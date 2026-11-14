@@ -28,3 +28,7 @@ project reference files/
 
 # Antigravity system files
 .gemini/
+
+# Generated creative assets
+static/generated/*
+leadpulse/static/generated/*
