@@ -629,8 +629,13 @@ async def create_ad_banner(
 ) -> CreativeBannerResponse:
     """Generate a high-converting Meta Ad banner PNG."""
     import os
+    import shutil
     from .creative_studio import generate_ad_banner
     out_dir = os.path.join("leadpulse", "static", "generated")
+    static_out_dir = os.path.join("static", "generated")
+    os.makedirs(out_dir, exist_ok=True)
+    os.makedirs(static_out_dir, exist_ok=True)
+
     filepath = generate_ad_banner(
         product_name=body.product_name,
         headline=body.headline,
@@ -640,7 +645,13 @@ async def create_ad_banner(
         output_dir=out_dir,
         aspect_ratio=body.aspect_ratio,
     )
-    rel_url = f"/static/generated/{os.path.basename(filepath)}"
+    filename = os.path.basename(filepath)
+    try:
+        shutil.copy(filepath, os.path.join(static_out_dir, filename))
+    except Exception:
+        pass
+
+    rel_url = f"/static/generated/{filename}"
     return CreativeBannerResponse(banner_url=rel_url, aspect_ratio=body.aspect_ratio)
 
 
@@ -651,8 +662,13 @@ async def create_ad_video(
 ) -> CreativeVideoResponse:
     """Generate a complete 9:16 vertical MP4 video ad."""
     import os
+    import shutil
     from .creative_studio import generate_video_ad
     out_dir = os.path.join("leadpulse", "static", "generated")
+    static_out_dir = os.path.join("static", "generated")
+    os.makedirs(out_dir, exist_ok=True)
+    os.makedirs(static_out_dir, exist_ok=True)
+
     filepath = await generate_video_ad(
         product_name=body.product_name,
         price_point=body.price_point,
@@ -662,7 +678,13 @@ async def create_ad_video(
         output_dir=out_dir,
         voice=body.voice,
     )
-    rel_url = f"/static/generated/{os.path.basename(filepath)}"
+    filename = os.path.basename(filepath)
+    try:
+        shutil.copy(filepath, os.path.join(static_out_dir, filename))
+    except Exception:
+        pass
+
+    rel_url = f"/static/generated/{filename}"
     return CreativeVideoResponse(video_url=rel_url, format="9:16")
 
 
@@ -671,21 +693,53 @@ async def create_ad_audio(
     body: dict,
     tenant_id: UUID = Depends(get_current_tenant),
 ):
-    """Generate audio voiceover MP3 via Edge-TTS."""
-    import os, uuid
+    """Generate high-fidelity neural MP3 voiceover via VoiceStudio Neural Engine.
+
+    Returns VoiceStudio neural MP3 with metadata including voice persona and engine info.
+    Saves to leadpulse/static/generated/ and copies to static/generated/ for dual compatibility.
+    """
+    import os
+    import uuid
     from .creative_studio.video_producer import generate_voiceover
+
     out_dir = os.path.join("leadpulse", "static", "generated")
     os.makedirs(out_dir, exist_ok=True)
+
+    # Also ensure static/generated exists for static file serving
+    static_out_dir = os.path.join("static", "generated")
+    os.makedirs(static_out_dir, exist_ok=True)
+
     filename = f"voiceover_{uuid.uuid4().hex[:8]}.mp3"
     filepath = os.path.join(out_dir, filename)
+    static_filepath = os.path.join(static_out_dir, filename)
+
     text = body.get("text", "Welcome to our exclusive launch offer.")
     voice = body.get("voice", "en-IN-NeerjaNeural")
+    rate = body.get("rate", "+0%")
+
     try:
-        await generate_voiceover(text, filepath, voice)
+        # Generate voiceover with VoiceStudio Neural Engine
+        await generate_voiceover(text, filepath, voice, rate)
+
+        # Copy to static directory for dual compatibility
+        import shutil
+        shutil.copy(filepath, static_filepath)
+
         rel_url = f"/static/generated/{filename}"
-        return {"audio_url": rel_url, "voice": voice, "text": text}
+        return {
+            "audio_url": rel_url,
+            "voice": voice,
+            "text": text,
+            "engine": "VoiceStudio Neural Engine",
+            "rate": rate,
+        }
     except Exception as e:
-        return {"error": str(e), "voice": voice, "text": text}
+        return {
+            "error": str(e),
+            "voice": voice,
+            "text": text,
+            "engine": "VoiceStudio Neural Engine",
+        }
 
 
 # ────────────────────────────────────────────────────────

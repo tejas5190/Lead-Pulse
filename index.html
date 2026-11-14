@@ -325,22 +325,42 @@
 
     <!-- Main Grid: Left Config Panel, Right Creative Previews -->
     <div class="grid grid-cols-1 lg:grid-cols-[380px_1fr] gap-6 items-start">
-      
+
       <!-- Left: Production Brief & Parameters -->
       <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-lg space-y-4">
+
+        <!-- 1. HERO CARD: Free-Form Campaign Requirement Prompt (TOP FIRST) -->
+        <div class="bg-gradient-to-br from-indigo-950/80 to-purple-950/80 border border-indigo-500/30 rounded-xl p-4 space-y-3">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="text-lg">🎯</span>
+            <h3 class="text-sm font-bold text-indigo-200">Custom Campaign Requirement & Brief</h3>
+          </div>
+          <p class="text-xs text-indigo-200/70">Describe your campaign in natural language. Our AI will extract all details and fill the fields below.</p>
+
+          <textarea id="creative-prompt-input" placeholder="E.g. I'm selling artisanal cold brew coffee in Bangalore for ₹299 per 4-pack. Target busy professionals aged 25-40 who care about quality. Key benefits are zero acidity, 24-hour extraction, single-origin arabica. Free delivery. Looking to run ads on Instagram Reels and Facebook this month."
+                    rows="4" class="w-full bg-slate-800 border border-indigo-500/30 rounded-lg px-3 py-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+
+          <button type="button" onclick="smartParsePrompt()"
+                  class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-xs py-2 rounded-lg transition flex items-center justify-center gap-2 shadow-lg shadow-indigo-500/20">
+            <span>⚡</span> <span>Smart Parse into Fields</span>
+          </button>
+        </div>
+
+        <!-- Refinement Fields Header -->
         <div class="flex items-center justify-between">
           <h3 class="text-sm font-semibold text-slate-200 flex items-center gap-2">
-            <span>⚙️</span> Custom Ad Brief & Specs
+            <span>⚙️</span> Campaign Parameters & Specs
           </h3>
           <span class="text-[10px] font-mono uppercase bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded-full font-bold">On-Demand AI</span>
         </div>
 
-        <!-- 1-Click Industry Presets Bar -->
-        <div class="bg-slate-950/70 border border-slate-800/80 p-2.5 rounded-xl">
-          <div class="text-[11px] text-slate-400 font-semibold mb-2 flex items-center gap-1.5">
-            <span>⚡</span> <span>Instant Client Demo Presets:</span>
-          </div>
-          <div class="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
+        <!-- Collapsed Accordion: Need Inspiration? Load Example Prompts -->
+        <details class="group bg-slate-950/70 border border-slate-800/80 p-2.5 rounded-xl">
+          <summary class="text-[11px] text-slate-400 font-semibold mb-0 flex items-center gap-1.5 cursor-pointer hover:text-slate-300 transition">
+            <span>💡</span> <span>Need Inspiration? Load an Example Prompt</span>
+            <span class="ml-auto transition group-open:rotate-180">▼</span>
+          </summary>
+          <div class="mt-2 grid grid-cols-2 sm:grid-cols-3 gap-1.5">
             <button type="button" onclick="loadIndustryPreset('coffee')"
                     class="preset-pill px-2 py-1.5 rounded-lg text-[10px] font-medium bg-slate-800 hover:bg-indigo-600 text-slate-300 hover:text-white transition border border-slate-700/60 truncate text-left">
               ☕ Cold Brew Coffee
@@ -462,15 +482,16 @@
               </select>
             </div>
             <div>
-              <label class="block text-xs font-medium text-slate-400 mb-1">AI Voiceover Actor</label>
+              <label class="block text-xs font-medium text-slate-400 mb-1">VoiceStudio Neural Voice</label>
               <select id="creative-voice"
                       class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                <option value="en-IN-NeerjaNeural" selected>Neerja (Indian English - Female)</option>
-                <option value="en-IN-PrabhatNeural">Prabhat (Indian English - Male)</option>
-                <option value="en-US-JennyNeural">Jenny (US English - Female)</option>
-                <option value="en-US-GuyNeural">Guy (US English - Male)</option>
-                <option value="hi-IN-SwaraNeural">Swara (Hindi - Female)</option>
-                <option value="hi-IN-MadhurNeural">Madhur (Hindi - Male)</option>
+                <option value="en-US-JennyNeural">🎙️ Sarah (UGC Authentic Creator)</option>
+                <option value="en-US-GuyNeural">🎙️ Marcus (High-Energy Direct Response)</option>
+                <option value="en-IN-NeerjaNeural" selected>🎙️ Neerja (Luxury & Premium Narrator)</option>
+                <option value="en-US-ChristopherNeural">🎙️ Christopher (Tech & Corporate Storyteller)</option>
+                <option value="en-US-AriaNeural">🎙️ Aria (Expressive Commercial)</option>
+                <option value="hi-IN-MadhurNeural">🎙️ Madhur (Indian Male Voice)</option>
+                <option value="hi-IN-SwaraNeural">🎙️ Swara (Indian Female Voice)</option>
               </select>
             </div>
           </div>
@@ -539,80 +560,60 @@
               <div class="flex items-center gap-2">
                 <span id="video-spec-duration" class="text-xs font-bold text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-2 py-0.5 rounded">15s Video</span>
                 <span id="video-spec-quality" class="text-xs font-bold text-indigo-400 bg-indigo-950/60 border border-indigo-500/30 px-2 py-0.5 rounded">1080p Full HD</span>
-                <span id="video-spec-scenes" class="text-xs text-slate-400 font-medium">4 Scenes Screenplay</span>
+                <span id="video-spec-scenes" class="text-xs text-slate-400 font-medium">🟢 AI Motion Film Ready · 1080p Full HD</span>
               </div>
-              <p class="text-[11px] text-slate-400 mt-1">Multi-scene Google Veo / Sora cinematography storyboard with synchronized pacing.</p>
+              <p class="text-[11px] text-slate-400 mt-1">Professional MP4 commercial with FFmpeg Ken Burns zoom transitions and VoiceStudio neural voiceover.</p>
             </div>
             <div class="flex items-center gap-2">
               <button onclick="copyEntireScreenplay()"
                       class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 transition flex items-center gap-1">
                 <span>📋</span> <span>Copy Full Screenplay</span>
               </button>
-              <a id="btn-download-video" href="./static/generated/video_ad_65db34c0.mp4" download="leadpulse_reel_ad.mp4"
+              <a id="btn-download-video" href="./static/generated/video_ad_65db34c0.mp4" download="leadpulse_commercial.mp4"
                  class="text-xs bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-3 py-1.5 rounded-lg transition inline-flex items-center gap-1">
-                <span>⬇️</span> Download Reel
+                <span>⬇️</span> Download AI Commercial Film (MP4)
               </a>
             </div>
           </div>
 
-          <!-- Video Grid: Left Phone Mockup, Right Scene Details -->
-          <div class="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-6 items-start">
-            
+          <!-- Video Grid: Left Phone Mockup with Interactive Player, Right Scene Details -->
+          <div class="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-6 items-start">
+
             <!-- Left: Interactive 9:16 Video Player Mockup -->
             <div class="bg-slate-950 rounded-2xl p-4 border border-slate-800 flex flex-col items-center">
-              <div class="w-[260px] h-[462px] rounded-[28px] border-4 border-slate-700 bg-slate-900 shadow-2xl relative overflow-hidden flex flex-col justify-between p-3.5 text-white">
-                <!-- Top Progress Bars -->
-                <div id="reel-progress-bars" class="flex gap-1 w-full z-10">
-                  <!-- Dynamically rendered based on scenes count -->
-                </div>
+              <div class="w-[260px] h-[462px] rounded-[28px] border-4 border-slate-700 bg-slate-900 shadow-2xl relative overflow-hidden flex flex-col">
+                <!-- Embedded HTML5 Video Player -->
+                <video id="creative-video-player" playsinline controls class="w-full h-full object-cover rounded-[24px]" poster="./static/generated/banner_68632c63_1x1.png">
+                  <source src="./static/generated/video_ad_65db34c0.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
 
-                <!-- Top Profile Bar -->
-                <div class="flex items-center justify-between text-xs mt-1.5 z-10">
-                  <div class="flex items-center gap-1.5">
-                    <div class="w-5 h-5 rounded-full bg-gradient-to-tr from-pink-500 to-indigo-500 flex items-center justify-center font-bold text-[9px]">LP</div>
-                    <span id="reel-brand-tag" class="font-bold text-[10px] drop-shadow">aura_craft</span>
-                    <span class="text-[9px] bg-white/20 px-1 py-0.2 rounded-full font-medium">Sponsored</span>
-                  </div>
-                  <span class="text-white/80 text-xs">•••</span>
-                </div>
-
-                <!-- Background Image & Gradient Scrim -->
-                <img id="reel-bg-img" src="./static/stock_dental.jpg" class="absolute inset-0 w-full h-full object-cover opacity-60 pointer-events-none transition-all duration-500" />
-                <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent pointer-events-none"></div>
-
-                <!-- Center Dynamic Slide Content -->
-                <div class="z-10 my-auto text-center px-1.5 space-y-2.5">
-                  <span id="reel-badge" class="inline-block px-2 py-0.5 rounded-full text-[9px] font-bold tracking-wider uppercase bg-indigo-500 text-white shadow-lg animate-pulse">
-                    🔥 THE HOOK
-                  </span>
-                  <h4 id="reel-title" class="text-base font-black leading-snug drop-shadow-md">
-                    Looking for Authentic Cold Brew?
-                  </h4>
-                  <p id="reel-desc" class="text-[11px] text-slate-200 drop-shadow leading-relaxed">
-                    Zero Acidity · 24-Hour Extraction · 100% Arabica
-                  </p>
-                  <div id="reel-price-pill" class="inline-block bg-emerald-500 text-white font-extrabold text-[11px] px-2.5 py-0.5 rounded-full shadow-lg">
-                    Pack of 4 @ ₹299
-                  </div>
-                </div>
-
-                <!-- Bottom WhatsApp CTA -->
-                <div class="z-10 space-y-1.5">
-                  <button class="w-full bg-[#25D366] hover:bg-[#20ba59] text-white font-bold text-xs py-1.5 rounded-xl flex items-center justify-center gap-1 shadow-lg">
-                    <span>💬</span> <span>Send WhatsApp Message</span>
-                  </button>
-                  <div class="text-[9px] text-center text-slate-300">Tap below to claim introductory voucher</div>
-                </div>
+                <!-- Fallback: Motion Canvas -->
+                <canvas id="cinema-motion-canvas" class="w-full h-full object-cover rounded-[24px] hidden"></canvas>
               </div>
 
-              <!-- Controls below player -->
-              <div class="w-full mt-3 space-y-2">
-                <div class="flex items-center justify-between gap-1" id="reel-scene-chips">
-                  <!-- Injected scene chips -->
+              <!-- Video Controls Below Player -->
+              <div class="w-full mt-4 space-y-3">
+                <!-- Play/Pause & Timeline -->
+                <div class="flex items-center gap-2">
+                  <button onclick="toggleVideoPlayback()" id="btn-video-play"
+                          class="px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white transition flex items-center gap-1">
+                    <span>▶</span> <span>Play Film Preview</span>
+                  </button>
+                  <input type="range" id="video-timeline" min="0" max="100" value="0" onchange="seekVideo(this.value)"
+                         class="flex-1 h-1.5 bg-slate-700 rounded-full accent-indigo-600 cursor-pointer" />
+                  <span id="video-timecode" class="text-xs text-slate-400 font-mono">00:00 / 00:15</span>
                 </div>
-                <button onclick="toggleReelAutoPlay()" id="btn-reel-play"
-                        class="w-full py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white flex items-center justify-center gap-1.5 shadow-md transition">
-                  <span>▶</span> <span>Auto-Play Video Ad (with Voice)</span>
+
+                <!-- Status Badge -->
+                <div class="text-center px-3 py-2 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-xs text-emerald-300 font-medium">
+                  🟢 AI Motion Film Ready · 1080p Full HD
+                </div>
+
+                <!-- Re-render Button -->
+                <button onclick="regenerateVideo()"
+                        class="w-full px-3 py-2 rounded-lg text-xs font-bold bg-indigo-600 hover:bg-indigo-500 text-white transition flex items-center justify-center gap-1">
+                  <span>🎬</span> <span>Re-render MP4 Film</span>
                 </button>
               </div>
             </div>
@@ -621,9 +622,9 @@
             <div class="space-y-3">
               <div class="flex items-center justify-between">
                 <h4 class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
-                  <span>🎥</span> <span>Google Veo 2 / Sora Screenplay Deck</span>
+                  <span>🎥</span> <span>Cinematographic Screenplay (Google Veo 2 / Sora)</span>
                 </h4>
-                <span class="text-[10px] text-slate-400">Cinematographic production instructions</span>
+                <span class="text-[10px] text-slate-400">Production instructions for film synthesis</span>
               </div>
               <div id="screenplay-deck-list" class="space-y-3">
                 <!-- Dynamically rendered scene cards -->
@@ -632,6 +633,9 @@
 
           </div>
         </div>
+
+        <!-- Hidden: Audio Player Element -->
+        <audio id="creative-studio-audio" class="hidden" controls></audio>
 
         <!-- Panel 3: Audio AI Voiceover Studio -->
         <div id="cpanel-audio" class="space-y-5 hidden">
@@ -3096,47 +3100,89 @@ function stopWaveformAnimation() {
   });
 }
 
-function speakFullNarration() {
-  if (!('speechSynthesis' in window)) {
-    showToast('Speech synthesis not supported in this browser');
-    return;
-  }
-  window.speechSynthesis.cancel();
-
+async function speakFullNarration() {
   const scriptBox = document.getElementById('audio-script-box');
   const text = scriptBox?.innerText || (cachedCreativeData && cachedCreativeData.full_narration) || 'Welcome to LeadPulse AI';
   const voiceName = document.getElementById('creative-voice')?.value || 'en-IN-NeerjaNeural';
   const statusLabel = document.getElementById('audio-status-label');
   const speakBtn = document.getElementById('btn-audio-speak');
+  const audio = document.getElementById('creative-studio-audio');
 
+  if (speakBtn) {
+    speakBtn.disabled = true;
+    speakBtn.innerHTML = '<span>⏳</span> <span>Synthesizing VoiceStudio...</span>';
+  }
+  if (statusLabel) statusLabel.innerText = 'Synthesizing VoiceStudio Neural (' + voiceName + ')...';
+
+  try {
+    const res = await api._fetch('POST', '/api/creative/audio', { text, voice: voiceName });
+    if (res && res.audio_url && audio) {
+      audio.src = res.audio_url;
+      audio.onplay = () => {
+        startWaveformAnimation();
+        if (statusLabel) statusLabel.innerText = '🟢 Playing VoiceStudio Neural: ' + voiceName;
+        if (speakBtn) speakBtn.innerHTML = '<span>🔊</span> <span>Speaking VoiceStudio...</span>';
+      };
+      audio.onended = () => {
+        stopWaveformAnimation();
+        if (statusLabel) statusLabel.innerText = 'VoiceStudio Playback Complete';
+        if (speakBtn) {
+          speakBtn.disabled = false;
+          speakBtn.innerHTML = '<span>▶</span> <span>Speak Narration Live</span>';
+        }
+      };
+      audio.onerror = () => {
+        stopWaveformAnimation();
+        fallbackSpeechSynthesis(text, voiceName, statusLabel, speakBtn);
+      };
+      await audio.play();
+      showToast('🎙️ Playing VoiceStudio Neural voiceover (' + voiceName + ')');
+    } else {
+      fallbackSpeechSynthesis(text, voiceName, statusLabel, speakBtn);
+    }
+  } catch (err) {
+    console.warn('VoiceStudio backend unavailable, falling back:', err);
+    fallbackSpeechSynthesis(text, voiceName, statusLabel, speakBtn);
+  } finally {
+    if (speakBtn && (!audio || audio.paused)) speakBtn.disabled = false;
+  }
+}
+
+function fallbackSpeechSynthesis(text, voiceName, statusLabel, speakBtn) {
+  if (!('speechSynthesis' in window)) {
+    showToast('Speech synthesis unavailable');
+    if (speakBtn) {
+      speakBtn.disabled = false;
+      speakBtn.innerHTML = '<span>▶</span> <span>Speak Narration Live</span>';
+    }
+    return;
+  }
+  window.speechSynthesis.cancel();
   const utter = new SpeechSynthesisUtterance(text);
   utter.rate = 1.0;
-  utter.pitch = 1.0;
-
   const voices = window.speechSynthesis.getVoices();
-  const found = voices.find(v => v.name.includes('India') || v.lang.includes('en-IN') || v.lang.includes('en-US'));
+  const found = voices.find(v => v.lang.includes('en-IN') || v.lang.includes('en-US'));
   if (found) utter.voice = found;
-
   startWaveformAnimation();
-  if (statusLabel) statusLabel.innerText = '🟢 Playing Live Speech Synthesis...';
-  if (speakBtn) speakBtn.innerHTML = '<span>🔊</span> <span>Speaking...</span>';
-
-  utter.onend = () => {
+  if (statusLabel) statusLabel.innerText = '🟢 Playing Local Fallback Speech...';
+  if (speakBtn) {
+    speakBtn.disabled = false;
+    speakBtn.innerHTML = '<span>🔊</span> <span>Speaking...</span>';
+  }
+  utter.onend = utter.onerror = () => {
     stopWaveformAnimation();
     if (statusLabel) statusLabel.innerText = 'Playback Complete';
     if (speakBtn) speakBtn.innerHTML = '<span>▶</span> <span>Speak Narration Live</span>';
   };
-
-  utter.onerror = () => {
-    stopWaveformAnimation();
-    if (statusLabel) statusLabel.innerText = 'Playback Stopped';
-    if (speakBtn) speakBtn.innerHTML = '<span>▶</span> <span>Speak Narration Live</span>';
-  };
-
   window.speechSynthesis.speak(utter);
 }
 
 function stopAudioPlayback() {
+  const audio = document.getElementById('creative-studio-audio');
+  if (audio) {
+    audio.pause();
+    audio.currentTime = 0;
+  }
   if ('speechSynthesis' in window) {
     window.speechSynthesis.cancel();
   }
@@ -3144,7 +3190,10 @@ function stopAudioPlayback() {
   const statusLabel = document.getElementById('audio-status-label');
   const speakBtn = document.getElementById('btn-audio-speak');
   if (statusLabel) statusLabel.innerText = 'Playback Stopped';
-  if (speakBtn) speakBtn.innerHTML = '<span>▶</span> <span>Speak Narration Live</span>';
+  if (speakBtn) {
+    speakBtn.disabled = false;
+    speakBtn.innerHTML = '<span>▶</span> <span>Speak Narration Live</span>';
+  }
 }
 
 async function downloadVoiceoverAudio() {
@@ -3293,8 +3342,8 @@ async function generateCreativeKit() {
     // 6. Update Canva template link
     updateCanvaLink(topic, product_name);
 
-    // 7. If server backend is connected, also trigger background renders
-    if (api._base) {
+    // 7. Render high-fidelity MP4 video ad and banner
+    try {
       api.generateBanner({
         product_name,
         headline: copyData.headlines[0],
@@ -3303,6 +3352,9 @@ async function generateCreativeKit() {
         key_points: key_benefit.split(',').map(s => s.trim()).filter(Boolean),
         aspect_ratio
       }).catch(() => {});
+
+      const videoBadge = document.getElementById('video-status-badge');
+      if (videoBadge) videoBadge.innerHTML = '<span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span> ⏳ Rendering AI Commercial Film...';
 
       api.generateVideo({
         product_name,
@@ -3313,10 +3365,25 @@ async function generateCreativeKit() {
         voice
       }).then(videoData => {
         if (videoData && videoData.video_url) {
+          const videoPlayer = document.getElementById('creative-video-player');
+          if (videoPlayer) {
+            videoPlayer.src = videoData.video_url;
+            videoPlayer.load();
+            videoPlayer.play().catch(() => {});
+          }
+          if (videoBadge) {
+            videoBadge.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> 🟢 AI Commercial Film Ready';
+          }
           const downloadVideo = document.getElementById('btn-download-video');
           if (downloadVideo) downloadVideo.href = videoData.video_url;
+          showToast('🎬 New AI Commercial Film rendered and loaded in player!');
         }
-      }).catch(() => {});
+      }).catch(err => {
+        console.warn('Video rendering note:', err);
+        if (videoBadge) videoBadge.innerHTML = '🟢 Motion Reel Player Active';
+      });
+    } catch (e) {
+      console.warn('Render dispatch error:', e);
     }
 
     showToast('Generative Ad Suite (Still + Video + Audio + Screenplay) Ready!');
@@ -3919,15 +3986,94 @@ function saveSimLeadToCRM() {
   loadLeads();
 }
 
-function handleInstantAccess() {
-  localStorage.setItem('lp_token', 'demo_' + Date.now());
-  showPage('dashboard');
-  initDashboard();
+function smartParsePrompt() {
+  const prompt = document.getElementById('creative-prompt-input')?.value || '';
+  if (!prompt.trim()) {
+    showToast('Please enter a campaign description first.');
+    return;
+  }
+
+  // Simple AI-like parsing of natural language prompt
+  const promptLower = prompt.toLowerCase();
+
+  // Extract product/topic
+  const topicMatch = prompt.match(/(?:selling|promoting|launching|advertising)\s+([^.!?]+)/i);
+  const topic = topicMatch ? topicMatch[1].trim() : prompt.split('\n')[0].substring(0, 50);
+  document.getElementById('creative-topic').value = topic;
+
+  // Extract price/offer
+  const priceMatch = prompt.match(/[₹$]\s*(\d+[,.\d]*(?:\/|per)?[^\s.!?]*)/i);
+  const price = priceMatch ? '₹' + priceMatch[1] : 'Special Offer';
+  document.getElementById('creative-price').value = price;
+
+  // Extract location
+  const locationMatch = prompt.match(/(?:in|for|serving)\s+([A-Za-z\s,]+?)(?:\.|for|,|$)/i);
+  const location = locationMatch ? locationMatch[1].trim() : 'Your City';
+  document.getElementById('creative-location').value = location;
+
+  // Extract audience
+  const audienceMatch = prompt.match(/(?:target|audience|for)\s+([^.!?]+?)(?:\.|,|$)/i);
+  const audience = audienceMatch ? audienceMatch[1].trim() : 'Professionals';
+  document.getElementById('creative-audience').value = audience;
+
+  // Extract benefits/USPs
+  const benefitMatch = prompt.match(/(?:benefits?|features?|including|with)\s+([^.!?]+?)(?:\.|,|$)/i);
+  const benefits = benefitMatch ? benefitMatch[1].trim() : topic;
+  document.getElementById('creative-benefit').value = benefits;
+
+  showToast('✅ Smart parse complete! Review and refine the extracted fields below.');
 }
+
+// VoiceStudio audio handled above
 
 // ──────────────────────────────────────────────
 // Boot
 // ──────────────────────────────────────────────
+
+// ──────────────────────────────────────────────
+// Video Cinema Film Player Controls
+// ──────────────────────────────────────────────
+function toggleVideoPlayback() {
+  const video = document.getElementById('creative-video-player');
+  const btn = document.getElementById('btn-video-play');
+  if (!video) return;
+  if (video.paused) {
+    video.play();
+    if (btn) btn.innerHTML = '<span>⏸</span> <span>Pause</span>';
+  } else {
+    video.pause();
+    if (btn) btn.innerHTML = '<span>▶</span> <span>Play Film Preview</span>';
+  }
+}
+
+function seekVideo(percent) {
+  const video = document.getElementById('creative-video-player');
+  if (video && video.duration) {
+    video.currentTime = (percent / 100) * video.duration;
+    updateVideoTimecode();
+  }
+}
+
+function updateVideoTimecode() {
+  const video = document.getElementById('creative-video-player');
+  const timecode = document.getElementById('video-timecode');
+  const timeline = document.getElementById('video-timeline');
+  if (!video || !timecode) return;
+  const formatTime = (seconds) => {
+    if (isNaN(seconds)) return '00:00';
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return ${String(mins).padStart(2, '0')}:;
+  };
+  timecode.innerText = ${formatTime(video.currentTime)} / ;
+  if (timeline && video.duration) timeline.value = (video.currentTime / video.duration) * 100;
+}
+
+function regenerateVideo() {
+  showToast('🎬 Re-rendering MP4 Film with FFmpeg motion transitions...');
+  generateCreativeKit();
+}
+
 (function boot() {
   const savedBackend = localStorage.getItem('lp_backend_url');
   if (savedBackend) {

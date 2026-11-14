@@ -1,7 +1,7 @@
 """
 LeadPulse AI — Programmatic 9:16 Video Ad Producer
-Combines AI voiceover (Edge-TTS) with programmatic motion slides and FFmpeg
-to generate professional 9:16 Instagram Reels / WhatsApp video ads.
+Combines AI voiceover (VoiceStudio Neural Engine via Edge-TTS) with programmatic motion slides
+and FFmpeg to generate professional 9:16 Instagram Reels / WhatsApp video ads with smooth transitions.
 """
 import os
 import uuid
@@ -12,10 +12,38 @@ from PIL import Image, ImageDraw, ImageFont
 from .banner_designer import get_font, create_gradient, fetch_stock_photo
 
 
-async def generate_voiceover(text: str, output_path: str, voice: str = "en-IN-NeerjaNeural"):
-    """Generate audio MP3 using Edge-TTS."""
+async def generate_voiceover(
+    text: str,
+    output_path: str,
+    voice: str = "en-IN-NeerjaNeural",
+    rate: str = "+0%"
+):
+    """Generate audio MP3 using VoiceStudio Neural Engine (Edge-TTS).
+
+    Args:
+        text: Full narration script
+        output_path: Path to save MP3
+        voice: Neural voice persona (VoiceStudio voices)
+        rate: Speech rate adjustment (+/- percentage)
+    """
     import edge_tts
-    communicate = edge_tts.Communicate(text, voice)
+    # Map VoiceStudio personas to Edge-TTS voices
+    voice_mapping = {
+        "en-US-JennyNeural": "en-US-JennyNeural",  # Sarah (UGC Authentic Creator)
+        "en-US-GuyNeural": "en-US-GuyNeural",        # Marcus (High-Energy Direct Response)
+        "en-IN-NeerjaNeural": "en-IN-NeerjaNeural",  # Neerja (Luxury & Premium Narrator)
+        "en-US-ChristopherNeural": "en-US-ChristopherNeural",  # Tech & Corporate Storyteller
+        "en-US-AriaNeural": "en-US-AriaNeural",      # Expressive Commercial
+        "hi-IN-MadhurNeural": "hi-IN-MadhurNeural",  # Indian Male Voice
+        "hi-IN-SwaraNeural": "hi-IN-SwaraNeural",    # Indian Female Voice
+    }
+
+    selected_voice = voice_mapping.get(voice, voice)
+
+    # Add natural pauses between beats (sentences ending with punctuation)
+    processed_text = text.replace(". ", ".<break time=\"500ms\"/> ").replace("! ", "!<break time=\"500ms\"/> ")
+
+    communicate = edge_tts.Communicate(processed_text, selected_voice, rate=rate)
     await communicate.save(output_path)
 
 
@@ -125,7 +153,24 @@ async def generate_video_ad(
     voice: str = "en-IN-NeerjaNeural",
     industry: str = "dental"
 ) -> str:
-    """Generate a complete 9:16 vertical MP4 video ad."""
+    """Generate a complete 9:16 vertical MP4 video ad with FFmpeg motion transitions.
+
+    Creates smooth Ken Burns zoompan effects and xfade crossfade transitions between scenes.
+    Muxes high-fidelity VoiceStudio neural voiceover (AAC 192k) for professional output.
+
+    Args:
+        product_name: Product/service name
+        price_point: Price/offer text
+        location: Target location
+        key_benefit: Main benefit/USP
+        script_obj: Dict with keys: hook, problem, solution, cta
+        output_dir: Output directory
+        voice: VoiceStudio neural voice persona
+        industry: Industry type for stock photo selection
+
+    Returns:
+        Path to generated MP4 video file
+    """
     os.makedirs(output_dir, exist_ok=True)
     run_id = uuid.uuid4().hex[:8]
     temp_dir = os.path.join(output_dir, f"temp_{run_id}")
@@ -143,14 +188,14 @@ async def generate_video_ad(
     elif any(k in combined for k in ["gym", "fit", "workout"]):
         industry = "fitness"
 
-    # 1. Generate Voiceover
+    # 1. Generate Voiceover with VoiceStudio Neural Engine
     full_text = f"{script_obj['hook']} {script_obj['problem']} {script_obj['solution']} {script_obj['cta']}"
     await generate_voiceover(full_text, audio_path, voice=voice)
 
-    # 2. Get audio duration using ffprobe
+    # 2. Get FFmpeg executable
     ffmpeg_exe = imageio_ffmpeg.get_ffmpeg_exe()
-    
-    # 3. Generate 3 Animated Slide Frames
+
+    # 3. Generate 3 Animated Slide Frames with stock photography
     slide1 = os.path.join(temp_dir, "slide1.jpg")
     create_slide(
         title=script_obj['hook'],
@@ -184,36 +229,43 @@ async def generate_video_ad(
         industry=industry
     )
 
-    # 4. Create concat demuxer text file for FFmpeg (using relative basenames)
-    concat_file = os.path.join(temp_dir, "concat.txt")
-    with open(concat_file, "w") as f:
-        f.write("file 'slide1.jpg'\nduration 4.5\n")
-        f.write("file 'slide2.jpg'\nduration 4.5\n")
-        f.write("file 'slide3.jpg'\nduration 5.0\n")
-        f.write("file 'slide3.jpg'\n")
+    # 4. Create FFmpeg filtergraph for motion effects and transitions
+    # Use zoompan for Ken Burns effect (push-in, pan, hero reveal)
+    # Use xfade for smooth crossfade transitions (0.5s duration)
+    filtergraph = (
+        "[0:v]zoompan=z='min(zoom+0.0012,1.15)':d=125:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s=1080x1920:fps=25[v0];"
+        "[1:v]zoompan=z='min(zoom+0.0015,1.20)':d=125:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s=1080x1920:fps=25[v1];"
+        "[2:v]zoompan=z='min(zoom+0.0010,1.15)':d=150:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s=1080x1920:fps=25[v2];"
+        "[v0][v1]xfade=transition=fade:duration=0.5:offset=4.5[xf1];"
+        "[xf1][v2]xfade=transition=fade:duration=0.5:offset=9.0[v_out]"
+    )
 
-    # 5. Render Video with FFmpeg
+    # 5. Build FFmpeg command with motion video + audio mux
     cmd = [
         ffmpeg_exe,
         "-y",
-        "-f", "concat",
-        "-safe", "0",
-        "-i", concat_file,
+        "-i", slide1,
+        "-i", slide2,
+        "-i", slide3,
         "-i", audio_path,
+        "-filter_complex", filtergraph,
+        "-map", "[v_out]",
+        "-map", "3:a",
         "-c:v", "libx264",
+        "-preset", "fast",
+        "-crf", "23",
         "-pix_fmt", "yuv420p",
-        "-r", "25",
         "-c:a", "aac",
-        "-b:a", "128k",
+        "-b:a", "192k",
         "-shortest",
         output_video
     ]
-    
+
     proc = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     if proc.returncode != 0:
         raise RuntimeError(f"FFmpeg failed: {proc.stderr.decode('utf-8', errors='ignore')}")
 
-    # Cleanup temp slides and audio
+    # Cleanup temp directory
     try:
         import shutil
         shutil.rmtree(temp_dir, ignore_errors=True)
