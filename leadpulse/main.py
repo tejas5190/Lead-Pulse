@@ -42,9 +42,26 @@ except ImportError:  # pragma: no cover
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
-    """Create DB tables on startup; dispose engine on shutdown."""
+    """Create DB tables on startup; seed demo tenant; dispose engine on shutdown."""
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+    try:
+        from .database import Tenant, async_session_factory
+        from .auth import DEMO_TENANT_ID, hash_password
+        async with async_session_factory() as session:
+            existing = await session.get(Tenant, DEMO_TENANT_ID)
+            if not existing:
+                demo_tenant = Tenant(
+                    id=DEMO_TENANT_ID,
+                    company_name="LeadPulse Demo Client",
+                    industry="universal",
+                    owner_email="demo@leadpulse.ai",
+                    hashed_password=hash_password("demo1234"),
+                )
+                session.add(demo_tenant)
+                await session.commit()
+    except Exception:
+        pass
     yield
     await engine.dispose()
 

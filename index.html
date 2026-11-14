@@ -326,18 +326,29 @@
     <!-- Main Grid: Left Config Panel, Right Creative Previews -->
     <div class="grid grid-cols-1 lg:grid-cols-[380px_1fr] gap-6 items-start">
       
-      <!-- Left: Generator Form -->
-      <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-lg">
-        <h3 class="text-sm font-semibold text-slate-200 mb-2 flex items-center gap-2">
-          <span>⚙️</span> Ad Campaign Parameters
-        </h3>
+      <!-- Left: Production Brief & Parameters -->
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-lg space-y-4">
+        <div class="flex items-center justify-between">
+          <h3 class="text-sm font-semibold text-slate-200 flex items-center gap-2">
+            <span>⚙️</span> Custom Ad Brief & Specs
+          </h3>
+          <span class="text-[10px] font-mono uppercase bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded-full font-bold">On-Demand AI</span>
+        </div>
 
         <!-- 1-Click Industry Presets Bar -->
-        <div class="mb-4 bg-slate-950/70 border border-slate-800/80 p-2.5 rounded-xl">
+        <div class="bg-slate-950/70 border border-slate-800/80 p-2.5 rounded-xl">
           <div class="text-[11px] text-slate-400 font-semibold mb-2 flex items-center gap-1.5">
-            <span>⚡</span> <span>1-Click Industry Presets:</span>
+            <span>⚡</span> <span>Instant Client Demo Presets:</span>
           </div>
           <div class="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
+            <button type="button" onclick="loadIndustryPreset('coffee')"
+                    class="preset-pill px-2 py-1.5 rounded-lg text-[10px] font-medium bg-slate-800 hover:bg-indigo-600 text-slate-300 hover:text-white transition border border-slate-700/60 truncate text-left">
+              ☕ Cold Brew Coffee
+            </button>
+            <button type="button" onclick="loadIndustryPreset('saas')"
+                    class="preset-pill px-2 py-1.5 rounded-lg text-[10px] font-medium bg-slate-800 hover:bg-indigo-600 text-slate-300 hover:text-white transition border border-slate-700/60 truncate text-left">
+              🛡️ Cyber Security SaaS
+            </button>
             <button type="button" onclick="loadIndustryPreset('real_estate')"
                     class="preset-pill px-2 py-1.5 rounded-lg text-[10px] font-medium bg-slate-800 hover:bg-indigo-600 text-slate-300 hover:text-white transition border border-slate-700/60 truncate text-left">
               🏢 Real Estate (3BHK)
@@ -348,214 +359,341 @@
             </button>
             <button type="button" onclick="loadIndustryPreset('fitness')"
                     class="preset-pill px-2 py-1.5 rounded-lg text-[10px] font-medium bg-slate-800 hover:bg-indigo-600 text-slate-300 hover:text-white transition border border-slate-700/60 truncate text-left">
-              💪 Fitness & Gym
+              💪 Elite Gym & Fitness
             </button>
-            <button type="button" onclick="loadIndustryPreset('education')"
+            <button type="button" onclick="loadIndustryPreset('luxury_auto')"
                     class="preset-pill px-2 py-1.5 rounded-lg text-[10px] font-medium bg-slate-800 hover:bg-indigo-600 text-slate-300 hover:text-white transition border border-slate-700/60 truncate text-left">
-              🎓 UPSC Coaching
-            </button>
-            <button type="button" onclick="loadIndustryPreset('ecommerce')"
-                    class="preset-pill px-2 py-1.5 rounded-lg text-[10px] font-medium bg-slate-800 hover:bg-indigo-600 text-slate-300 hover:text-white transition border border-slate-700/60 truncate text-left">
-              💎 Diamond Jewellery
-            </button>
-            <button type="button" onclick="loadIndustryPreset('auto')"
-                    class="preset-pill px-2 py-1.5 rounded-lg text-[10px] font-medium bg-slate-800 hover:bg-indigo-600 text-slate-300 hover:text-white transition border border-slate-700/60 truncate text-left">
-              🚗 Luxury Cars
+              🚗 Luxury EV Sedan
             </button>
           </div>
         </div>
         
-        <div class="space-y-3.5">
-          <div>
-            <label class="block text-xs font-medium text-slate-400 mb-1">Product / Project Name</label>
-            <input id="creative-product" type="text" value="Greenfield Signature 3BHK"
-                   class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+        <div class="space-y-3">
+          <!-- Topic & Brand -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div>
+              <label class="block text-xs font-medium text-slate-400 mb-1">Campaign Topic / Concept</label>
+              <input id="creative-topic" type="text" value="Artisanal Single-Origin Nitro Cold Brew" placeholder="e.g. Nitro Cold Brew Coffee"
+                     class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-slate-400 mb-1">Brand / Company Name</label>
+              <input id="creative-brand" type="text" value="Aura Craft Roasters" placeholder="e.g. Aura Craft Roasters"
+                     class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+            </div>
           </div>
 
-          <div class="grid grid-cols-2 gap-2.5">
+          <!-- Product Offering & Price -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
             <div>
-              <label class="block text-xs font-medium text-slate-400 mb-1">Industry</label>
-              <select id="creative-industry" onchange="handleIndustryChange(this.value)"
-                      class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                <option value="real_estate" selected>Real Estate</option>
-                <option value="dental">Dental Clinic</option>
-                <option value="fitness">Fitness / Gym</option>
-                <option value="education">Coaching / Education</option>
-                <option value="ecommerce">Luxury / E-commerce</option>
-                <option value="auto">Automotive / Cars</option>
-                <option value="universal">Universal / Other</option>
+              <label class="block text-xs font-medium text-slate-400 mb-1">Product Offering / Title</label>
+              <input id="creative-product" type="text" value="Signature Nitro Cold Brew (Pack of 4)" placeholder="e.g. Nitro Cold Brew 4-Pack"
+                     class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-slate-400 mb-1">Price Point / Launch Offer</label>
+              <input id="creative-price" type="text" value="Pack of 4 @ ₹299 (Free Delivery)" placeholder="e.g. Pack of 4 @ ₹299"
+                     class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+            </div>
+          </div>
+
+          <!-- Location & Target Audience -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div>
+              <label class="block text-xs font-medium text-slate-400 mb-1">Target City / Region</label>
+              <input id="creative-location" type="text" value="Koramangala, Bangalore" placeholder="e.g. Bangalore, Indiranagar"
+                     class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-slate-400 mb-1">Target Audience / Buyer Persona</label>
+              <input id="creative-audience" type="text" value="Coffee aficionados & busy professionals seeking clean energy" placeholder="e.g. Tech professionals, coffee lovers"
+                     class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+            </div>
+          </div>
+
+          <!-- USPs / Differentiators -->
+          <div>
+            <label class="block text-xs font-medium text-slate-400 mb-1">Key Selling Points / USPs (comma separated)</label>
+            <textarea id="creative-benefit" rows="2" placeholder="e.g. Zero Acidity, 24-Hour Extraction, 100% Arabica, No Added Sugar"
+                      class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500">Zero Acidity, 24-Hour Cold Extraction, 100% Single-Estate Arabica, Zero Sugar</textarea>
+          </div>
+
+          <!-- Video Duration, Quality & Tone Selectors -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 bg-slate-950/50 p-2.5 rounded-xl border border-slate-800">
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-300 mb-1">⏱️ Video Duration</label>
+              <select id="creative-duration" onchange="handleDurationChange(this.value)"
+                      class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2 py-1.5 text-xs text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <option value="15" selected>15s (Blitz Reel - 4 Scenes)</option>
+                <option value="30">30s (Meta Feed - 6 Scenes)</option>
+                <option value="60">60s (Explainer - 8 Scenes)</option>
               </select>
             </div>
             <div>
-              <label class="block text-xs font-medium text-slate-400 mb-1">Price Point / Offer</label>
-              <input id="creative-price" type="text" value="Starting ₹85 Lakhs"
-                     class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+              <label class="block text-[11px] font-semibold text-slate-300 mb-1">🎯 Quality Target</label>
+              <select id="creative-quality"
+                      class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2 py-1.5 text-xs text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <option value="1080p" selected>1080p Full HD (Meta)</option>
+                <option value="4k">4K Ultra HD (Veo)</option>
+                <option value="720p">720p Fast Demo</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-300 mb-1">🎭 Creative Tone</label>
+              <select id="creative-tone"
+                      class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2 py-1.5 text-xs text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <option value="high_energy" selected>🔥 High-Energy & Direct</option>
+                <option value="luxury">✨ Luxury & Aesthetic</option>
+                <option value="problem_solution">🧠 Problem-Solution</option>
+                <option value="friendly">🤝 Friendly & Relatable</option>
+              </select>
             </div>
           </div>
 
-          <div>
-            <label class="block text-xs font-medium text-slate-400 mb-1">Location / Target City</label>
-            <input id="creative-location" type="text" value="Sector 62, Gurugram"
-                   class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
-          </div>
-
-          <div>
-            <label class="block text-xs font-medium text-slate-400 mb-1">Key Selling Points / Hook</label>
-            <textarea id="creative-benefit" rows="2"
-                      class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500">Zero Brokerage, 80% Green Open Spaces, Sample Flat Open</textarea>
-          </div>
-
-          <div>
-            <label class="block text-xs font-medium text-slate-400 mb-1">AI Voiceover (Free Edge-TTS)</label>
-            <select id="creative-voice"
-                    class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-              <option value="en-IN-NeerjaNeural" selected>Neerja (Indian English - Female)</option>
-              <option value="en-IN-PrabhatNeural">Prabhat (Indian English - Male)</option>
-              <option value="hi-IN-SwaraNeural">Swara (Hindi - Female)</option>
-              <option value="hi-IN-MadhurNeural">Madhur (Hindi - Male)</option>
-            </select>
+          <!-- Aspect Ratio & AI Voice -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div>
+              <label class="block text-xs font-medium text-slate-400 mb-1">Still Banner Aspect Ratio</label>
+              <select id="creative-aspect" onchange="handleAspectChange(this.value)"
+                      class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <option value="1:1" selected>1:1 Square (Instagram & FB Feed)</option>
+                <option value="9:16">9:16 Vertical (Stories & Reels)</option>
+                <option value="16:9">16:9 Landscape (YouTube & Display)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-slate-400 mb-1">AI Voiceover Actor</label>
+              <select id="creative-voice"
+                      class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <option value="en-IN-NeerjaNeural" selected>Neerja (Indian English - Female)</option>
+                <option value="en-IN-PrabhatNeural">Prabhat (Indian English - Male)</option>
+                <option value="en-US-JennyNeural">Jenny (US English - Female)</option>
+                <option value="en-US-GuyNeural">Guy (US English - Male)</option>
+                <option value="hi-IN-SwaraNeural">Swara (Hindi - Female)</option>
+                <option value="hi-IN-MadhurNeural">Madhur (Hindi - Male)</option>
+              </select>
+            </div>
           </div>
 
           <button id="btn-generate-creative" onclick="generateCreativeKit()"
-                  class="w-full bg-indigo-600 hover:bg-indigo-500 transition rounded-lg py-2.5 text-sm font-semibold text-white flex items-center justify-center gap-2 shadow-md">
-            <span>✨</span> <span>Generate Full Ad Creative Kit</span>
+                  class="w-full bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-500 hover:to-pink-500 transition rounded-xl py-3 text-xs font-bold text-white flex items-center justify-center gap-2 shadow-xl shadow-indigo-600/30">
+            <span>✨</span> <span>Generate Custom AI Ad Suite (Still + Video + Audio + Screenplay)</span>
           </button>
-          <p id="creative-loading-msg" class="text-xs text-indigo-400 text-center hidden animate-pulse">Generating ad copy, rendering banner & compiling video ad...</p>
+          <p id="creative-loading-msg" class="text-xs text-indigo-400 text-center hidden animate-pulse font-medium">Synthesizing ad copy, Google Veo screenplay, visual banner & audio voiceover...</p>
         </div>
       </div>
 
       <!-- Right: Generated Creative Output -->
       <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-lg">
-        <!-- Sub-tabs: Banner, Video, Copy -->
-        <div class="flex items-center gap-2 border-b border-slate-800 pb-3 mb-5">
+        <!-- Sub-tabs: Banner, Video & Screenplay, Audio AI, Copy -->
+        <div class="flex items-center gap-2 border-b border-slate-800 pb-3 mb-5 overflow-x-auto">
           <button id="ctab-btn-banner" onclick="switchCreativeTab('banner')"
-                  class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 text-white transition flex items-center gap-1.5">
-            <span>🖼️</span> <span>Still Banner Ad (1:1)</span>
+                  class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 text-white transition flex items-center gap-1.5 shrink-0">
+            <span>🖼️</span> <span>Still Ad Creative</span>
           </button>
           <button id="ctab-btn-video" onclick="switchCreativeTab('video')"
-                  class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition flex items-center gap-1.5">
-            <span>🎬</span> <span>9:16 Reels Video Ad</span>
+                  class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition flex items-center gap-1.5 shrink-0">
+            <span>🎬</span> <span>Video Ad & Veo Screenplay</span>
+          </button>
+          <button id="ctab-btn-audio" onclick="switchCreativeTab('audio')"
+                  class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition flex items-center gap-1.5 shrink-0">
+            <span>🎙️</span> <span>Audio AI Voiceover</span>
           </button>
           <button id="ctab-btn-copy" onclick="switchCreativeTab('copy')"
-                  class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition flex items-center gap-1.5">
-            <span>✍️</span> <span>Ad Copy & Scripts</span>
+                  class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition flex items-center gap-1.5 shrink-0">
+            <span>✍️</span> <span>Multi-Angle Ad Copy</span>
           </button>
         </div>
 
         <!-- Panel 1: Banner -->
         <div id="cpanel-banner" class="space-y-4">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <span class="text-xs text-slate-400">High-converting 1080x1080 Feed Ad with dynamic photography & WhatsApp CTA</span>
             <div class="flex items-center gap-2">
-              <a id="btn-open-canva" href="https://www.canva.com/templates/?query=real+estate+instagram+post" target="_blank"
+              <span id="banner-aspect-tag" class="text-xs font-bold text-indigo-400 bg-indigo-950/60 border border-indigo-500/30 px-2 py-0.5 rounded">1:1 Square</span>
+              <span id="banner-res-tag" class="text-xs text-slate-400">1080x1080 Feed Ad with dynamic photography & WhatsApp CTA</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <a id="btn-open-canva" href="https://www.canva.com/templates/?query=coffee+instagram+post" target="_blank"
                  class="text-xs bg-gradient-to-r from-teal-600 to-indigo-600 hover:from-teal-500 hover:to-indigo-500 text-white font-medium px-3 py-1.5 rounded-lg transition inline-flex items-center gap-1 shadow-sm">
                 <span>🎨</span> Open in Canva
               </a>
-              <a id="btn-download-banner" href="./static/generated/banner_68632c63_1x1.png" download="leadpulse_ad_banner.png"
-                 class="text-xs bg-emerald-600 hover:bg-emerald-500 text-white font-medium px-3 py-1.5 rounded-lg transition inline-flex items-center gap-1">
-                <span>⬇️</span> Download 1080x1080 PNG
+              <a id="btn-download-banner" href="./static/generated/banner_68632c63_1x1.png" download="leadpulse_custom_ad.png"
+                 class="text-xs bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-3 py-1.5 rounded-lg transition inline-flex items-center gap-1 shadow-sm">
+                <span>⬇️</span> <span id="btn-download-banner-text">Download High-Res PNG</span>
               </a>
             </div>
           </div>
-          <div class="bg-slate-950 rounded-xl p-4 border border-slate-800 flex justify-center items-center relative min-h-[400px]">
-            <!-- Hidden Canvas for high-res browser rendering -->
+          <div class="bg-slate-950 rounded-xl p-4 border border-slate-800 flex justify-center items-center relative min-h-[420px]">
+            <!-- Dynamic HTML5 Canvas for real-time generative ad composition -->
             <canvas id="ad-banner-canvas" width="1080" height="1080" class="hidden"></canvas>
             <img id="creative-banner-img" src="./static/generated/banner_68632c63_1x1.png"
-                 alt="Generated Ad Banner" class="max-h-[460px] rounded-lg shadow-2xl object-contain border border-slate-700/50" />
+                 alt="Generated Custom Ad Banner" class="max-h-[460px] rounded-lg shadow-2xl object-contain border border-slate-700/50" />
           </div>
         </div>
 
-        <!-- Panel 2: Video Ad (Reel Story Player & MP4) -->
-        <div id="cpanel-video" class="space-y-4 hidden">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <span class="text-xs text-slate-400">9:16 Vertical HD Video Ad with kinetic narration & multi-slide story pacing</span>
+        <!-- Panel 2: Video Ad (Reel Storyboard Player & Google Veo Screenplay) -->
+        <div id="cpanel-video" class="space-y-6 hidden">
+          <!-- Top Controls & Screenplay Summary -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-950/60 p-3 rounded-xl border border-slate-800">
+            <div>
+              <div class="flex items-center gap-2">
+                <span id="video-spec-duration" class="text-xs font-bold text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-2 py-0.5 rounded">15s Video</span>
+                <span id="video-spec-quality" class="text-xs font-bold text-indigo-400 bg-indigo-950/60 border border-indigo-500/30 px-2 py-0.5 rounded">1080p Full HD</span>
+                <span id="video-spec-scenes" class="text-xs text-slate-400 font-medium">4 Scenes Screenplay</span>
+              </div>
+              <p class="text-[11px] text-slate-400 mt-1">Multi-scene Google Veo / Sora cinematography storyboard with synchronized pacing.</p>
+            </div>
             <div class="flex items-center gap-2">
-              <button id="btn-toggle-story" onclick="toggleReelView('story')"
-                      class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 text-white transition">
-                📱 9:16 Kinetic Story
-              </button>
-              <button id="btn-toggle-mp4" onclick="toggleReelView('mp4')"
-                      class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:text-white transition">
-                🎬 Rendered MP4
+              <button onclick="copyEntireScreenplay()"
+                      class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 transition flex items-center gap-1">
+                <span>📋</span> <span>Copy Full Screenplay</span>
               </button>
               <a id="btn-download-video" href="./static/generated/video_ad_65db34c0.mp4" download="leadpulse_reel_ad.mp4"
-                 class="text-xs bg-emerald-600 hover:bg-emerald-500 text-white font-medium px-3 py-1.5 rounded-lg transition inline-flex items-center gap-1">
+                 class="text-xs bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-3 py-1.5 rounded-lg transition inline-flex items-center gap-1">
                 <span>⬇️</span> Download Reel
               </a>
             </div>
           </div>
 
-          <!-- Sub-view 1: Kinetic 9:16 Story Phone Mockup -->
-          <div id="video-story-view" class="bg-slate-950 rounded-xl p-5 border border-slate-800 flex flex-col items-center">
-            <!-- 9:16 Phone Mockup -->
-            <div class="w-[280px] h-[498px] rounded-[32px] border-4 border-slate-700 bg-slate-900 shadow-2xl relative overflow-hidden flex flex-col justify-between p-4 text-white">
-              <!-- Top Story Progress Bars -->
-              <div class="flex gap-1.5 w-full z-10">
-                <div class="h-1 flex-1 bg-white/30 rounded-full overflow-hidden"><div id="sprog-1" class="h-full bg-white w-full transition-all duration-300"></div></div>
-                <div class="h-1 flex-1 bg-white/30 rounded-full overflow-hidden"><div id="sprog-2" class="h-full bg-white w-0 transition-all duration-300"></div></div>
-                <div class="h-1 flex-1 bg-white/30 rounded-full overflow-hidden"><div id="sprog-3" class="h-full bg-white w-0 transition-all duration-300"></div></div>
-                <div class="h-1 flex-1 bg-white/30 rounded-full overflow-hidden"><div id="sprog-4" class="h-full bg-white w-0 transition-all duration-300"></div></div>
-              </div>
-
-              <!-- Top Profile Bar -->
-              <div class="flex items-center justify-between text-xs mt-2 z-10">
-                <div class="flex items-center gap-2">
-                  <div class="w-6 h-6 rounded-full bg-gradient-to-tr from-pink-500 to-indigo-500 flex items-center justify-center font-bold text-[10px]">LP</div>
-                  <span class="font-bold text-[11px] drop-shadow">leadpulse.ai</span>
-                  <span class="text-[10px] bg-white/20 px-1.5 py-0.5 rounded-full font-medium">Sponsored</span>
+          <!-- Video Grid: Left Phone Mockup, Right Scene Details -->
+          <div class="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-6 items-start">
+            
+            <!-- Left: Interactive 9:16 Video Player Mockup -->
+            <div class="bg-slate-950 rounded-2xl p-4 border border-slate-800 flex flex-col items-center">
+              <div class="w-[260px] h-[462px] rounded-[28px] border-4 border-slate-700 bg-slate-900 shadow-2xl relative overflow-hidden flex flex-col justify-between p-3.5 text-white">
+                <!-- Top Progress Bars -->
+                <div id="reel-progress-bars" class="flex gap-1 w-full z-10">
+                  <!-- Dynamically rendered based on scenes count -->
                 </div>
-                <span class="text-white/80 text-xs">•••</span>
-              </div>
 
-              <!-- Background Image & Gradient Scrim -->
-              <img id="reel-bg-img" src="./static/stock_real_estate.jpg" class="absolute inset-0 w-full h-full object-cover opacity-60 pointer-events-none" />
-              <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent pointer-events-none"></div>
+                <!-- Top Profile Bar -->
+                <div class="flex items-center justify-between text-xs mt-1.5 z-10">
+                  <div class="flex items-center gap-1.5">
+                    <div class="w-5 h-5 rounded-full bg-gradient-to-tr from-pink-500 to-indigo-500 flex items-center justify-center font-bold text-[9px]">LP</div>
+                    <span id="reel-brand-tag" class="font-bold text-[10px] drop-shadow">aura_craft</span>
+                    <span class="text-[9px] bg-white/20 px-1 py-0.2 rounded-full font-medium">Sponsored</span>
+                  </div>
+                  <span class="text-white/80 text-xs">•••</span>
+                </div>
 
-              <!-- Center Dynamic Slide Content -->
-              <div class="z-10 my-auto text-center px-2 space-y-3">
-                <span id="reel-badge" class="inline-block px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase bg-indigo-500 text-white shadow-lg animate-pulse">
-                  🔥 THE HOOK
-                </span>
-                <h4 id="reel-title" class="text-lg font-black leading-snug drop-shadow-md">
-                  Looking for Luxury 3BHK in Gurugram?
-                </h4>
-                <p id="reel-desc" class="text-xs text-slate-200 drop-shadow leading-relaxed">
-                  Zero Brokerage · 80% Greenery · Ready Sample Flats
-                </p>
-                <div id="reel-price-pill" class="inline-block bg-emerald-500 text-white font-extrabold text-xs px-3 py-1 rounded-full shadow-lg">
-                  Starting ₹85 Lakhs
+                <!-- Background Image & Gradient Scrim -->
+                <img id="reel-bg-img" src="./static/stock_dental.jpg" class="absolute inset-0 w-full h-full object-cover opacity-60 pointer-events-none transition-all duration-500" />
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent pointer-events-none"></div>
+
+                <!-- Center Dynamic Slide Content -->
+                <div class="z-10 my-auto text-center px-1.5 space-y-2.5">
+                  <span id="reel-badge" class="inline-block px-2 py-0.5 rounded-full text-[9px] font-bold tracking-wider uppercase bg-indigo-500 text-white shadow-lg animate-pulse">
+                    🔥 THE HOOK
+                  </span>
+                  <h4 id="reel-title" class="text-base font-black leading-snug drop-shadow-md">
+                    Looking for Authentic Cold Brew?
+                  </h4>
+                  <p id="reel-desc" class="text-[11px] text-slate-200 drop-shadow leading-relaxed">
+                    Zero Acidity · 24-Hour Extraction · 100% Arabica
+                  </p>
+                  <div id="reel-price-pill" class="inline-block bg-emerald-500 text-white font-extrabold text-[11px] px-2.5 py-0.5 rounded-full shadow-lg">
+                    Pack of 4 @ ₹299
+                  </div>
+                </div>
+
+                <!-- Bottom WhatsApp CTA -->
+                <div class="z-10 space-y-1.5">
+                  <button class="w-full bg-[#25D366] hover:bg-[#20ba59] text-white font-bold text-xs py-1.5 rounded-xl flex items-center justify-center gap-1 shadow-lg">
+                    <span>💬</span> <span>Send WhatsApp Message</span>
+                  </button>
+                  <div class="text-[9px] text-center text-slate-300">Tap below to claim introductory voucher</div>
                 </div>
               </div>
 
-              <!-- Bottom WhatsApp CTA -->
-              <div class="z-10 space-y-2">
-                <button class="w-full bg-[#25D366] hover:bg-[#20ba59] text-white font-bold text-xs py-2 rounded-xl flex items-center justify-center gap-1.5 shadow-lg">
-                  <span>💬</span> <span>Send WhatsApp Message</span>
+              <!-- Controls below player -->
+              <div class="w-full mt-3 space-y-2">
+                <div class="flex items-center justify-between gap-1" id="reel-scene-chips">
+                  <!-- Injected scene chips -->
+                </div>
+                <button onclick="toggleReelAutoPlay()" id="btn-reel-play"
+                        class="w-full py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white flex items-center justify-center gap-1.5 shadow-md transition">
+                  <span>▶</span> <span>Auto-Play Video Ad (with Voice)</span>
                 </button>
-                <div class="text-[10px] text-center text-slate-300">Tap below to claim complimentary VIP pass</div>
               </div>
             </div>
 
-            <!-- Slide Switcher & Auto-Play Controls -->
-            <div class="flex items-center gap-1.5 mt-4">
-              <button onclick="setReelSlide(1)" id="rbtn-1" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-indigo-600 text-white">1. Hook</button>
-              <button onclick="setReelSlide(2)" id="rbtn-2" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300">2. Problem</button>
-              <button onclick="setReelSlide(3)" id="rbtn-3" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300">3. Solution</button>
-              <button onclick="setReelSlide(4)" id="rbtn-4" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300">4. CTA</button>
-              <button onclick="toggleReelAutoPlay()" id="btn-reel-play" class="ml-2 px-3 py-1 rounded-lg text-xs font-bold bg-emerald-600 text-white flex items-center gap-1">
-                <span>▶</span> <span>Auto-Play Story</span>
+            <!-- Right: Google Veo 2 / Sora Screenplay Deck -->
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
+                  <span>🎥</span> <span>Google Veo 2 / Sora Screenplay Deck</span>
+                </h4>
+                <span class="text-[10px] text-slate-400">Cinematographic production instructions</span>
+              </div>
+              <div id="screenplay-deck-list" class="space-y-3">
+                <!-- Dynamically rendered scene cards -->
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Panel 3: Audio AI Voiceover Studio -->
+        <div id="cpanel-audio" class="space-y-5 hidden">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-950/60 p-4 rounded-xl border border-slate-800">
+            <div>
+              <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                <span>🎙️</span> <span>AI Voiceover Narration Studio</span>
+              </h4>
+              <p class="text-xs text-slate-400 mt-0.5">Real-time synthesized voice track synchronized to video screenplay timestamps.</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="speakFullNarration()" id="btn-audio-speak"
+                      class="px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white transition flex items-center gap-1.5 shadow-md">
+                <span>▶</span> <span>Speak Narration Live</span>
+              </button>
+              <button onclick="stopAudioPlayback()"
+                      class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 transition">
+                <span>⏹</span> <span>Stop</span>
+              </button>
+              <button onclick="downloadVoiceoverAudio()" id="btn-audio-download"
+                      class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 text-white transition flex items-center gap-1">
+                <span>⬇️</span> <span>Download MP3</span>
               </button>
             </div>
           </div>
 
-          <!-- Sub-view 2: Rendered MP4 Video Player -->
-          <div id="video-mp4-view" class="bg-slate-950 rounded-xl p-4 border border-slate-800 flex justify-center items-center hidden">
-            <video id="creative-video-player" src="./static/generated/video_ad_65db34c0.mp4"
-                   controls class="max-h-[460px] rounded-lg shadow-2xl border border-slate-700/50"></video>
+          <!-- Audio Equalizer / Waveform Visualizer Mockup -->
+          <div class="bg-slate-950 p-6 rounded-xl border border-slate-800 text-center space-y-4">
+            <div class="flex items-center justify-center gap-1.5 h-16" id="audio-waveform-bars">
+              <div class="w-1.5 bg-indigo-500 rounded-full h-4 transition-all duration-150"></div>
+              <div class="w-1.5 bg-indigo-500 rounded-full h-8 transition-all duration-150"></div>
+              <div class="w-1.5 bg-indigo-400 rounded-full h-12 transition-all duration-150"></div>
+              <div class="w-1.5 bg-emerald-400 rounded-full h-6 transition-all duration-150"></div>
+              <div class="w-1.5 bg-emerald-500 rounded-full h-14 transition-all duration-150"></div>
+              <div class="w-1.5 bg-indigo-500 rounded-full h-10 transition-all duration-150"></div>
+              <div class="w-1.5 bg-purple-500 rounded-full h-8 transition-all duration-150"></div>
+              <div class="w-1.5 bg-purple-400 rounded-full h-16 transition-all duration-150"></div>
+              <div class="w-1.5 bg-indigo-400 rounded-full h-6 transition-all duration-150"></div>
+              <div class="w-1.5 bg-emerald-400 rounded-full h-12 transition-all duration-150"></div>
+            </div>
+            <div class="flex items-center justify-center gap-4 text-xs text-slate-400">
+              <span id="audio-status-label">Ready for Client Demonstration</span>
+              <span>•</span>
+              <span id="audio-voice-label">Voice: en-IN-NeerjaNeural</span>
+              <span>•</span>
+              <span id="audio-duration-label">Est. Duration: 15s</span>
+            </div>
+          </div>
+
+          <!-- Narration Teleprompter Box -->
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <h5 class="text-xs font-semibold uppercase tracking-wider text-slate-400">Voiceover Teleprompter Script</h5>
+              <button onclick="copyElementText('audio-script-box', this)" class="text-[11px] text-indigo-400 hover:text-indigo-300">Copy Teleprompter Script</button>
+            </div>
+            <div id="audio-script-box" class="bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs text-slate-200 leading-relaxed font-mono whitespace-pre-line">
+              <!-- Dynamically injected narration text -->
+            </div>
           </div>
         </div>
 
-        <!-- Panel 3: Copy & Script -->
+        <!-- Panel 4: Copy & Script -->
         <div id="cpanel-copy" class="space-y-5 hidden">
           <!-- Headlines -->
           <div>
@@ -569,7 +707,7 @@
           </div>
           <!-- Video Script -->
           <div>
-            <h4 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">15-Second Video Narration Script</h4>
+            <h4 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Timestamped Narration Summary</h4>
             <div id="copy-script-box" class="bg-slate-950 border border-slate-800 rounded-lg p-4 text-xs text-slate-300 leading-relaxed font-mono"></div>
           </div>
         </div>
@@ -1211,159 +1349,292 @@ const api = {
 
   async generateAdCopy(payload) {
     const data = await this._fetch('POST', '/api/creative/copy', payload);
-    if (data && data.headlines) return data;
+    if (data && data.headlines && data.screenplay && data.screenplay.length > 0) return data;
     
-    const ind = payload.industry || 'real_estate';
-    const pName = payload.product_name || 'Premium Offering';
-    const price = payload.price_point || 'Best In Market';
-    const loc = payload.location || 'Prime Location';
-    const ben = payload.key_benefit || 'Verified Quality, Exclusive Launch Offer';
+    // Client-side generative engine matching copywriter.py
+    const brand = (payload.company_name || payload.product_name || 'Exclusive Brand').trim();
+    const prod = (payload.product_name || payload.topic || 'Signature Offering').trim();
+    const topic = (payload.topic || prod).trim();
+    const loc = (payload.location || 'Your City').trim();
+    const price = (payload.price_point || 'Exclusive Launch Offer').trim();
+    const ben = (payload.key_benefit || 'Verified Quality, Guaranteed Results').trim();
+    const aud = (payload.target_audience || 'Discerning clients').trim();
+    const duration = parseInt(payload.duration || 15, 10);
+    const tone = payload.tone || 'high_energy';
+    const quality = payload.quality || '1080p';
 
-    if (ind === 'real_estate') {
-      return {
-        headlines: [
-          `Luxury 3BHK Living in ${loc} | ${price}`,
-          `Zero Brokerage Homes: ${pName} @ ${price}`,
-          `Book Your Exclusive Sample Flat Tour in ${loc}`
-        ],
-        primary_texts: [
-          `🏡 Upgrade to the lifestyle you deserve at ${pName}, ${loc}.\n\n✨ Starting at ${price}\n🌿 ${ben}\n📍 Prime connectivity to metro & business hubs\n\n👉 Tap WhatsApp below to get the exclusive floor plans & launch pricing brochure instantly!`,
-          `⏳ Limited Launch Inventory: Why pay rent when luxury 3BHK homes in ${loc} start from ${price}?\n\n✔️ ${ben}\n✔️ Pre-approved bank home loans with lowest interest\n\nClick below to chat with our senior advisor on WhatsApp.`,
-          `🌟 Experience unmatched luxury at ${pName}.\n\n💎 Starting ${price}\n💎 ${ben}\n\nTap below to book your private VIP sample flat tour on WhatsApp before prices increase!`
-        ],
-        descriptions: [
-          'Prime Location · Ready Sample Flats',
-          'Zero Brokerage · Easy Bank Loans',
-          'Limited Units Remaining · Enquire Now'
-        ],
-        video_script: {
-          hook: `Looking for a luxury 3BHK home in ${loc} without dealing with greedy brokers?`,
-          problem: `Most projects promise luxury but compromise on open space, construction quality, and delivery dates.`,
-          solution: `At ${pName}, experience premium architecture starting at just ${price}. ${ben}.`,
-          cta: `Tap the WhatsApp button below right now to download the master floor plan and get VIP launch pricing!`
-        }
-      };
-    } else if (ind === 'fitness') {
-      return {
-        headlines: [
-          `Transform Your Fitness @ ${pName} | ${price}`,
-          `Elite Personal Coaching in ${loc} - Zero Excuses`,
-          `Claim Your Free 3-Day VIP Gym Pass on WhatsApp`
-        ],
-        primary_texts: [
-          `💪 Ready to achieve the best shape of your life? Join ${pName} in ${loc}.\n\n🔥 Memberships from ${price}\n⚡ ${ben}\n\n👉 Tap below to claim your complimentary 3-day VIP trial on WhatsApp today!`,
-          `🏋️ Stop putting off your health goals. Experience high-tech biomechanical equipment and dedicated coaching at ${pName}.\n\n✔️ Starting at ${price}\n✔️ ${ben}\n\nClick WhatsApp to unlock our exclusive pre-launch discount!`,
-          `⏳ Only 25 Founding Memberships left at ${pName}, ${loc}!\n\n🔒 Lock in your rate at ${price} with 0% joining fees.\n\nTap below to message our head coach directly on WhatsApp.`
-        ],
-        descriptions: [
-          'Certified Trainers · World-Class Equipment',
-          'Steam & Sauna · Personalized Diets',
-          'Limited Founding Slots · Claim Pass'
-        ],
-        video_script: {
-          hook: `Tired of crowded local gyms where nobody helps you achieve real results?`,
-          problem: `Generic workout routines and poor guidance lead to burnout and zero physical change.`,
-          solution: `At ${pName} in ${loc}, our elite trainers build a science-backed roadmap for you starting at ${price}. ${ben}.`,
-          cta: `Tap the WhatsApp link below right now to claim your free 3-day guest pass!`
-        }
-      };
-    } else if (ind === 'education') {
-      return {
-        headlines: [
-          `Crack Your Exams With ${pName} | ${price}`,
-          `Top Ranker Mentorship & Batch 2027 @ ${loc}`,
-          `Book Your Free Career & Syllabus Counseling on WhatsApp`
-        ],
-        primary_texts: [
-          `🎓 Accelerate your exam preparation with top rankers and expert faculty at ${pName}, ${loc}.\n\n📚 Course fee: ${price}\n🎯 ${ben}\n\n👉 Tap below to receive the complete 2027 syllabus breakdown & free demo lecture on WhatsApp!`,
-          `🚀 Don't leave your dream career to chance. Join ${pName} for structured daily answer writing and one-on-one mentorship.\n\n✔️ ${ben}\n✔️ Scholarships: ${price}\n\nClick below to chat with our academic counselor on WhatsApp.`,
-          `⏳ Admissions Closing This Week for the new batch in ${loc}.\n\nSecure your seat at ${pName} with ${price}.\n\nTap WhatsApp to talk to a faculty member today.`
-        ],
-        descriptions: [
-          'Top Ranker Faculty · Proven Results',
-          'Daily Test Series · Personal Doubt Clearing',
-          'Batch Starting Soon · Reserve Seat'
-        ],
-        video_script: {
-          hook: `Preparing for competitive exams in ${loc} but feeling overwhelmed by the endless syllabus?`,
-          problem: `Random study materials and lack of personal feedback waste months of your prime preparation years.`,
-          solution: `At ${pName}, learn proven strategies from top rankers. ${ben} with plans starting at ${price}.`,
-          cta: `Click the WhatsApp button below now to download our ranker study plan and book a free mentoring session!`
-        }
-      };
-    } else if (ind === 'ecommerce') {
-      return {
-        headlines: [
-          `Pure Luxury Redefined: ${pName} | ${price}`,
-          `Certified & Conflict-Free @ ${price} | Free Delivery`,
-          `Claim Your Exclusive ₹2,000 Launch Voucher on WhatsApp`
-        ],
-        primary_texts: [
-          `💎 Sparkle with timeless elegance. Discover the new designer collection from ${pName}.\n\n✨ Starting at ${price}\n🎁 ${ben}\n📦 Insured nationwide delivery from ${loc}\n\n👉 Tap below to unlock your exclusive introductory gift voucher on WhatsApp!`,
-          `💍 Looking for the perfect gift or engagement ring? ${pName} delivers certified brilliance at direct-to-consumer prices.\n\n✔️ Starting from ${price}\n✔️ ${ben}\n\nChat with our personal jewellery stylist on WhatsApp in 10 seconds.`,
-          `⏳ Limited Festive Showcase: Exclusive handcrafted pieces at ${pName}.\n\nStarting at ${price} with 100% money-back guarantee.\n\nTap WhatsApp to view the VIP lookbook now!`
-        ],
-        descriptions: [
-          '100% Certified · Lifetime Exchange',
-          'Free Insured Shipping · Luxury Packaging',
-          'Limited Stock · Shop on WhatsApp'
-        ],
-        video_script: {
-          hook: `Want breathtaking, certified diamonds without paying 3x retail markups?`,
-          problem: `Traditional retail showrooms charge massive brand premiums and overhead fees.`,
-          solution: `At ${pName}, get certified, ethically sourced luxury starting at just ${price}. ${ben}.`,
-          cta: `Tap the WhatsApp link below right now to see our catalog and claim an instant voucher!`
-        }
-      };
-    } else if (ind === 'auto') {
-      return {
-        headlines: [
-          `Certified Pre-Owned Luxury Cars @ ${price} | ${loc}`,
-          `Drive Home Your Dream Car: ${pName} in ${loc}`,
-          `Book Your Doorstep Test Drive on WhatsApp Today`
-        ],
-        primary_texts: [
-          `🚗 Experience the thrill of driving a luxury car without the new-car depreciation. Welcome to ${pName}, ${loc}.\n\n⚡ ${price}\n🛡️ ${ben}\n\n👉 Tap WhatsApp below to get the 210-point inspection report and service history instantly!`,
-          `🔑 Over 100+ verified luxury German & Japanese cars ready for delivery at ${pName}.\n\n✔️ Easy financing from ${price}\n✔️ ${ben}\n\nClick below to book your doorstep test drive on WhatsApp.`,
-          `⏳ Flash Weekend Clearance at ${pName}, ${loc}!\n\nLock in your favorite vehicle starting at ${price} with free 1-year warranty.\n\nTap below to chat with our inventory manager.`
-        ],
-        descriptions: [
-          '210-Point Inspection · 1-Year Warranty',
-          'Instant RC Transfer · 0% Downpayment EMI',
-          'Verified Service History · Book Test Drive'
-        ],
-        video_script: {
-          hook: `Dreaming of owning a luxury car in ${loc} without paying exorbitant new car showroom prices?`,
-          problem: `Unverified used car dealers often sell accident-damaged cars with rolled-back odometers.`,
-          solution: `At ${pName}, every car undergoes a 210-point inspection with 1-year warranty. EMI starting ${price}. ${ben}.`,
-          cta: `Tap WhatsApp below to inspect the car's complete service history and book a test drive!`
-        }
-      };
-    } else {
-      return {
-        headlines: [
-          `Transform Your Smile From ${price} | Free Consultation`,
-          `Pain-Free Clear Aligners & Implants @ ${loc}`,
-          `Book Your 3D Dental Scan on WhatsApp Today`
-        ],
-        primary_texts: [
-          `✨ Stop hiding your smile! Experience pain-free dental care and laser teeth alignment with ${pName}.\n\n💎 Starting at ${price}\n📍 ${loc}\n🩺 ${ben}\n\n👉 Tap below to claim your complimentary dental scan & consultation on WhatsApp.`,
-          `🦷 Missing teeth or crooked smile? Transform your confidence in just 2 sittings at ${pName}.\n\n✔️ Packages from ${price}\n✔️ 0% EMI Available\n\nClick below to book your appointment on WhatsApp in 30 seconds.`,
-          `⏳ Limited Weekend Slots: Book your 3D digital dental scan at ${pName} before appointments fill up.\n\n🔒 Starting at ${price} with 0% interest monthly payment options.\n📍 ${loc}\n\nTap WhatsApp to claim your special introductory voucher today!`
-        ],
-        descriptions: [
-          'Top Rated Dental Specialists · 0% EMI',
-          'Pain-Free Technology · 10,000+ Happy Smiles',
-          'Limited Slots This Week · Book Now'
-        ],
-        video_script: {
-          hook: `Want a perfect, confident smile in ${loc} without the pain or high hospital bills?`,
-          problem: `Traditional braces take years and cost a fortune.`,
-          solution: `At ${pName}, our modern clear aligners and painless dental care start at just ${price}. ${ben}.`,
-          cta: `Click the WhatsApp button below right now to claim your free consultation!`
-        }
-      };
+    let h_prefix = [];
+    let v_mood = '';
+
+    if (tone === 'luxury') {
+      h_prefix = ['The Art of', 'Unrivaled Elegance:', 'Redefining Luxury:'];
+      v_mood = 'Cinematic slow-motion 4K macro shot, dramatic chiaroscuro lighting, shallow depth of field (f/1.4, 85mm anamorphic), deep obsidian and warm metallic gold tones.';
+    } else if (tone === 'problem_solution') {
+      h_prefix = ['Why Settle When', 'The Problem With Ordinary', 'Finally, A Better Way:'];
+      v_mood = 'Sharp dynamic transition, high-contrast editorial lighting, 35mm crisp commercial lens, candid documentary realism shifting to glowing polished finish.';
+    } else if (tone === 'friendly') {
+      h_prefix = ['Meet', 'Your New Favorite', `Why Everyone in ${loc} Loves`];
+      v_mood = 'Warm natural daylight, handheld tracking shot, cheerful organic atmosphere, vibrant natural color grading.';
+    } else { // high_energy
+      h_prefix = ['Stop Wasting Money On', 'Transform Your Results With', 'Limited Launch Offer:'];
+      v_mood = 'Fast dynamic zoom-in, electric neon rim lighting, high-speed 60fps slow-motion capture, energetic motion blur with crisp product isolation.';
     }
+
+    const firstBen = ben.split(',')[0].trim();
+    const headlines = [
+      `${h_prefix[0]} ${prod} | ${price}`,
+      `${h_prefix[1]} ${topic} @ ${loc}`,
+      `Get ${firstBen} With ${brand} Today`
+    ];
+
+    const primary_texts = [
+      `✨ Experience the difference with ${prod} by ${brand}.\n\nDesigned specifically for ${aud}, this is your opportunity to upgrade without compromise.\n\n💎 ${price}\n📍 Available in ${loc}\n⭐ ${ben}\n\n👉 Tap WhatsApp below to get the exclusive brochure and introductory pricing directly on your phone.`,
+      `💡 Why settle for ordinary ${topic} when you can get direct access to ${brand}?\n\n✔️ Transparent Pricing: ${price}\n✔️ Proven Benefits: ${ben}\n✔️ 100% Satisfaction & Verified Quality\n\nJoin hundreds of satisfied clients in ${loc}. Tap below to speak directly with our team on WhatsApp in 30 seconds.`,
+      `⏳ LIMITED OPPORTUNITY: Exclusive launch packages for ${prod} are now live for ${loc}.\n\n🔒 Lock in special pricing at ${price} before rates adjust.\n⚡ ${ben}\n\nClick WhatsApp below right now to secure your spot before this week's allocation fills up.`
+    ];
+
+    const descriptions = [
+      `${brand} Official · Instant WhatsApp Response`,
+      `Verified Quality · ${price} · ${loc}`,
+      `Limited Allocation This Week · Inquire Now`
+    ];
+
+    let screenplay = [];
+    if (duration <= 15) {
+      screenplay = [
+        {
+          scene_number: 1,
+          timecode: "00:00 - 00:03",
+          scene_title: "The Visual Hook",
+          veo_prompt: `${v_mood} Camera pulls back rapidly revealing ${topic} centered in frame with glowing atmospheric mist. Text pops with kinetic energy.`,
+          camera_movement: "Rapid Snap-Zoom + Center Track",
+          lighting_and_lens: "35mm T1.5 Anamorphic / High-Key Rim Light",
+          on_screen_text: `Tired of Average ${topic}?`,
+          voiceover: `Still searching for the best ${topic} in ${loc}?`,
+          sound_fx: "Deep sub-bass riser with crisp whoosh transition"
+        },
+        {
+          scene_number: 2,
+          timecode: "00:03 - 00:07",
+          scene_title: "The Agitation & Pain",
+          veo_prompt: `Gritty high-speed macro details of common industry frustrations, rapid shutter flicker, transitioning abruptly into sleek polished glass.`,
+          camera_movement: "Whip Pan Left to Right",
+          lighting_and_lens: "Low-Key Desaturated / 50mm Macro",
+          on_screen_text: "Most options cut corners.",
+          voiceover: `Most alternatives overcharge and underdeliver on quality.`,
+          sound_fx: "Vinyl scratch transition into energetic rhythmic beat"
+        },
+        {
+          scene_number: 3,
+          timecode: "00:07 - 00:12",
+          scene_title: "The Solution & Hero Showcase",
+          veo_prompt: `Hero 360-degree orbit shot around ${prod}. Soft studio rim lights highlight premium textures. Floating holographic badge reads '${firstBen}'.`,
+          camera_movement: "Smooth 360-Degree Orbital Gimbal",
+          lighting_and_lens: "Golden Hour Warmth / 85mm Portrait f/1.4",
+          on_screen_text: `${prod} · ${price}`,
+          voiceover: `Meet ${prod} by ${brand}. ${ben}. Starting at just ${price}.`,
+          sound_fx: "Upbeat cinematic punch with warm synth pad"
+        },
+        {
+          scene_number: 4,
+          timecode: "00:12 - 00:15",
+          scene_title: "The Urgent Call-To-Action",
+          veo_prompt: `Dynamic end card with glowing neon border. Sleek smartphone mockup displays an active WhatsApp chat with instant reply bubbles.`,
+          camera_movement: "Slow Forward Dolly Push",
+          lighting_and_lens: "Studio Cyber Glow / 24mm Wide Angle",
+          on_screen_text: `Tap WhatsApp Below · ${price}`,
+          voiceover: `Tap the WhatsApp button below now to claim your launch package!`,
+          sound_fx: "WhatsApp notification ding & bass drop"
+        }
+      ];
+    } else if (duration <= 30) {
+      screenplay = [
+        {
+          scene_number: 1,
+          timecode: "00:00 - 00:04",
+          scene_title: "The Cinematic Hook",
+          veo_prompt: `${v_mood} Dramatic slow-motion dolly in towards ${topic}. Volumetric light rays stream across the frame revealing craftsmanship details.`,
+          camera_movement: "Slow-Dolly Push-In with 10-degree Dutch Angle",
+          lighting_and_lens: "Anamorphic 40mm / Volumetric Morning Mist",
+          on_screen_text: `What if ${topic} could be effortless?`,
+          voiceover: `If you have been looking for real quality in ${loc}, this is for you.`,
+          sound_fx: "Orchestral swell with ambient texture"
+        },
+        {
+          scene_number: 2,
+          timecode: "00:04 - 00:09",
+          scene_title: "The Hidden Industry Flaw",
+          veo_prompt: `Fast-cut documentary montage illustrating high prices and lack of transparency in conventional alternatives.`,
+          camera_movement: "Handheld Jitter Track to Static Lock",
+          lighting_and_lens: "Cool Tone 5600K / 28mm Documentary Prime",
+          on_screen_text: "You shouldn't have to compromise.",
+          voiceover: `Too many brands make big promises but leave you with hidden costs and disappointment.`,
+          sound_fx: "Muffled record beat with tension tone"
+        },
+        {
+          scene_number: 3,
+          timecode: "00:09 - 00:15",
+          scene_title: "Introducing The New Standard",
+          veo_prompt: `Clean radiant sweep. ${brand} logo animates in brushed titanium, settling over stunning product visuals.`,
+          camera_movement: "Crane Downward Pedestal to Eye Level",
+          lighting_and_lens: "Diffusion 1/4 Pro-Mist / 50mm Prime f/1.8",
+          on_screen_text: `Enter ${brand}`,
+          voiceover: `That is why ${brand} built ${prod}. Designed from the ground up for ${aud}.`,
+          sound_fx: "Bright orchestral drop with inspiring piano chords"
+        },
+        {
+          scene_number: 4,
+          timecode: "00:15 - 00:21",
+          scene_title: "Proof & Performance",
+          veo_prompt: `Macro inspection of ${prod} materials and operation. Kinetic UI callouts display '${ben}'.`,
+          camera_movement: "Macro Slider Track Left-to-Right",
+          lighting_and_lens: "100mm Macro f/2.8 / Dual LED Edge Strips",
+          on_screen_text: `✔ ${firstBen}`,
+          voiceover: `Enjoy ${ben}. Backed by verified standards and complete peace of mind.`,
+          sound_fx: "Crisp technical UI clicks and warm sub bass"
+        },
+        {
+          scene_number: 5,
+          timecode: "00:21 - 00:26",
+          scene_title: "The Unbeatable Value Proposition",
+          veo_prompt: `Full 3D typography reveal of pricing: ${price}. Floating trust badges: 5-star ratings and guaranteed satisfaction.`,
+          camera_movement: "Orbital Arc Camera Move",
+          lighting_and_lens: "Warm Amber Rim / 35mm Master Prime",
+          on_screen_text: `Launch Offer: ${price}`,
+          voiceover: `And right now in ${loc}, get exclusive launch pricing starting at ${price}.`,
+          sound_fx: "Triumphant musical crescendo"
+        },
+        {
+          scene_number: 6,
+          timecode: "00:26 - 00:30",
+          scene_title: "Call-to-Action & WhatsApp VIP Pass",
+          veo_prompt: `Clean interactive end screen with vibrating WhatsApp CTA button and promotional countdown timer.`,
+          camera_movement: "Smooth Zoom-out to Hero Center Lock",
+          lighting_and_lens: "High-contrast Studio Fill / 50mm",
+          on_screen_text: `Tap WhatsApp · Instant Response`,
+          voiceover: `Tap the WhatsApp button below now to lock in this special offer before it expires!`,
+          sound_fx: "WhatsApp send bubble chime & clean reverb tail"
+        }
+      ];
+    } else { // 60s
+      screenplay = [
+        {
+          scene_number: 1,
+          timecode: "00:00 - 00:08",
+          scene_title: "The Deep Hook & Atmosphere",
+          veo_prompt: `${v_mood} Breathtaking cinematic establishing shot of ${loc}. Camera glides forward smoothly, zeroing into an elegant setting showcasing ${topic}.`,
+          camera_movement: "Drone Crane Descend to SteadyCam Push",
+          lighting_and_lens: "Golden Twilight 3200K / Anamorphic 35mm",
+          on_screen_text: `Welcome to the Future of ${topic}`,
+          voiceover: `Take a moment. What if everything you thought you knew about ${topic} changed today?`,
+          sound_fx: "Atmospheric wind whoosh and gentle piano intro"
+        },
+        {
+          scene_number: 2,
+          timecode: "00:08 - 00:15",
+          scene_title: "The Consumer Dilemma",
+          veo_prompt: `Cinematic split screen contrasting cluttered, frustrating conventional experiences with serene minimalist perfection.`,
+          camera_movement: "Whip Pan Transition",
+          lighting_and_lens: "Split Tone Contrast / 50mm Prime",
+          on_screen_text: "Most people settle for less.",
+          voiceover: `For years, finding dependable quality in ${loc} meant overpaying and dealing with compromises.`,
+          sound_fx: "Low frequency tension drone"
+        },
+        {
+          scene_number: 3,
+          timecode: "00:15 - 00:23",
+          scene_title: "The Genesis of the Brand",
+          veo_prompt: `Behind-the-scenes master craftsmanship montage. High-speed 120fps slow-motion capture of precision assembly and rigorous quality tests.`,
+          camera_movement: "Circular Tracking Shot",
+          lighting_and_lens: "Natural Studio Daylight / 85mm f/1.4",
+          on_screen_text: `Engineered by ${brand}`,
+          voiceover: `That is why ${brand} set out to change the game with ${prod}.`,
+          sound_fx: "Uplifting string quartet with heartbeat kick drum"
+        },
+        {
+          scene_number: 4,
+          timecode: "00:23 - 00:32",
+          scene_title: "Feature Deep-Dive 1: The Core Benefit",
+          veo_prompt: `Macro lens reveals stunning craftsmanship and key selling point: ${firstBen}. High-contrast lighting accents every curve.`,
+          camera_movement: "Extreme Macro Probe Lens Pass",
+          lighting_and_lens: "100mm Probe Lens / Fiber Optic Edge Lighting",
+          on_screen_text: `✔ ${firstBen}`,
+          voiceover: `First, ${firstBen}. Built to deliver reliable, long-lasting performance you can trust every single day.`,
+          sound_fx: "Digital sweep and solid metallic confirmation thud"
+        },
+        {
+          scene_number: 5,
+          timecode: "00:32 - 00:40",
+          scene_title: "Feature Deep-Dive 2: Built For You",
+          veo_prompt: `Candid lifestyle cinematography showing delighted customers using ${prod} in authentic modern settings.`,
+          camera_movement: "Shoulder Rig Handheld Steadicam",
+          lighting_and_lens: "35mm High-Speed Prime / Warm Ambient",
+          on_screen_text: `Tailored For ${aud}`,
+          voiceover: `Specifically engineered for ${aud}, addressing every pain point with precision.`,
+          sound_fx: "Warm acoustic guitar rhythm with cheerful cadence"
+        },
+        {
+          scene_number: 6,
+          timecode: "00:40 - 00:48",
+          scene_title: "Social Proof & Verified Trust",
+          veo_prompt: `Montage of genuine 5-star customer ratings, verified badges, and press mentions animating across the screen.`,
+          camera_movement: "Slow Backward Pull-Out",
+          lighting_and_lens: "Commercial Studio Softbox / 50mm",
+          on_screen_text: `⭐ 4.9/5 Rating · Over 1,200+ Verified Clients`,
+          voiceover: `Join hundreds of satisfied clients in ${loc} who have already upgraded their experience.`,
+          sound_fx: "Subtle applause and rhythmic percussion build-up"
+        },
+        {
+          scene_number: 7,
+          timecode: "00:48 - 00:54",
+          scene_title: "The Launch Price Guarantee",
+          veo_prompt: `Gleaming 3D gold and emerald typographic treatment of the offer: ${price}. Guarantee badge locks into place.`,
+          camera_movement: "Sweeping Arc Pedestal Shot",
+          lighting_and_lens: "Backlit Amber Glow / 85mm Anamorphic",
+          on_screen_text: `Direct Offer: ${price}`,
+          voiceover: `Today, you can access this entire package starting at just ${price}. Zero hidden fees. 100% satisfaction guaranteed.`,
+          sound_fx: "Triumphant cinematic brass hit"
+        },
+        {
+          scene_number: 8,
+          timecode: "00:54 - 01:00",
+          scene_title: "Final Call to Action",
+          veo_prompt: `High-conversion animated end screen featuring WhatsApp chat interface with direct interactive button.`,
+          camera_movement: "Lock-Off Static Center Punch",
+          lighting_and_lens: "Crisp Modern Flat Lay Lighting / 50mm",
+          on_screen_text: `Chat Directly on WhatsApp · Instant VIP Access`,
+          voiceover: `Click the WhatsApp link below right now to claim your exclusive launch package while allocations last!`,
+          sound_fx: "WhatsApp chime and resonant final chord"
+        }
+      ];
+    }
+
+    const full_narration = screenplay.map(s => s.voiceover).join(' ');
+
+    return {
+      product_name: prod,
+      company_name: brand,
+      topic,
+      industry: payload.industry || 'universal',
+      price_point: price,
+      location: loc,
+      key_benefit: ben,
+      target_audience: aud,
+      duration,
+      quality,
+      tone,
+      headlines,
+      primary_texts,
+      descriptions,
+      screenplay,
+      full_narration,
+      video_script: {
+        hook: screenplay[0]?.voiceover || `Looking for ${topic}?`,
+        problem: screenplay[1]?.voiceover || 'Most options cut corners.',
+        solution: screenplay[2]?.voiceover || `${prod} starting at ${price}.`,
+        cta: screenplay[screenplay.length - 1]?.voiceover || 'Tap WhatsApp below!'
+      }
+    };
   },
 
   async generateBanner(payload) {
@@ -2034,76 +2305,113 @@ function showToast(msg) {
 }
 
 // ──────────────────────────────────────────────
-// Creative Studio Handlers
+// Creative Studio Handlers (Generative Ad Suite)
 // ──────────────────────────────────────────────
 let currentCreativeTab = 'banner';
 let cachedCreativeData = null;
+let currentScreenplay = [];
+let reelSceneIndex = 0;
+let reelAutoTimer = null;
+let waveformInterval = null;
 
 function switchCreativeTab(tab) {
   currentCreativeTab = tab;
-  ['banner', 'video', 'copy'].forEach(t => {
+  ['banner', 'video', 'audio', 'copy'].forEach(t => {
     document.getElementById('cpanel-' + t)?.classList.toggle('hidden', t !== tab);
     const btn = document.getElementById('ctab-btn-' + t);
     if (btn) {
       if (t === tab) {
-        btn.className = 'px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 text-white transition flex items-center gap-1.5';
+        btn.className = 'px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 text-white transition flex items-center gap-1.5 shrink-0';
       } else {
-        btn.className = 'px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition flex items-center gap-1.5';
+        btn.className = 'px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition flex items-center gap-1.5 shrink-0';
       }
     }
   });
 }
 
-// ──────────────────────────────────────────────
-// Industry Presets & Canvas Creative Engine
-// ──────────────────────────────────────────────
 const INDUSTRY_PRESETS = {
+  coffee: {
+    topic: 'Artisanal Single-Origin Nitro Cold Brew',
+    brand: 'Aura Craft Roasters',
+    product: 'Signature Nitro Cold Brew (Pack of 4)',
+    price: 'Pack of 4 @ ₹299 (Free Delivery)',
+    location: 'Koramangala, Bangalore',
+    audience: 'Coffee aficionados & busy professionals seeking clean energy',
+    benefit: 'Zero Acidity, 24-Hour Cold Extraction, 100% Single-Estate Arabica, Zero Sugar',
+    duration: '15',
+    quality: '1080p',
+    tone: 'luxury',
+    aspect: '1:1',
+    voice: 'en-IN-NeerjaNeural'
+  },
+  saas: {
+    topic: 'Autonomous Cloud Cybersecurity Threat Detection',
+    brand: 'DefendScale AI',
+    product: 'SOC 2 Enterprise Cloud Shield',
+    price: 'From $499/mo (30-Day Free Trial)',
+    location: 'San Francisco & Remote Worldwide',
+    audience: 'CTOs, CISOs & DevSecOps Engineering Leaders',
+    benefit: 'Zero Day Detection, Auto Remediation in 30s, SOC2 & ISO 27001 Compliance Guaranteed',
+    duration: '30',
+    quality: '1080p',
+    tone: 'high_energy',
+    aspect: '16:9',
+    voice: 'en-IN-PrabhatNeural'
+  },
   real_estate: {
-    product: 'Greenfield Signature 3BHK',
-    industry: 'real_estate',
+    topic: 'Luxury High-Rise Penthouse & 3BHK Residences',
+    brand: 'Greenfield Signature Estates',
+    product: 'Signature 3BHK Parkview Suites',
     price: 'Starting ₹85 Lakhs',
-    location: 'Sector 62, Gurugram',
-    benefit: 'Zero Brokerage, 80% Green Open Spaces, Sample Flat Open',
+    location: 'Sector 62, Golf Course Ext, Gurugram',
+    audience: 'High-net-worth families & discerning property investors',
+    benefit: 'Zero Brokerage, 80% Green Open Spaces, Sample Flat Open For Walkthrough, Possession in 6 Months',
+    duration: '30',
+    quality: '4k',
+    tone: 'luxury',
+    aspect: '9:16',
     voice: 'en-IN-NeerjaNeural'
   },
   dental: {
-    product: 'Apex Laser Dental Clinic',
-    industry: 'dental',
-    price: 'From ₹2,499/mo',
+    topic: 'Invisible Aligners & Painless Laser Dentistry',
+    brand: 'Apex Laser Dental',
+    product: 'Full Arch Invisible Aligners & Whitening',
+    price: 'EMI From ₹2,499/mo',
     location: 'Indiranagar, Bangalore',
-    benefit: 'Zero Pain, Free 3D Scan, Invisible Aligners, 0% EMI',
+    audience: 'Adults seeking smile correction without visible metal braces',
+    benefit: 'Zero Pain Laser Tech, Free 3D Intraoral Scan, Custom German Polyurethane, 0% EMI',
+    duration: '15',
+    quality: '1080p',
+    tone: 'friendly',
+    aspect: '1:1',
     voice: 'en-IN-NeerjaNeural'
   },
   fitness: {
-    product: 'IronForge Elite Fitness',
-    industry: 'fitness',
-    price: '₹1,999/mo (Pre-Launch)',
+    topic: 'Personalized Functional Strength & Body Transformation',
+    brand: 'IronForge Elite Fitness',
+    product: '90-Day VIP Physique Transformation Club',
+    price: '₹1,999/mo (Pre-Launch Special)',
     location: 'Bandra West, Mumbai',
-    benefit: 'Personal Trainer Included, Steam & Sauna, 24/7 Access',
+    audience: 'Professionals & athletes looking for guaranteed body transformation',
+    benefit: 'Dedicated Personal Trainer Included, Olympic Lifting Rig, Steam & Sauna, 24/7 Access',
+    duration: '15',
+    quality: '1080p',
+    tone: 'high_energy',
+    aspect: '9:16',
     voice: 'hi-IN-MadhurNeural'
   },
-  education: {
-    product: 'Drishti UPSC Foundation 2027',
-    industry: 'education',
-    price: 'Scholarship up to 50%',
-    location: 'Mukherjee Nagar, Delhi',
-    benefit: 'Top Ranker Mentors, Daily Answer Writing, Live & Offline',
-    voice: 'hi-IN-SwaraNeural'
-  },
-  ecommerce: {
-    product: 'Aura Lab-Grown Diamonds',
-    industry: 'ecommerce',
-    price: 'Starting ₹24,999',
-    location: 'Nationwide Free Delivery',
-    benefit: 'IGI Certified, 100% Conflict Free, 15-Day Moneyback',
-    voice: 'en-IN-PrabhatNeural'
-  },
-  auto: {
-    product: 'Velocity Certified Luxury Cars',
-    industry: 'auto',
+  luxury_auto: {
+    topic: 'Long-Range Luxury Electric Sports Sedan',
+    brand: 'Velocity Certified Motors',
+    product: 'Velocity GT Long-Range Electric Performance',
     price: 'EMI from ₹34,999/mo',
     location: 'Andheri East, Mumbai',
-    benefit: '210-Point Inspection, 1-Year Warranty, Instant RC Transfer',
+    audience: 'Automotive enthusiasts wanting zero emissions without sacrificing track performance',
+    benefit: '210-Point Certified Inspection, 0-100 in 3.4s, 550km Real-World Range, 1-Year Comprehensive Warranty',
+    duration: '30',
+    quality: '4k',
+    tone: 'luxury',
+    aspect: '16:9',
     voice: 'en-IN-PrabhatNeural'
   }
 };
@@ -2111,33 +2419,57 @@ const INDUSTRY_PRESETS = {
 function loadIndustryPreset(key) {
   const p = INDUSTRY_PRESETS[key];
   if (!p) return;
-  const prod = document.getElementById('creative-product');
-  const ind = document.getElementById('creative-industry');
-  const price = document.getElementById('creative-price');
-  const loc = document.getElementById('creative-location');
-  const ben = document.getElementById('creative-benefit');
-  const voice = document.getElementById('creative-voice');
-  if (prod) prod.value = p.product;
-  if (ind) ind.value = p.industry;
-  if (price) price.value = p.price;
-  if (loc) loc.value = p.location;
-  if (ben) ben.value = p.benefit;
-  if (voice) voice.value = p.voice;
+  const setVal = (id, val) => { const el = document.getElementById(id); if (el && val !== undefined) el.value = val; };
+  setVal('creative-topic', p.topic);
+  setVal('creative-brand', p.brand);
+  setVal('creative-product', p.product);
+  setVal('creative-price', p.price);
+  setVal('creative-location', p.location);
+  setVal('creative-audience', p.audience);
+  setVal('creative-benefit', p.benefit);
+  setVal('creative-duration', p.duration);
+  setVal('creative-quality', p.quality);
+  setVal('creative-tone', p.tone);
+  setVal('creative-aspect', p.aspect);
+  setVal('creative-voice', p.voice);
+
   generateCreativeKit();
 }
 
-function handleIndustryChange(val) {
-  if (INDUSTRY_PRESETS[val]) {
-    loadIndustryPreset(val);
-  } else {
+function handleDurationChange(val) {
+  if (cachedCreativeData) {
     generateCreativeKit();
   }
 }
 
-function updateCanvaLink(industry, productName) {
+function handleAspectChange(val) {
+  if (cachedCreativeData) {
+    const brand = document.getElementById('creative-brand')?.value || 'Exclusive Brand';
+    const product = document.getElementById('creative-product')?.value || 'Signature Offering';
+    const topic = document.getElementById('creative-topic')?.value || product;
+    const price = document.getElementById('creative-price')?.value || 'Special Offer';
+    const location = document.getElementById('creative-location')?.value || 'Prime Location';
+    const benefit = document.getElementById('creative-benefit')?.value || 'Verified Quality';
+    const tone = document.getElementById('creative-tone')?.value || 'high_energy';
+    const headline = (cachedCreativeData.headlines && cachedCreativeData.headlines[0]) || `Exclusive ${product}`;
+    renderCanvasBanner({
+      aspect_ratio: val,
+      brand,
+      product_name: product,
+      topic,
+      price_point: price,
+      location,
+      key_benefit: benefit,
+      tone,
+      headline
+    });
+  }
+}
+
+function updateCanvaLink(topic, productName) {
   const btn = document.getElementById('btn-open-canva');
   if (btn) {
-    btn.href = 'https://www.canva.com/templates/?query=' + encodeURIComponent((industry || 'ad').replace('_', ' ') + ' ' + (productName || 'instagram post'));
+    btn.href = 'https://www.canva.com/templates/?query=' + encodeURIComponent((topic || productName || 'modern ad').replace(/_/g, ' ') + ' instagram post');
   }
 }
 
@@ -2157,22 +2489,28 @@ function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
   if (stroke) ctx.stroke();
 }
 
-function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+function wrapText(ctx, text, x, y, maxWidth, lineHeight, maxLines = 4) {
   const words = (text || '').split(' ');
   let line = '';
   let curY = y;
+  let linesCount = 0;
   for (let n = 0; n < words.length; n++) {
     const testLine = line + words[n] + ' ';
     const metrics = ctx.measureText(testLine);
     if (metrics.width > maxWidth && n > 0) {
-      ctx.fillText(line, x, curY);
+      ctx.fillText(line.trim(), x, curY);
       line = words[n] + ' ';
       curY += lineHeight;
+      linesCount++;
+      if (linesCount >= maxLines - 1 && n < words.length - 1) {
+        ctx.fillText((line + '...').trim(), x, curY);
+        return curY;
+      }
     } else {
       line = testLine;
     }
   }
-  ctx.fillText(line, x, curY);
+  ctx.fillText(line.trim(), x, curY);
   return curY;
 }
 
@@ -2180,143 +2518,387 @@ async function renderCanvasBanner(params) {
   const canvas = document.getElementById('ad-banner-canvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
-  const W = 1080;
-  const H = 1080;
+  
+  const aspect = params.aspect_ratio || '1:1';
+  let W = 1080;
+  let H = 1080;
+  let aspectLabel = '1:1 Square';
+  let resDesc = '1080x1080 Feed Ad with dynamic theme, glowing price pill & WhatsApp CTA';
+
+  if (aspect === '9:16') {
+    W = 1080;
+    H = 1920;
+    aspectLabel = '9:16 Vertical Story';
+    resDesc = '1080x1920 Instagram Story / Reel Ad with mobile-optimized layout';
+  } else if (aspect === '16:9') {
+    W = 1920;
+    H = 1080;
+    aspectLabel = '16:9 Landscape';
+    resDesc = '1920x1080 YouTube / Web Display Banner Ad with widescreen layout';
+  }
+
+  const aspectTag = document.getElementById('banner-aspect-tag');
+  const resTag = document.getElementById('banner-res-tag');
+  if (aspectTag) aspectTag.innerText = aspectLabel;
+  if (resTag) resTag.innerText = resDesc;
+
   canvas.width = W;
   canvas.height = H;
 
-  const photoMap = {
-    real_estate: './static/stock_real_estate.jpg',
-    dental: './static/stock_dental.jpg',
-    fitness: './static/stock_fitness.jpg',
-    education: './static/stock_education.jpg',
-    ecommerce: './static/stock_ecommerce.jpg',
-    auto: './static/stock_auto.jpg',
-    universal: './static/stock_dental.jpg'
-  };
-  const imgUrl = photoMap[params.industry] || './static/stock_dental.jpg';
+  // Keyword-based stock photo & aesthetic theme detection
+  const textCombined = `${params.topic || ''} ${params.product_name || ''} ${params.brand || ''}`.toLowerCase();
+  let imgUrl = './static/stock_dental.jpg';
+  let primaryColor = '#4f46e5';
+  let accentColor = '#10b981';
+  let bgGradStart = '#0f172a';
+  let bgGradEnd = '#020617';
+
+  if (textCombined.includes('coffee') || textCombined.includes('brew') || textCombined.includes('roast') || textCombined.includes('cafe')) {
+    imgUrl = './static/stock_ecommerce.jpg';
+    primaryColor = '#d97706';
+    accentColor = '#f59e0b';
+    bgGradStart = '#27170a';
+    bgGradEnd = '#0c0703';
+  } else if (textCombined.includes('cyber') || textCombined.includes('saas') || textCombined.includes('tech') || textCombined.includes('cloud') || textCombined.includes('ai') || textCombined.includes('soft')) {
+    imgUrl = './static/stock_education.jpg';
+    primaryColor = '#06b6d4';
+    accentColor = '#6366f1';
+    bgGradStart = '#081a30';
+    bgGradEnd = '#030712';
+  } else if (textCombined.includes('estate') || textCombined.includes('penthouse') || textCombined.includes('3bhk') || textCombined.includes('luxury') || textCombined.includes('villa')) {
+    imgUrl = './static/stock_real_estate.jpg';
+    primaryColor = '#eab308';
+    accentColor = '#3b82f6';
+    bgGradStart = '#111827';
+    bgGradEnd = '#030712';
+  } else if (textCombined.includes('dental') || textCombined.includes('align') || textCombined.includes('smile') || textCombined.includes('teeth') || textCombined.includes('clinic')) {
+    imgUrl = './static/stock_dental.jpg';
+    primaryColor = '#14b8a6';
+    accentColor = '#06b6d4';
+    bgGradStart = '#042f2e';
+    bgGradEnd = '#021214';
+  } else if (textCombined.includes('gym') || textCombined.includes('fit') || textCombined.includes('physique') || textCombined.includes('muscle') || textCombined.includes('workout')) {
+    imgUrl = './static/stock_fitness.jpg';
+    primaryColor = '#ef4444';
+    accentColor = '#84cc16';
+    bgGradStart = '#1e1b4b';
+    bgGradEnd = '#020617';
+  } else if (textCombined.includes('auto') || textCombined.includes('car') || textCombined.includes('sedan') || textCombined.includes('speed') || textCombined.includes('vehicle')) {
+    imgUrl = './static/stock_auto.jpg';
+    primaryColor = '#f43f5e';
+    accentColor = '#38bdf8';
+    bgGradStart = '#18181b';
+    bgGradEnd = '#09090b';
+  }
 
   const finishDrawing = () => {
-    // 1. Dark Cinematic Gradient Scrim (for text contrast)
-    const scrim = ctx.createLinearGradient(0, H * 0.35, 0, H);
-    scrim.addColorStop(0, 'rgba(10, 15, 30, 0)');
-    scrim.addColorStop(0.35, 'rgba(10, 15, 30, 0.75)');
-    scrim.addColorStop(0.65, 'rgba(5, 8, 20, 0.94)');
-    scrim.addColorStop(1, 'rgba(2, 6, 18, 0.98)');
-    ctx.fillStyle = scrim;
-    ctx.fillRect(0, 0, W, H);
+    if (aspect === '9:16') {
+      const scrim = ctx.createLinearGradient(0, H * 0.4, 0, H);
+      scrim.addColorStop(0, 'rgba(5, 8, 20, 0)');
+      scrim.addColorStop(0.35, 'rgba(5, 8, 20, 0.82)');
+      scrim.addColorStop(0.7, 'rgba(2, 6, 18, 0.96)');
+      scrim.addColorStop(1, 'rgba(2, 6, 18, 1)');
+      ctx.fillStyle = scrim;
+      ctx.fillRect(0, 0, W, H);
 
-    // Top Dark Gradient Scrim (for top badge)
-    const topScrim = ctx.createLinearGradient(0, 0, 0, 220);
-    topScrim.addColorStop(0, 'rgba(5, 8, 20, 0.85)');
-    topScrim.addColorStop(1, 'rgba(10, 15, 30, 0)');
-    ctx.fillStyle = topScrim;
-    ctx.fillRect(0, 0, W, 220);
+      const topScrim = ctx.createLinearGradient(0, 0, 0, 320);
+      topScrim.addColorStop(0, 'rgba(5, 8, 20, 0.9)');
+      topScrim.addColorStop(1, 'rgba(10, 15, 30, 0)');
+      ctx.fillStyle = topScrim;
+      ctx.fillRect(0, 0, W, 320);
 
-    // Top Left: Category Pill Badge
-    const badgeText = '✦ LIMITED EXCLUSIVE OFFER';
-    ctx.font = 'bold 22px system-ui, -apple-system, sans-serif';
-    const badgeW = ctx.measureText(badgeText).width + 36;
-    ctx.fillStyle = 'rgba(79, 70, 229, 0.85)';
-    roundRect(ctx, 60, 55, badgeW, 46, 23, true);
-    ctx.fillStyle = '#ffffff';
-    ctx.fillText(badgeText, 78, 86);
+      // Top Badges
+      const badgeText = '✦ LIMITED EXCLUSIVE OFFER';
+      ctx.font = 'bold 24px system-ui, -apple-system, sans-serif';
+      const badgeW = ctx.measureText(badgeText).width + 36;
+      ctx.fillStyle = primaryColor;
+      roundRect(ctx, 60, 140, badgeW, 48, 24, true);
+      ctx.fillStyle = '#ffffff';
+      ctx.fillText(badgeText, 78, 172);
 
-    // Top Right: 5-Star Rating Pill
-    const starsText = '⭐ 4.9/5 · 1,200+ Verified';
-    ctx.font = 'bold 20px system-ui, -apple-system, sans-serif';
-    const starsW = ctx.measureText(starsText).width + 36;
-    ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
-    roundRect(ctx, W - 60 - starsW, 55, starsW, 46, 23, true);
-    ctx.fillStyle = '#facc15';
-    ctx.fillText(starsText, W - 60 - starsW + 18, 85);
+      const starsText = '⭐ 4.9/5 · Verified';
+      ctx.font = 'bold 22px system-ui, -apple-system, sans-serif';
+      const starsW = ctx.measureText(starsText).width + 36;
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.9)';
+      roundRect(ctx, W - 60 - starsW, 140, starsW, 48, 24, true);
+      ctx.fillStyle = '#facc15';
+      ctx.fillText(starsText, W - 60 - starsW + 18, 172);
 
-    // Product / Campaign Headline
-    ctx.fillStyle = '#ffffff';
-    ctx.font = '900 48px system-ui, -apple-system, sans-serif';
-    ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
-    ctx.shadowBlur = 12;
-    const headline = params.headline || `Exclusive ${params.product_name}`;
-    wrapText(ctx, headline, 60, 520, W - 120, 56);
-    ctx.shadowBlur = 0;
+      // Brand tag
+      const brandStr = (params.brand || 'LEADPULSE').toUpperCase();
+      ctx.fillStyle = accentColor;
+      ctx.font = 'bold 26px system-ui, -apple-system, sans-serif';
+      ctx.fillText(brandStr, 60, 930);
 
-    // Glowing Price Tag Pill
-    const price = params.price_point || 'Starting ₹85 Lakhs';
-    ctx.font = '900 32px system-ui, -apple-system, sans-serif';
-    const priceW = ctx.measureText(price).width + 50;
-    const priceGrad = ctx.createLinearGradient(60, 630, 60 + priceW, 690);
-    priceGrad.addColorStop(0, '#10b981');
-    priceGrad.addColorStop(1, '#059669');
-    ctx.fillStyle = priceGrad;
-    ctx.shadowColor = 'rgba(16, 185, 129, 0.4)';
-    ctx.shadowBlur = 16;
-    roundRect(ctx, 60, 630, priceW, 60, 30, true);
-    ctx.shadowBlur = 0;
-    ctx.fillStyle = '#ffffff';
-    ctx.fillText(price, 85, 672);
+      // Headline
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '900 54px system-ui, -apple-system, sans-serif';
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.85)';
+      ctx.shadowBlur = 16;
+      const headline = params.headline || `Exclusive ${params.product_name}`;
+      wrapText(ctx, headline, 60, 1000, W - 120, 64, 4);
+      ctx.shadowBlur = 0;
 
-    // Key Benefits Checklist
-    const benefits = (params.key_benefit || 'Zero Brokerage, Verified Quality, 0% EMI')
-      .split(',')
-      .map(b => b.trim())
-      .filter(Boolean)
-      .slice(0, 3);
-    
-    let benY = 730;
-    ctx.font = '600 24px system-ui, -apple-system, sans-serif';
-    benefits.forEach(b => {
-      ctx.fillStyle = '#10b981';
-      ctx.fillText('✔', 60, benY);
-      ctx.fillStyle = '#cbd5e1';
-      ctx.fillText(b, 95, benY);
-      benY += 40;
-    });
+      // Price Tag Pill
+      const price = params.price_point || 'Exclusive Offer';
+      ctx.font = '900 36px system-ui, -apple-system, sans-serif';
+      const priceW = ctx.measureText(price).width + 56;
+      const priceGrad = ctx.createLinearGradient(60, 1200, 60 + priceW, 1270);
+      priceGrad.addColorStop(0, '#10b981');
+      priceGrad.addColorStop(1, '#059669');
+      ctx.fillStyle = priceGrad;
+      ctx.shadowColor = 'rgba(16, 185, 129, 0.4)';
+      ctx.shadowBlur = 20;
+      roundRect(ctx, 60, 1200, priceW, 70, 35, true);
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = '#ffffff';
+      ctx.fillText(price, 88, 1248);
 
-    // Location / City Tag
-    if (params.location) {
-      ctx.fillStyle = '#94a3b8';
-      ctx.font = '500 20px system-ui, -apple-system, sans-serif';
-      ctx.fillText('📍 ' + params.location, 60, 875);
+      // Benefits Checklist
+      const benefits = (params.key_benefit || 'Verified Quality, Instant Confirmation')
+        .split(',').map(b => b.trim()).filter(Boolean).slice(0, 4);
+      let benY = 1330;
+      ctx.font = '600 28px system-ui, -apple-system, sans-serif';
+      benefits.forEach(b => {
+        ctx.fillStyle = '#10b981';
+        ctx.fillText('✔', 60, benY);
+        ctx.fillStyle = '#e2e8f0';
+        ctx.fillText(b, 102, benY);
+        benY += 48;
+      });
+
+      // Location
+      if (params.location) {
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '500 24px system-ui, -apple-system, sans-serif';
+        ctx.fillText('📍 ' + params.location, 60, 1550);
+      }
+
+      // WhatsApp Button
+      const btnGrad = ctx.createLinearGradient(60, 1620, W - 60, 1740);
+      btnGrad.addColorStop(0, '#25D366');
+      btnGrad.addColorStop(1, '#128C7E');
+      ctx.fillStyle = btnGrad;
+      ctx.shadowColor = 'rgba(37, 211, 102, 0.45)';
+      ctx.shadowBlur = 24;
+      roundRect(ctx, 60, 1620, W - 120, 120, 28, true);
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '900 40px system-ui, -apple-system, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('💬 Chat on WhatsApp · Instant Booking', W / 2, 1695);
+      ctx.textAlign = 'left';
+
+    } else if (aspect === '16:9') {
+      const scrim = ctx.createLinearGradient(0, 0, W * 0.75, 0);
+      scrim.addColorStop(0, 'rgba(2, 6, 18, 0.98)');
+      scrim.addColorStop(0.45, 'rgba(5, 8, 20, 0.88)');
+      scrim.addColorStop(0.7, 'rgba(10, 15, 30, 0.4)');
+      scrim.addColorStop(1, 'rgba(10, 15, 30, 0)');
+      ctx.fillStyle = scrim;
+      ctx.fillRect(0, 0, W, H);
+
+      // Top Badge
+      const badgeText = '✦ LIMITED EXCLUSIVE OFFER';
+      ctx.font = 'bold 22px system-ui, -apple-system, sans-serif';
+      const badgeW = ctx.measureText(badgeText).width + 36;
+      ctx.fillStyle = primaryColor;
+      roundRect(ctx, 80, 60, badgeW, 44, 22, true);
+      ctx.fillStyle = '#ffffff';
+      ctx.fillText(badgeText, 98, 90);
+
+      // Stars
+      const starsText = '⭐ 4.9/5 · Verified';
+      ctx.font = 'bold 20px system-ui, -apple-system, sans-serif';
+      const starsW = ctx.measureText(starsText).width + 36;
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.9)';
+      roundRect(ctx, 80 + badgeW + 16, 60, starsW, 44, 22, true);
+      ctx.fillStyle = '#facc15';
+      ctx.fillText(starsText, 80 + badgeW + 34, 89);
+
+      // Brand
+      const brandStr = (params.brand || 'LEADPULSE').toUpperCase();
+      ctx.fillStyle = accentColor;
+      ctx.font = 'bold 24px system-ui, -apple-system, sans-serif';
+      ctx.fillText(brandStr, 80, 160);
+
+      // Headline
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '900 52px system-ui, -apple-system, sans-serif';
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.85)';
+      ctx.shadowBlur = 14;
+      const headline = params.headline || `Exclusive ${params.product_name}`;
+      wrapText(ctx, headline, 80, 230, 1100, 62, 3);
+      ctx.shadowBlur = 0;
+
+      // Price Tag Pill
+      const price = params.price_point || 'Exclusive Offer';
+      ctx.font = '900 32px system-ui, -apple-system, sans-serif';
+      const priceW = ctx.measureText(price).width + 50;
+      const priceGrad = ctx.createLinearGradient(80, 420, 80 + priceW, 480);
+      priceGrad.addColorStop(0, '#10b981');
+      priceGrad.addColorStop(1, '#059669');
+      ctx.fillStyle = priceGrad;
+      ctx.shadowColor = 'rgba(16, 185, 129, 0.4)';
+      ctx.shadowBlur = 18;
+      roundRect(ctx, 80, 420, priceW, 60, 30, true);
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = '#ffffff';
+      ctx.fillText(price, 105, 462);
+
+      // Benefits
+      const benefits = (params.key_benefit || 'Verified Quality, 0% EMI')
+        .split(',').map(b => b.trim()).filter(Boolean).slice(0, 3);
+      let benY = 540;
+      ctx.font = '600 24px system-ui, -apple-system, sans-serif';
+      benefits.forEach(b => {
+        ctx.fillStyle = '#10b981';
+        ctx.fillText('✔', 80, benY);
+        ctx.fillStyle = '#cbd5e1';
+        ctx.fillText(b, 115, benY);
+        benY += 42;
+      });
+
+      // Location
+      if (params.location) {
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '500 22px system-ui, -apple-system, sans-serif';
+        ctx.fillText('📍 ' + params.location, 80, 710);
+      }
+
+      // WhatsApp Button
+      const btnGrad = ctx.createLinearGradient(80, 780, 880, 880);
+      btnGrad.addColorStop(0, '#25D366');
+      btnGrad.addColorStop(1, '#128C7E');
+      ctx.fillStyle = btnGrad;
+      ctx.shadowColor = 'rgba(37, 211, 102, 0.4)';
+      ctx.shadowBlur = 20;
+      roundRect(ctx, 80, 780, 800, 100, 24, true);
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '900 34px system-ui, -apple-system, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('💬 Chat on WhatsApp · Instant Booking', 480, 843);
+      ctx.textAlign = 'left';
+
+    } else {
+      // 1:1 Square Feed (Default)
+      const scrim = ctx.createLinearGradient(0, H * 0.35, 0, H);
+      scrim.addColorStop(0, 'rgba(10, 15, 30, 0)');
+      scrim.addColorStop(0.35, 'rgba(10, 15, 30, 0.75)');
+      scrim.addColorStop(0.65, 'rgba(5, 8, 20, 0.94)');
+      scrim.addColorStop(1, 'rgba(2, 6, 18, 0.98)');
+      ctx.fillStyle = scrim;
+      ctx.fillRect(0, 0, W, H);
+
+      const topScrim = ctx.createLinearGradient(0, 0, 0, 220);
+      topScrim.addColorStop(0, 'rgba(5, 8, 20, 0.85)');
+      topScrim.addColorStop(1, 'rgba(10, 15, 30, 0)');
+      ctx.fillStyle = topScrim;
+      ctx.fillRect(0, 0, W, 220);
+
+      const badgeText = '✦ LIMITED EXCLUSIVE OFFER';
+      ctx.font = 'bold 22px system-ui, -apple-system, sans-serif';
+      const badgeW = ctx.measureText(badgeText).width + 36;
+      ctx.fillStyle = primaryColor;
+      roundRect(ctx, 60, 55, badgeW, 46, 23, true);
+      ctx.fillStyle = '#ffffff';
+      ctx.fillText(badgeText, 78, 86);
+
+      const starsText = '⭐ 4.9/5 · Verified';
+      ctx.font = 'bold 20px system-ui, -apple-system, sans-serif';
+      const starsW = ctx.measureText(starsText).width + 36;
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
+      roundRect(ctx, W - 60 - starsW, 55, starsW, 46, 23, true);
+      ctx.fillStyle = '#facc15';
+      ctx.fillText(starsText, W - 60 - starsW + 18, 85);
+
+      const brandStr = (params.brand || 'LEADPULSE').toUpperCase();
+      ctx.fillStyle = accentColor;
+      ctx.font = 'bold 22px system-ui, -apple-system, sans-serif';
+      ctx.fillText(brandStr, 60, 480);
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '900 48px system-ui, -apple-system, sans-serif';
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+      ctx.shadowBlur = 12;
+      const headline = params.headline || `Exclusive ${params.product_name}`;
+      wrapText(ctx, headline, 60, 540, W - 120, 56, 3);
+      ctx.shadowBlur = 0;
+
+      const price = params.price_point || 'Exclusive Offer';
+      ctx.font = '900 32px system-ui, -apple-system, sans-serif';
+      const priceW = ctx.measureText(price).width + 50;
+      const priceGrad = ctx.createLinearGradient(60, 645, 60 + priceW, 705);
+      priceGrad.addColorStop(0, '#10b981');
+      priceGrad.addColorStop(1, '#059669');
+      ctx.fillStyle = priceGrad;
+      ctx.shadowColor = 'rgba(16, 185, 129, 0.4)';
+      ctx.shadowBlur = 16;
+      roundRect(ctx, 60, 645, priceW, 60, 30, true);
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = '#ffffff';
+      ctx.fillText(price, 85, 687);
+
+      const benefits = (params.key_benefit || 'Verified Quality, 0% EMI')
+        .split(',').map(b => b.trim()).filter(Boolean).slice(0, 3);
+      let benY = 745;
+      ctx.font = '600 24px system-ui, -apple-system, sans-serif';
+      benefits.forEach(b => {
+        ctx.fillStyle = '#10b981';
+        ctx.fillText('✔', 60, benY);
+        ctx.fillStyle = '#cbd5e1';
+        ctx.fillText(b, 95, benY);
+        benY += 40;
+      });
+
+      if (params.location) {
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '500 20px system-ui, -apple-system, sans-serif';
+        ctx.fillText('📍 ' + params.location, 60, 880);
+      }
+
+      const btnGrad = ctx.createLinearGradient(60, 920, W - 60, 1020);
+      btnGrad.addColorStop(0, '#25D366');
+      btnGrad.addColorStop(1, '#128C7E');
+      ctx.fillStyle = btnGrad;
+      ctx.shadowColor = 'rgba(37, 211, 102, 0.4)';
+      ctx.shadowBlur = 20;
+      roundRect(ctx, 60, 920, W - 120, 100, 24, true);
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '900 36px system-ui, -apple-system, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('💬 Chat on WhatsApp · Instant Booking', W / 2, 983);
+      ctx.textAlign = 'left';
     }
 
-    // High-Converting WhatsApp CTA Button at Bottom
-    const btnGrad = ctx.createLinearGradient(60, 915, W - 60, 1015);
-    btnGrad.addColorStop(0, '#25D366');
-    btnGrad.addColorStop(1, '#128C7E');
-    ctx.fillStyle = btnGrad;
-    ctx.shadowColor = 'rgba(37, 211, 102, 0.4)';
-    ctx.shadowBlur = 20;
-    roundRect(ctx, 60, 915, W - 120, 100, 24, true);
-    ctx.shadowBlur = 0;
-
-    ctx.fillStyle = '#ffffff';
-    ctx.font = '900 36px system-ui, -apple-system, sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('💬 Chat on WhatsApp · Instant Booking', W / 2, 978);
-    ctx.textAlign = 'left';
-
-    // Export to Image & Download Link
     const dataUrl = canvas.toDataURL('image/png');
     const bannerImg = document.getElementById('creative-banner-img');
     const downloadLink = document.getElementById('btn-download-banner');
     if (bannerImg) bannerImg.src = dataUrl;
     if (downloadLink) {
       downloadLink.href = dataUrl;
-      downloadLink.download = `leadpulse_${params.industry}_1080x1080.png`;
+      downloadLink.download = `leadpulse_ad_${aspect.replace(':', 'x')}.png`;
     }
   };
 
   const img = new Image();
   img.crossOrigin = 'anonymous';
   img.onload = () => {
-    ctx.drawImage(img, 0, 0, W, H);
+    const scale = Math.max(W / img.width, H / img.height);
+    const sw = img.width * scale;
+    const sh = img.height * scale;
+    const sx = (W - sw) / 2;
+    const sy = (H - sh) / 2;
+    ctx.drawImage(img, sx, sy, sw, sh);
     finishDrawing();
   };
   img.onerror = () => {
-    const bgGrad = ctx.createRadialGradient(W / 2, H / 3, 50, W / 2, H / 2, W * 0.8);
-    bgGrad.addColorStop(0, '#1e1b4b');
-    bgGrad.addColorStop(0.6, '#0f172a');
-    bgGrad.addColorStop(1, '#020617');
+    const bgGrad = ctx.createRadialGradient(W / 2, H / 3, 50, W / 2, H / 2, Math.max(W, H) * 0.8);
+    bgGrad.addColorStop(0, bgGradStart);
+    bgGrad.addColorStop(0.7, bgGradEnd);
+    bgGrad.addColorStop(1, '#000000');
     ctx.fillStyle = bgGrad;
     ctx.fillRect(0, 0, W, H);
     finishDrawing();
@@ -2324,61 +2906,140 @@ async function renderCanvasBanner(params) {
   img.src = imgUrl;
 }
 
-// ──────────────────────────────────────────────
-// Kinetic 9:16 Reel Story View
-// ──────────────────────────────────────────────
-let currentReelSlide = 1;
-let reelAutoTimer = null;
-let currentReelData = null;
+function renderScreenplayDeck(screenplay) {
+  const container = document.getElementById('screenplay-deck-list');
+  if (!container || !screenplay) return;
+  
+  container.innerHTML = screenplay.map((s, idx) => `
+    <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-4 transition hover:border-slate-700/80 space-y-3">
+      <div class="flex items-center justify-between flex-wrap gap-2 border-b border-slate-800/80 pb-2.5">
+        <div class="flex items-center gap-2">
+          <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-900/60 text-indigo-300 border border-indigo-700/40">Scene ${s.scene_number}</span>
+          <span class="text-xs font-bold text-white">${s.scene_title}</span>
+          <span class="text-[11px] font-mono text-emerald-400 bg-emerald-950/50 px-2 py-0.5 rounded border border-emerald-700/30">⏱️ ${s.timecode}</span>
+        </div>
+        <button onclick="copyVeoPrompt(${idx}, this)"
+                class="px-2.5 py-1 rounded-md text-[11px] font-semibold bg-indigo-600 hover:bg-indigo-500 text-white transition flex items-center gap-1 shadow-sm">
+          <span>✨</span> <span>Copy Veo 2 Prompt</span>
+        </button>
+      </div>
 
-function setReelSlide(slideNum) {
-  currentReelSlide = slideNum;
-  for (let i = 1; i <= 4; i++) {
-    const prog = document.getElementById('sprog-' + i);
-    const rbtn = document.getElementById('rbtn-' + i);
+      <div class="flex items-center gap-2 flex-wrap text-[11px]">
+        <span class="px-2 py-0.5 rounded bg-slate-900 text-slate-300 border border-slate-800 flex items-center gap-1">
+          <span>🎥</span> <span>${s.camera_movement}</span>
+        </span>
+        <span class="px-2 py-0.5 rounded bg-slate-900 text-slate-300 border border-slate-800 flex items-center gap-1">
+          <span>💡</span> <span>${s.lighting_and_lens}</span>
+        </span>
+      </div>
+
+      <div class="bg-slate-900/90 rounded-lg p-3 border border-slate-800">
+        <div class="text-[10px] font-bold uppercase tracking-wider text-indigo-400 mb-1 flex items-center justify-between">
+          <span>Google Veo 2 / Sora Generation Prompt</span>
+          <span class="text-slate-500 font-mono text-[9px]">4K · 60fps · Anamorphic</span>
+        </div>
+        <p class="text-xs text-slate-200 font-mono leading-relaxed select-all">${s.veo_prompt}</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs">
+        <div class="bg-slate-900/50 rounded-lg p-2.5 border border-slate-800/60">
+          <div class="text-[10px] uppercase font-bold text-emerald-400 mb-0.5">🎙️ Voiceover Dialogue</div>
+          <div class="text-slate-300 italic">"${s.voiceover}"</div>
+        </div>
+        <div class="bg-slate-900/50 rounded-lg p-2.5 border border-slate-800/60">
+          <div class="text-[10px] uppercase font-bold text-amber-400 mb-0.5">💬 On-Screen Kinetic Text</div>
+          <div class="text-slate-300 font-semibold">${s.on_screen_text}</div>
+          <div class="text-[10px] text-slate-400 mt-1">🎵 SFX: ${s.sound_fx}</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function setupReelPlayer(screenplay, duration, brand, product, price, voice) {
+  currentScreenplay = screenplay || [];
+  reelSceneIndex = 0;
+
+  const brandTag = document.getElementById('reel-brand-tag');
+  if (brandTag) {
+    brandTag.innerText = (brand || 'leadpulse').toLowerCase().replace(/\s+/g, '_');
+  }
+
+  const progContainer = document.getElementById('reel-progress-bars');
+  if (progContainer) {
+    progContainer.innerHTML = currentScreenplay.map((_, i) => `
+      <div class="h-1 flex-1 bg-white/20 rounded-full overflow-hidden">
+        <div id="sprog-${i}" class="h-full bg-white transition-all duration-300" style="width: ${i === 0 ? '100%' : '0%'}"></div>
+      </div>
+    `).join('');
+  }
+
+  const chipsContainer = document.getElementById('reel-scene-chips');
+  if (chipsContainer) {
+    chipsContainer.innerHTML = currentScreenplay.map((_, i) => `
+      <button onclick="setReelScene(${i})" id="rchip-${i}"
+              class="flex-1 py-1 rounded-md text-[10px] font-semibold ${i === 0 ? 'bg-indigo-600 text-white' : 'bg-slate-800 text-slate-400 hover:text-slate-200'} transition">
+        S${i + 1}
+      </button>
+    `).join('');
+  }
+
+  setReelScene(0);
+}
+
+function setReelScene(index) {
+  if (!currentScreenplay || currentScreenplay.length === 0) return;
+  if (index < 0) index = 0;
+  if (index >= currentScreenplay.length) index = 0;
+  reelSceneIndex = index;
+  const s = currentScreenplay[index];
+
+  currentScreenplay.forEach((_, i) => {
+    const prog = document.getElementById(`sprog-${i}`);
     if (prog) {
-      prog.style.width = i <= slideNum ? '100%' : '0%';
+      prog.style.width = i <= index ? '100%' : '0%';
     }
-    if (rbtn) {
-      if (i === slideNum) {
-        rbtn.className = 'px-2.5 py-1 rounded-lg text-xs font-semibold bg-indigo-600 text-white';
+    const chip = document.getElementById(`rchip-${i}`);
+    if (chip) {
+      if (i === index) {
+        chip.className = 'flex-1 py-1 rounded-md text-[10px] font-semibold bg-indigo-600 text-white transition';
       } else {
-        rbtn.className = 'px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300';
+        chip.className = 'flex-1 py-1 rounded-md text-[10px] font-semibold bg-slate-800 text-slate-400 hover:text-slate-200 transition';
       }
     }
-  }
+  });
 
   const badge = document.getElementById('reel-badge');
   const title = document.getElementById('reel-title');
   const desc = document.getElementById('reel-desc');
   const pricePill = document.getElementById('reel-price-pill');
-  if (!badge || !title || !desc || !currentReelData) return;
 
-  const d = currentReelData;
-  if (slideNum === 1) {
-    badge.innerText = '🔥 THE HOOK';
-    badge.className = 'inline-block px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase bg-indigo-500 text-white shadow-lg animate-pulse';
-    title.innerText = d.copyData?.video_script?.hook || `Looking for ${d.product_name} in ${d.location}?`;
-    desc.innerText = d.key_benefit || 'Exclusive Opportunity · Limited Time';
-    if (pricePill) pricePill.innerText = d.price_point;
-  } else if (slideNum === 2) {
-    badge.innerText = '❌ THE PROBLEM';
-    badge.className = 'inline-block px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase bg-rose-500 text-white shadow-lg';
-    title.innerText = d.copyData?.video_script?.problem || 'Tired of hidden charges and delayed timelines?';
-    desc.innerText = 'Most options in the market cut corners. You deserve better transparency and proven value.';
-    if (pricePill) pricePill.innerText = 'Stop Wasting Money';
-  } else if (slideNum === 3) {
-    badge.innerText = '✨ THE SOLUTION';
-    badge.className = 'inline-block px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase bg-emerald-500 text-white shadow-lg';
-    title.innerText = `${d.product_name} starting at ${d.price_point}`;
-    desc.innerText = d.copyData?.video_script?.solution || d.key_benefit;
-    if (pricePill) pricePill.innerText = d.price_point;
-  } else if (slideNum === 4) {
-    badge.innerText = '👉 LIMITED LAUNCH PASS';
-    badge.className = 'inline-block px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase bg-amber-500 text-slate-950 shadow-lg animate-bounce';
-    title.innerText = d.copyData?.video_script?.cta || 'Tap WhatsApp below for VIP pricing & booking!';
-    desc.innerText = '⏳ Launch offer expires in 48 hours. Zero obligation consultation.';
-    if (pricePill) pricePill.innerText = 'Free Consultation';
+  if (badge) {
+    const badges = ['🔥 THE HOOK', '❌ THE PROBLEM', '✨ THE SOLUTION', '⭐ PROOF & VALUE', '💎 SPECIAL OFFER', '👉 CALL TO ACTION'];
+    const badgeText = badges[index] || `SCENE ${s.scene_number}`;
+    badge.innerText = badgeText;
+    const colors = [
+      'bg-indigo-500 text-white animate-pulse',
+      'bg-rose-500 text-white',
+      'bg-emerald-500 text-white',
+      'bg-blue-500 text-white',
+      'bg-purple-500 text-white',
+      'bg-amber-500 text-slate-950 animate-bounce'
+    ];
+    badge.className = `inline-block px-2 py-0.5 rounded-full text-[9px] font-bold tracking-wider uppercase shadow-lg ${colors[index % colors.length]}`;
+  }
+
+  if (title) {
+    title.innerText = s.on_screen_text || s.scene_title;
+  }
+
+  if (desc) {
+    desc.innerText = s.voiceover || s.veo_prompt;
+  }
+
+  if (pricePill) {
+    const priceVal = document.getElementById('creative-price')?.value || 'Special Offer';
+    pricePill.innerText = index === 0 ? 'Limited Deal' : (index === currentScreenplay.length - 1 ? 'Free Consultation' : priceVal);
   }
 }
 
@@ -2391,51 +3052,166 @@ function toggleReelAutoPlay() {
   } else {
     if (btn) btn.innerHTML = '<span>⏸</span> <span>Pause Story</span>';
     reelAutoTimer = setInterval(() => {
-      let next = currentReelSlide + 1;
-      if (next > 4) next = 1;
-      setReelSlide(next);
+      let next = reelSceneIndex + 1;
+      if (next >= currentScreenplay.length) next = 0;
+      setReelScene(next);
     }, 3200);
   }
 }
 
-function updateReelStory(data) {
-  currentReelData = data;
-  const photoMap = {
-    real_estate: './static/stock_real_estate.jpg',
-    dental: './static/stock_dental.jpg',
-    fitness: './static/stock_fitness.jpg',
-    education: './static/stock_education.jpg',
-    ecommerce: './static/stock_ecommerce.jpg',
-    auto: './static/stock_auto.jpg',
-    universal: './static/stock_dental.jpg'
-  };
-  const reelBg = document.getElementById('reel-bg-img');
-  if (reelBg) {
-    reelBg.src = photoMap[data.industry] || './static/stock_dental.jpg';
+function setupAudioStudio(fullNarration, voice, duration) {
+  const scriptBox = document.getElementById('audio-script-box');
+  if (scriptBox) {
+    scriptBox.innerText = fullNarration || 'Voiceover teleprompter script ready.';
   }
-  setReelSlide(1);
+  const statusLabel = document.getElementById('audio-status-label');
+  if (statusLabel) statusLabel.innerText = 'Ready for Client Demonstration';
+  const voiceLabel = document.getElementById('audio-voice-label');
+  if (voiceLabel) voiceLabel.innerText = `Voice: ${voice || 'en-IN-NeerjaNeural'}`;
+  const durLabel = document.getElementById('audio-duration-label');
+  if (durLabel) durLabel.innerText = `Est. Duration: ${duration || 15}s`;
 }
 
-function toggleReelView(mode) {
-  const storyView = document.getElementById('video-story-view');
-  const mp4View = document.getElementById('video-mp4-view');
-  const btnStory = document.getElementById('btn-toggle-story');
-  const btnMp4 = document.getElementById('btn-toggle-mp4');
-  if (mode === 'story') {
-    storyView?.classList.remove('hidden');
-    mp4View?.classList.add('hidden');
-    btnStory?.classList.replace('bg-slate-800', 'bg-indigo-600');
-    btnStory?.classList.replace('text-slate-300', 'text-white');
-    btnMp4?.classList.replace('bg-indigo-600', 'bg-slate-800');
-    btnMp4?.classList.replace('text-white', 'text-slate-300');
-  } else {
-    storyView?.classList.add('hidden');
-    mp4View?.classList.remove('hidden');
-    btnMp4?.classList.replace('bg-slate-800', 'bg-indigo-600');
-    btnMp4?.classList.replace('text-slate-300', 'text-white');
-    btnStory?.classList.replace('bg-indigo-600', 'bg-slate-800');
-    btnStory?.classList.replace('text-white', 'text-slate-300');
+function startWaveformAnimation() {
+  stopWaveformAnimation();
+  const bars = document.querySelectorAll('#audio-waveform-bars div');
+  if (!bars.length) return;
+  waveformInterval = setInterval(() => {
+    bars.forEach(b => {
+      const h = Math.floor(Math.random() * 52) + 12;
+      b.style.height = `${h}px`;
+    });
+  }, 100);
+}
+
+function stopWaveformAnimation() {
+  if (waveformInterval) {
+    clearInterval(waveformInterval);
+    waveformInterval = null;
   }
+  const defaultHeights = [16, 32, 48, 24, 56, 40, 32, 64, 24, 48];
+  const bars = document.querySelectorAll('#audio-waveform-bars div');
+  bars.forEach((b, i) => {
+    b.style.height = `${defaultHeights[i % defaultHeights.length]}px`;
+  });
+}
+
+function speakFullNarration() {
+  if (!('speechSynthesis' in window)) {
+    showToast('Speech synthesis not supported in this browser');
+    return;
+  }
+  window.speechSynthesis.cancel();
+
+  const scriptBox = document.getElementById('audio-script-box');
+  const text = scriptBox?.innerText || (cachedCreativeData && cachedCreativeData.full_narration) || 'Welcome to LeadPulse AI';
+  const voiceName = document.getElementById('creative-voice')?.value || 'en-IN-NeerjaNeural';
+  const statusLabel = document.getElementById('audio-status-label');
+  const speakBtn = document.getElementById('btn-audio-speak');
+
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.rate = 1.0;
+  utter.pitch = 1.0;
+
+  const voices = window.speechSynthesis.getVoices();
+  const found = voices.find(v => v.name.includes('India') || v.lang.includes('en-IN') || v.lang.includes('en-US'));
+  if (found) utter.voice = found;
+
+  startWaveformAnimation();
+  if (statusLabel) statusLabel.innerText = '🟢 Playing Live Speech Synthesis...';
+  if (speakBtn) speakBtn.innerHTML = '<span>🔊</span> <span>Speaking...</span>';
+
+  utter.onend = () => {
+    stopWaveformAnimation();
+    if (statusLabel) statusLabel.innerText = 'Playback Complete';
+    if (speakBtn) speakBtn.innerHTML = '<span>▶</span> <span>Speak Narration Live</span>';
+  };
+
+  utter.onerror = () => {
+    stopWaveformAnimation();
+    if (statusLabel) statusLabel.innerText = 'Playback Stopped';
+    if (speakBtn) speakBtn.innerHTML = '<span>▶</span> <span>Speak Narration Live</span>';
+  };
+
+  window.speechSynthesis.speak(utter);
+}
+
+function stopAudioPlayback() {
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+  }
+  stopWaveformAnimation();
+  const statusLabel = document.getElementById('audio-status-label');
+  const speakBtn = document.getElementById('btn-audio-speak');
+  if (statusLabel) statusLabel.innerText = 'Playback Stopped';
+  if (speakBtn) speakBtn.innerHTML = '<span>▶</span> <span>Speak Narration Live</span>';
+}
+
+async function downloadVoiceoverAudio() {
+  const text = document.getElementById('audio-script-box')?.innerText || (cachedCreativeData && cachedCreativeData.full_narration);
+  const voice = document.getElementById('creative-voice')?.value || 'en-IN-NeerjaNeural';
+  const btn = document.getElementById('btn-audio-download');
+  if (btn) btn.innerHTML = '<span>⏳</span> <span>Synthesizing...</span>';
+  
+  try {
+    const res = await api._fetch('POST', '/api/creative/audio', { text, voice });
+    if (res && res.audio_url) {
+      const a = document.createElement('a');
+      a.href = res.audio_url;
+      a.download = `voiceover_${Date.now()}.mp3`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      showToast('Voiceover MP3 downloaded!');
+    } else {
+      showToast('Live Web Speech synthesized above.');
+    }
+  } catch (e) {
+    showToast('Live Web Speech ready for client demo.');
+  } finally {
+    if (btn) btn.innerHTML = '<span>⬇️</span> <span>Download MP3</span>';
+  }
+}
+
+function copyVeoPrompt(idx, btn) {
+  if (!cachedCreativeData || !cachedCreativeData.screenplay || !cachedCreativeData.screenplay[idx]) return;
+  const prompt = cachedCreativeData.screenplay[idx].veo_prompt;
+  copyToClipboard(prompt, btn || document.body);
+  showToast(`Copied Veo 2 Prompt for Scene ${idx + 1}`);
+}
+
+function copyEntireScreenplay() {
+  if (!cachedCreativeData || !cachedCreativeData.screenplay) {
+    showToast('No screenplay loaded to copy');
+    return;
+  }
+  const d = cachedCreativeData;
+  let txt = `=======================================================\n`;
+  txt += `GOOGLE VEO 2 / SORA CINEMATIC PRODUCTION SCREENPLAY\n`;
+  txt += `Brand: ${d.company_name || 'Brand'}\n`;
+  txt += `Product: ${d.product_name}\n`;
+  txt += `Topic: ${d.topic}\n`;
+  txt += `Duration: ${d.duration}s | Quality: ${d.quality} | Tone: ${d.tone}\n`;
+  txt += `Offer / Price: ${d.price_point} | Location: ${d.location}\n`;
+  txt += `=======================================================\n\n`;
+
+  d.screenplay.forEach(s => {
+    txt += `SCENE ${s.scene_number} [${s.timecode}] - ${s.scene_title.toUpperCase()}\n`;
+    txt += `Camera Movement: ${s.camera_movement}\n`;
+    txt += `Lighting & Lens: ${s.lighting_and_lens}\n`;
+    txt += `Veo 2 Prompt: ${s.veo_prompt}\n`;
+    txt += `On-Screen Kinetic Caption: ${s.on_screen_text}\n`;
+    txt += `Voiceover Dialogue: "${s.voiceover}"\n`;
+    txt += `Sound FX Cue: ${s.sound_fx}\n\n`;
+  });
+
+  txt += `=======================================================\n`;
+  txt += `FULL AUDIO VOICEOVER SCRIPT:\n`;
+  txt += `${d.full_narration}\n`;
+  txt += `=======================================================\n`;
+
+  navigator.clipboard.writeText(txt);
+  showToast('Copied full production screenplay to clipboard!');
 }
 
 async function initCreativeStudio() {
@@ -2445,12 +3221,19 @@ async function initCreativeStudio() {
 }
 
 async function generateCreativeKit() {
-  const product_name = document.getElementById('creative-product')?.value || 'Greenfield Signature 3BHK';
-  const industry = document.getElementById('creative-industry')?.value || 'real_estate';
-  const price_point = document.getElementById('creative-price')?.value || 'Starting ₹85 Lakhs';
-  const location = document.getElementById('creative-location')?.value || 'Sector 62, Gurugram';
-  const key_benefit = document.getElementById('creative-benefit')?.value || 'Zero Brokerage, 80% Green Open Spaces';
+  const topic = document.getElementById('creative-topic')?.value || 'Artisanal Single-Origin Nitro Cold Brew';
+  const company_name = document.getElementById('creative-brand')?.value || 'Aura Craft Roasters';
+  const product_name = document.getElementById('creative-product')?.value || 'Signature Nitro Cold Brew (Pack of 4)';
+  const price_point = document.getElementById('creative-price')?.value || 'Pack of 4 @ ₹299 (Free Delivery)';
+  const location = document.getElementById('creative-location')?.value || 'Koramangala, Bangalore';
+  const target_audience = document.getElementById('creative-audience')?.value || 'Coffee lovers & busy professionals';
+  const key_benefit = document.getElementById('creative-benefit')?.value || 'Zero Acidity, 24-Hour Cold Extraction, 100% Single-Estate Arabica';
+  const duration = parseInt(document.getElementById('creative-duration')?.value || '15', 10);
+  const quality = document.getElementById('creative-quality')?.value || '1080p';
+  const tone = document.getElementById('creative-tone')?.value || 'high_energy';
+  const aspect_ratio = document.getElementById('creative-aspect')?.value || '1:1';
   const voice = document.getElementById('creative-voice')?.value || 'en-IN-NeerjaNeural';
+
   const loadingMsg = document.getElementById('creative-loading-msg');
   const btn = document.getElementById('btn-generate-creative');
 
@@ -2458,38 +3241,59 @@ async function generateCreativeKit() {
   if (btn) { btn.disabled = true; btn.classList.add('opacity-70'); }
 
   try {
-    // 1. Generate Ad Copy
+    // 1. Generate Ad Copy & Google Veo Screenplay
     const copyData = await api.generateAdCopy({
-      product_name, industry, price_point, location, key_benefit
+      topic,
+      company_name,
+      product_name,
+      price_point,
+      location,
+      target_audience,
+      key_benefit,
+      duration,
+      quality,
+      tone,
+      industry: 'universal'
     });
     cachedCreativeData = copyData;
 
+    // Render Copy Details in Sub-tab 4
     renderCopyDetails(copyData);
+
+    // Update Video specs summary in Sub-tab 2
+    const specDur = document.getElementById('video-spec-duration');
+    const specQual = document.getElementById('video-spec-quality');
+    const specScenes = document.getElementById('video-spec-scenes');
+    if (specDur) specDur.innerText = `${duration}s Video`;
+    if (specQual) specQual.innerText = quality === '4k' ? '4K Ultra HD Cinema' : (quality === '720p' ? '720p Fast Demo' : '1080p Full HD');
+    if (specScenes) specScenes.innerText = `${copyData.screenplay.length} Scenes Screenplay`;
 
     // 2. Render Photorealistic Banner on HTML5 Canvas
     await renderCanvasBanner({
-      industry,
+      aspect_ratio,
+      brand: company_name,
       product_name,
-      headline: (copyData.headlines && copyData.headlines[0]) || `Exclusive ${product_name}`,
-      price_point,
-      location,
-      key_benefit
-    });
-
-    // 3. Update Kinetic 9:16 Reel Story
-    updateReelStory({
-      industry,
-      product_name,
+      topic,
       price_point,
       location,
       key_benefit,
-      copyData
+      tone,
+      headline: (copyData.headlines && copyData.headlines[0]) || `Exclusive ${product_name}`
     });
 
-    // 4. Update Canva template link
-    updateCanvaLink(industry, product_name);
+    // 3. Render Google Veo 2 / Sora Screenplay Deck
+    renderScreenplayDeck(copyData.screenplay);
 
-    // 5. If server backend is connected, also trigger backend render
+    // 4. Setup Interactive 9:16 Reel Player
+    setupReelPlayer(copyData.screenplay, duration, company_name, product_name, price_point, voice);
+
+    // 5. Setup Audio Voiceover Teleprompter & Synthesizer
+    setupAudioStudio(copyData.full_narration, voice, duration);
+
+    // 6. Update Canva template link
+    updateCanvaLink(topic, product_name);
+
+    // 7. If server backend is connected, also trigger background renders
     if (api._base) {
       api.generateBanner({
         product_name,
@@ -2497,7 +3301,7 @@ async function generateCreativeKit() {
         price_tag: price_point,
         location,
         key_points: key_benefit.split(',').map(s => s.trim()).filter(Boolean),
-        aspect_ratio: '1:1'
+        aspect_ratio
       }).catch(() => {});
 
       api.generateVideo({
@@ -2509,18 +3313,13 @@ async function generateCreativeKit() {
         voice
       }).then(videoData => {
         if (videoData && videoData.video_url) {
-          const videoPlayer = document.getElementById('creative-video-player');
           const downloadVideo = document.getElementById('btn-download-video');
-          if (videoPlayer) {
-            videoPlayer.src = videoData.video_url + '?t=' + Date.now();
-            videoPlayer.load();
-          }
           if (downloadVideo) downloadVideo.href = videoData.video_url;
         }
       }).catch(() => {});
     }
 
-    showToast('Ad Creative Kit generated!');
+    showToast('Generative Ad Suite (Still + Video + Audio + Screenplay) Ready!');
   } catch (err) {
     console.error('Creative generation error:', err);
     showToast('Error generating creatives');
@@ -2562,28 +3361,28 @@ function renderCopyDetails(copyData) {
     `).join('');
   }
 
-  if (scriptBox && copyData.video_script) {
-    const s = copyData.video_script;
-    scriptBox.innerHTML = `
-      <div class="space-y-2">
-        <div><span class="text-indigo-400 font-bold">[0-3s HOOK]:</span> ${s.hook}</div>
-        <div><span class="text-amber-400 font-bold">[3-7s PAIN]:</span> ${s.problem}</div>
-        <div><span class="text-emerald-400 font-bold">[7-12s VALUE]:</span> ${s.solution}</div>
-        <div><span class="text-blue-400 font-bold">[12-15s CTA]:</span> ${s.cta}</div>
+  if (scriptBox && copyData.screenplay) {
+    scriptBox.innerHTML = copyData.screenplay.map(s => `
+      <div class="border-b border-slate-800 pb-2 mb-2 last:border-none last:pb-0 last:mb-0">
+        <span class="text-indigo-400 font-bold">[Scene ${s.scene_number} · ${s.timecode}]:</span>
+        <span class="text-slate-300 font-medium"> ${s.scene_title}</span>
+        <p class="text-slate-400 mt-1 italic">"${s.voiceover}"</p>
       </div>
-    `;
+    `).join('');
   }
 }
 
 function copyToClipboard(text, btn) {
   navigator.clipboard.writeText(text);
-  const orig = btn.innerText;
-  btn.innerText = 'Copied!';
-  btn.classList.add('text-emerald-400');
-  setTimeout(() => {
-    btn.innerText = orig;
-    btn.classList.remove('text-emerald-400');
-  }, 1500);
+  if (btn) {
+    const orig = btn.innerText;
+    btn.innerText = 'Copied!';
+    btn.classList.add('text-emerald-400');
+    setTimeout(() => {
+      btn.innerText = orig;
+      btn.classList.remove('text-emerald-400');
+    }, 1500);
+  }
 }
 
 function copyElementText(id, btn) {

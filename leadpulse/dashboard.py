@@ -604,15 +604,20 @@ async def create_ad_copy(
     body: CreativeCopyRequest,
     tenant_id: UUID = Depends(get_current_tenant),
 ) -> CreativeCopyResponse:
-    """Generate high-converting Meta Ad primary copy, headlines, and video script."""
+    """Generate high-converting Meta Ad primary copy, headlines, and Google Veo screenplay."""
     from .creative_studio import generate_ad_copy
     data = generate_ad_copy(
         product_name=body.product_name,
+        company_name=body.company_name or "",
+        topic=body.topic or "",
         industry=body.industry,
         price_point=body.price_point,
         location=body.location,
         key_benefit=body.key_benefit,
         target_audience=body.target_audience,
+        duration=body.duration or 15,
+        quality=body.quality or "1080p",
+        tone=body.tone or "high_energy",
     )
     return CreativeCopyResponse(**data)
 
@@ -659,6 +664,28 @@ async def create_ad_video(
     )
     rel_url = f"/static/generated/{os.path.basename(filepath)}"
     return CreativeVideoResponse(video_url=rel_url, format="9:16")
+
+
+@api_router.post("/creative/audio")
+async def create_ad_audio(
+    body: dict,
+    tenant_id: UUID = Depends(get_current_tenant),
+):
+    """Generate audio voiceover MP3 via Edge-TTS."""
+    import os, uuid
+    from .creative_studio.video_producer import generate_voiceover
+    out_dir = os.path.join("leadpulse", "static", "generated")
+    os.makedirs(out_dir, exist_ok=True)
+    filename = f"voiceover_{uuid.uuid4().hex[:8]}.mp3"
+    filepath = os.path.join(out_dir, filename)
+    text = body.get("text", "Welcome to our exclusive launch offer.")
+    voice = body.get("voice", "en-IN-NeerjaNeural")
+    try:
+        await generate_voiceover(text, filepath, voice)
+        rel_url = f"/static/generated/{filename}"
+        return {"audio_url": rel_url, "voice": voice, "text": text}
+    except Exception as e:
+        return {"error": str(e), "voice": voice, "text": text}
 
 
 # ────────────────────────────────────────────────────────

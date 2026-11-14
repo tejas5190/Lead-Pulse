@@ -1,168 +1,311 @@
 """
 LeadPulse AI — Creative Studio Copywriter Engine
-Generates high-converting Meta Ad primary text, headlines, descriptions,
-and short video scripts for any business vertical.
+Generates dynamic high-converting Meta Ad primary text, headlines, descriptions,
+and multi-scene Google Veo / Sora screenplays for any business topic.
 """
+from __future__ import annotations
 from typing import Dict, Any, List
-import json
-
-
-DEFAULT_TEMPLATES = {
-    "real_estate": {
-        "primary_texts": [
-            "🏡 Tired of endless traffic and congested apartments? Step into {product_name} — luxury living designed for families who want more space, fresh air, and peace of mind.\n\n✨ Premium {price_point}\n📍 Prime Location: {location}\n🌿 {key_benefit}\n\n👉 Click 'WhatsApp' below to receive the complete floor plan & price breakdown directly on your phone.",
-            "💰 Why pay rent or middleman commissions when you can own luxury directly from the developer? {product_name} is now open for private VIP viewings.\n\n✔️ {price_point}\n✔️ Direct Developer Pricing (Zero Brokerage)\n✔️ {key_benefit}\n\nTap below to chat with our property advisory team on WhatsApp.",
-            "⏳ URGENT: Only a few prime units remain in Phase 1 of {product_name}. Prices are set to revise by 8% next month.\n\n🔒 Lock in pre-launch pricing at {price_point}.\n📍 {location}\n\nBook your private sample flat visit this weekend before slots fill up."
-        ],
-        "headlines": [
-            "Luxury 3BHK Homes from {price_point} | Zero Brokerage",
-            "Exclusive Sample Flat Open This Saturday @ {location}",
-            "Save Up To ₹5 Lakhs on Pre-Launch Bookings Today"
-        ],
-        "descriptions": [
-            "Direct Developer Offer · Instant WhatsApp Brochure",
-            "RERA Approved · 80% Green Open Spaces",
-            "Limited Phase 1 Inventory · Book Your VIP Slot"
-        ],
-        "video_script": {
-            "hook": "Still looking for your dream home in {location} without paying crazy broker fees?",
-            "problem": "Most apartments give you small rooms and noisy neighborhoods.",
-            "solution": "Introducing {product_name}. Spacious luxury layouts starting at just {price_point}. {key_benefit}.",
-            "cta": "Tap the WhatsApp button below now to get the instant brochure and book your VIP site visit!"
-        }
-    },
-    "dental": {
-        "primary_texts": [
-            "✨ Stop hiding your smile! Experience pain-free dental care and laser teeth alignment with {product_name}.\n\n💎 {price_point}\n📍 {location}\n🩺 {key_benefit}\n\nTap below to claim your complimentary dental scan & consultation on WhatsApp.",
-            "🦷 Missing teeth or crooked smile? Transform your confidence in just 2 sittings at {product_name}.\n\n✔️ Packages from {price_point}\n✔️ 0% EMI Available\n\nClick below to book your appointment on WhatsApp in 30 seconds.",
-            "⏳ Limited Weekend Slots: Book your 3D digital dental scan at {product_name} before appointments fill up.\n\n🔒 Starting at {price_point} with 0% interest monthly payment options.\n📍 {location}\n\nTap WhatsApp to claim your special introductory voucher today."
-        ],
-        "headlines": [
-            "Transform Your Smile From {price_point} | Free Consultation",
-            "Pain-Free Dental Implants & Aligners @ {location}",
-            "Book Your 3D Dental Scan on WhatsApp Today"
-        ],
-        "descriptions": [
-            "Top Rated Dental Specialists · 0% EMI",
-            "Pain-Free Technology · 10,000+ Happy Smiles",
-            "Limited Slots This Week · Book Now"
-        ],
-        "video_script": {
-            "hook": "Want a perfect, confident smile without the pain or high hospital bills?",
-            "problem": "Traditional braces take years and cost a fortune.",
-            "solution": "At {product_name}, our modern clear aligners and painless dental care start at just {price_point}. {key_benefit}.",
-            "cta": "Click the WhatsApp button below right now to claim your free consultation!"
-        }
-    },
-    "fitness": {
-        "primary_texts": [
-            "🔥 Ready to get in the best shape of your life? Join {product_name} and get a custom workout + nutrition plan tailored to your body type.\n\n⚡ Membership starting at {price_point}\n📍 {location}\n🏋️ {key_benefit}\n\nTap WhatsApp to claim your Free 3-Day Trial Pass today!",
-            "💪 Don't wait until next year to fix your health. Work with certified personal trainers at {product_name}.\n\n✔️ Only {price_point}\n✔️ Guaranteed Results in 90 Days\n\nClaim your trial pass on WhatsApp now.",
-            "⚡ Flash Launch Offer: The first 25 sign-ups this month get free body composition analysis and zero admission fee at {product_name}.\n\n📍 {location} | Starting at {price_point}\n\nClick below to lock in your discounted membership on WhatsApp."
-        ],
-        "headlines": [
-            "Get In Peak Shape from {price_point} | Free 3-Day Pass",
-            "Elite Personal Training & Nutrition @ {location}",
-            "Join {product_name} Today · Zero Registration Fee"
-        ],
-        "descriptions": [
-            "Certified Trainers · State-of-the-art Equipment",
-            "Custom Diet & Workout Plans Included",
-            "Claim Your Free Session on WhatsApp"
-        ],
-        "video_script": {
-            "hook": "Tired of starting fitness programs and quitting after two weeks?",
-            "problem": "Generic workouts don't work without personal guidance.",
-            "solution": "Join {product_name}. Our certified coaches give you 1-on-1 guidance starting at {price_point}. {key_benefit}.",
-            "cta": "Click the WhatsApp button below to get your free 3-day pass today!"
-        }
-    },
-    "universal": {
-        "primary_texts": [
-            "🚀 Elevate your results with {product_name}. Designed for customers who value premium quality, reliability, and guaranteed performance.\n\n💎 {price_point}\n📍 {location}\n⭐ {key_benefit}\n\nTap WhatsApp to chat with our team directly and claim exclusive promotional pricing.",
-            "🎯 Why settle for less when you can get the best in class with {product_name}?\n\n✔️ Starting at {price_point}\n✔️ {key_benefit}\n\nClick the button below to connect with our specialists on WhatsApp.",
-            "⏳ Limited Opportunity: Take advantage of our exclusive seasonal pricing for {product_name}.\n\n⭐ {price_point}\n📍 {location}\n\nTap WhatsApp below to speak with an advisor and claim your special rate."
-        ],
-        "headlines": [
-            "Special Launch Offer Starting at {price_point}",
-            "Premium Quality & Guaranteed Results @ {location}",
-            "Chat With Us on WhatsApp for Instant Booking"
-        ],
-        "descriptions": [
-            "Direct Provider Offer · Instant Response",
-            "Limited Time Promotion · Zero Risk",
-            "100% Satisfaction Guaranteed"
-        ],
-        "video_script": {
-            "hook": "Looking for the highest quality {product_name} without overpaying?",
-            "problem": "Most options in the market are overpriced or deliver poor results.",
-            "solution": "We deliver premium quality starting from {price_point}. {key_benefit}.",
-            "cta": "Tap the WhatsApp button below now for instant details and VIP support!"
-        }
-    }
-}
 
 
 def generate_ad_copy(
     product_name: str,
-    industry: str = "real_estate",
+    company_name: str = "",
+    topic: str = "",
+    industry: str = "universal",
     price_point: str = "Competitive Pricing",
     location: str = "Your City",
-    key_benefit: str = "Top Quality & Fast Delivery",
-    target_audience: str = "Prospective buyers",
+    key_benefit: str = "Premium Quality & Fast Delivery",
+    target_audience: str = "Discerning customers",
+    duration: int = 15,
+    quality: str = "1080p",
+    tone: str = "high_energy",
     claude_api_key: str = None
 ) -> Dict[str, Any]:
-    """Generate high-CTR Meta Ad copy variants & video scripts."""
-    tmpl = DEFAULT_TEMPLATES.get(industry) or DEFAULT_TEMPLATES.get("universal")
+    """Generate dynamic high-CTR Meta Ad copy variants & Google Veo screenplays on demand."""
     
-    # Format templates with parameters
-    primary_texts = [
-        t.format(
-            product_name=product_name,
-            price_point=price_point,
-            location=location,
-            key_benefit=key_benefit,
-            target_audience=target_audience
-        )
-        for t in tmpl["primary_texts"]
-    ]
-    
+    brand = company_name.strip() if company_name else product_name
+    prod = product_name.strip() if product_name else "Exclusive Collection"
+    subject = topic.strip() if topic else prod
+    loc = location.strip() if location else "your area"
+    price = price_point.strip() if price_point else "Introductory Offer"
+    ben = key_benefit.strip() if key_benefit else "Guaranteed Results & Uncompromised Quality"
+    aud = target_audience.strip() if target_audience else "customers looking for the best"
+
+    # Tone adjustments
+    if tone == "luxury":
+        h_prefix = ["The Art of", "Unrivaled Elegance:", "Redefining Luxury:"]
+        v_mood = "Cinematic slow-motion 4K macro shot, dramatic chiaroscuro lighting, shallow depth of field (f/1.4, 85mm anamorphic), deep obsidian and warm metallic gold tones."
+        cta_verb = "Request Private VIP Invitation"
+    elif tone == "problem_solution":
+        h_prefix = ["Why Settle When", "The Problem With Ordinary", "Finally, A Better Way:"]
+        v_mood = "Sharp dynamic transition, high-contrast editorial lighting, 35mm crisp commercial lens, candid documentary realism shifting to glowing polished finish."
+        cta_verb = "See The Transformation on WhatsApp"
+    elif tone == "friendly":
+        h_prefix = ["Meet", "Your New Favorite", "Why Everyone in " + loc + " Loves"]
+        v_mood = "Warm natural daylight, handheld tracking shot, cheerful organic atmosphere, vibrant natural color grading."
+        cta_verb = "Say Hi on WhatsApp"
+    else:  # high_energy (default)
+        h_prefix = ["Stop Wasting Money On", "Transform Your Results With", "Limited Launch Offer:"]
+        v_mood = "Fast dynamic zoom-in, electric neon rim lighting, high-speed 60fps slow-motion capture, energetic motion blur with crisp product isolation."
+        cta_verb = "Claim Launch Offer on WhatsApp"
+
+    # 1. Dynamic CTR Headlines
     headlines = [
-        h.format(
-            product_name=product_name,
-            price_point=price_point,
-            location=location
-        )
-        for h in tmpl["headlines"]
+        f"{h_prefix[0]} {prod} | {price}",
+        f"{h_prefix[1]} {subject} @ {loc}",
+        f"Get {ben.split(',')[0]} With {brand} Today"
     ]
-    
+
+    # 2. Dynamic Primary Texts (Angle 1: Desire, Angle 2: Logic/ROI, Angle 3: Urgency)
+    primary_texts = [
+        # Angle 1: Desire & Aspiration
+        f"✨ Experience the difference with {prod} by {brand}.\n\n"
+        f"Designed specifically for {aud}, this is your opportunity to upgrade without compromise.\n\n"
+        f"💎 {price}\n"
+        f"📍 Available in {loc}\n"
+        f"⭐ {ben}\n\n"
+        f"👉 Tap WhatsApp below to get the exclusive brochure and introductory pricing directly on your phone.",
+
+        # Angle 2: Rational / Comparison / ROI
+        f"💡 Why settle for ordinary {subject} when you can get direct access to {brand}?\n\n"
+        f"✔️ Transparent Pricing: {price}\n"
+        f"✔️ Proven Benefits: {ben}\n"
+        f"✔️ 100% Satisfaction & Verified Quality\n\n"
+        f"Join hundreds of satisfied clients in {loc}. Tap below to speak directly with our team on WhatsApp in 30 seconds.",
+
+        # Angle 3: Scarcity & Urgent Launch Window
+        f"⏳ LIMITED OPPORTUNITY: Exclusive launch packages for {prod} are now live for {loc}.\n\n"
+        f"🔒 Lock in special pricing at {price} before rates adjust.\n"
+        f"⚡ {ben}\n\n"
+        f"Click WhatsApp below right now to secure your spot before this week's allocation fills up."
+    ]
+
     descriptions = [
-        d.format(
-            product_name=product_name,
-            price_point=price_point,
-            location=location
-        )
-        for d in tmpl["descriptions"]
+        f"{brand} Official · Instant WhatsApp Response",
+        f"Verified Quality · {price} · {loc}",
+        f"Limited Allocation This Week · Inquire Now"
     ]
-    
-    vs = tmpl["video_script"]
-    script_obj = {
-        "hook": vs["hook"].format(product_name=product_name, location=location, price_point=price_point),
-        "problem": vs["problem"].format(product_name=product_name, location=location, price_point=price_point),
-        "solution": vs["solution"].format(product_name=product_name, location=location, price_point=price_point, key_benefit=key_benefit),
-        "cta": vs["cta"].format(product_name=product_name, location=location, price_point=price_point),
+
+    # 3. Google Veo 2 / Sora Screenplay Generator
+    screenplay: List[Dict[str, Any]] = []
+
+    if duration <= 15:
+        # 15-Second Blitz Reel (4 scenes)
+        screenplay = [
+            {
+                "scene_number": 1,
+                "timecode": "00:00 - 00:03",
+                "scene_title": "The Visual Hook",
+                "veo_prompt": f"{v_mood} Camera pulls back rapidly revealing {subject} centered in frame with glowing atmospheric mist. Text pops with kinetic energy.",
+                "camera_movement": "Rapid Snap-Zoom + Center Track",
+                "on_screen_text": f"Tired of Average {subject}?",
+                "voiceover": f"Still searching for the best {subject} in {loc}?",
+                "sound_fx": "Deep sub-bass riser with crisp whoosh transition"
+            },
+            {
+                "scene_number": 2,
+                "timecode": "00:03 - 00:07",
+                "scene_title": "The Agitation",
+                "veo_prompt": f"Gritty high-speed macro details of common industry frustrations, rapid shutter flicker, transitioning abruptly into sleek polished glass.",
+                "camera_movement": "Whip Pan Left to Right",
+                "on_screen_text": "Most options cut corners.",
+                "voiceover": f"Most alternatives overcharge and underdeliver on quality.",
+                "sound_fx": "Vinyl scratch transition into energetic rhythmic beat"
+            },
+            {
+                "scene_number": 3,
+                "timecode": "00:07 - 00:12",
+                "scene_title": "The Solution & Hero Showcase",
+                "veo_prompt": f"Hero 360-degree orbit shot around {prod}. Pristine highlights glint across edges. Floating modern holographic badge reveals '{price}'.",
+                "camera_movement": "Smooth 360-Degree Drone Orbit",
+                "on_screen_text": f"{prod} · {price}",
+                "voiceover": f"Meet {prod} from {brand}. Starting at just {price}, with {ben}.",
+                "sound_fx": "Lush uplifting synth drop with crisp sparkle chime"
+            },
+            {
+                "scene_number": 4,
+                "timecode": "00:12 - 00:15",
+                "scene_title": "The Urgent CTA",
+                "veo_prompt": f"Vibrant WhatsApp green glow pulses around a sleek 3D smartphone mockup. Floating countdown timer and glowing direct message button.",
+                "camera_movement": "Gentle Forward Push to Screen",
+                "on_screen_text": "👉 Tap WhatsApp to Claim Offer",
+                "voiceover": f"Tap WhatsApp below right now to claim your exclusive launch voucher!",
+                "sound_fx": "Satisfying iPhone message pop chime"
+            }
+        ]
+    elif duration <= 30:
+        # 30-Second Standard Meta Ad (6 scenes)
+        screenplay = [
+            {
+                "scene_number": 1,
+                "timecode": "00:00 - 00:04",
+                "scene_title": "The Pattern Interrupt",
+                "veo_prompt": f"{v_mood} An unexpected extreme close-up of {subject}. Subtle smoke and dramatic rim lighting create instant curiosity.",
+                "camera_movement": "Slow Cinematic Dolly-In",
+                "on_screen_text": f"This changes everything about {subject}.",
+                "voiceover": f"If you live in {loc} and care about quality, you need to see this.",
+                "sound_fx": "Subtle cinematic heartbeat with ambient drone"
+            },
+            {
+                "scene_number": 2,
+                "timecode": "00:04 - 00:09",
+                "scene_title": "The Unspoken Problem",
+                "veo_prompt": f"Split screen or fast montage showing the hassle, hidden fees, and frustration people experience with ordinary {subject}.",
+                "camera_movement": "Fast Editorial Cuts with Glitch Accent",
+                "on_screen_text": "Why is it so hard to find true quality?",
+                "voiceover": f"Why is it so frustrating to find {subject} that actually delivers what is promised?",
+                "sound_fx": "Tension build with muted percussive ticks"
+            },
+            {
+                "scene_number": 3,
+                "timecode": "00:09 - 00:15",
+                "scene_title": "The Breakthrough Revelation",
+                "veo_prompt": f"A breathtaking reveal of {prod} in pristine studio lighting. The brand logo of {brand} shines subtly.",
+                "camera_movement": "Hero Pedestal Rise from Low Angle",
+                "on_screen_text": f"Introducing {brand}",
+                "voiceover": f"That's why {brand} created {prod}. Engineered from the ground up for {aud}.",
+                "sound_fx": "Full orchestral swell into driving commercial rhythm"
+            },
+            {
+                "scene_number": 4,
+                "timecode": "00:15 - 00:20",
+                "scene_title": "Core Craftsmanship & Benefits",
+                "veo_prompt": f"Dynamic macro sequence highlighting: {ben}. 4K crisp textures and smooth fluid motion graphics overlaying key specifications.",
+                "camera_movement": "Fluid Macro Tracking Pan",
+                "on_screen_text": f"✔ {ben}",
+                "voiceover": f"You get unmatched craftsmanship: {ben}, backed by our 100% satisfaction guarantee.",
+                "sound_fx": "Clean rhythmic bassline with subtle high-hat accents"
+            },
+            {
+                "scene_number": 5,
+                "timecode": "00:20 - 00:25",
+                "scene_title": "The Unbeatable Offer",
+                "veo_prompt": f"Glowing neon card displays the launch package. A bold price pill flashes '{price}' with zero hidden surprises.",
+                "camera_movement": "Slow Lateral Track Right",
+                "on_screen_text": f"Starting from {price}",
+                "voiceover": f"And for a limited time, packages start at just {price} with zero middleman markups.",
+                "sound_fx": "Positive chime riser with upbeat chord progression"
+            },
+            {
+                "scene_number": 6,
+                "timecode": "00:25 - 00:30",
+                "scene_title": "The Final Call To Action",
+                "veo_prompt": f"High-contrast end card with WhatsApp logo, direct chat prompt, and limited availability ticker: 'Only in {loc}'.",
+                "camera_movement": "Slow Static Hold with Subtle Pulse",
+                "on_screen_text": "💬 Tap WhatsApp Below · Instant Response",
+                "voiceover": f"Tap the WhatsApp button below now to lock in your introductory rate before spots fill up!",
+                "sound_fx": "Resonant final bass impact with double message notification"
+            }
+        ]
+    else:
+        # 60-Second Long-Form Explainer (8 scenes)
+        screenplay = [
+            {
+                "scene_number": 1,
+                "timecode": "00:00 - 00:06",
+                "scene_title": "Cinematic Teaser",
+                "veo_prompt": f"{v_mood} Atmospheric wide shot transitioning into intense macro focus on {subject}. Golden hour atmosphere in {loc}.",
+                "camera_movement": "Crane Down + Slow Push Forward",
+                "on_screen_text": f"The New Standard in {subject}",
+                "voiceover": f"For years, {aud} have been forced to accept compromise when it comes to {subject}.",
+                "sound_fx": "Atmospheric cinematic pad with distant city drone"
+            },
+            {
+                "scene_number": 2,
+                "timecode": "00:06 - 00:14",
+                "scene_title": "The Conflict & Reality Check",
+                "veo_prompt": f"Realistic documentary-style footage illustrating common pitfalls: high costs, delays, poor materials, and broken promises.",
+                "camera_movement": "Handheld Tracking Shot with Natural Motion",
+                "on_screen_text": "Broken Promises & Inflated Costs",
+                "voiceover": f"Most providers cut corners on materials, hide extra fees, and disappear when you need support.",
+                "sound_fx": "Subtle dissonant strings building suspense"
+            },
+            {
+                "scene_number": 3,
+                "timecode": "00:14 - 00:22",
+                "scene_title": f"The Vision Behind {brand}",
+                "veo_prompt": f"Behind-the-scenes master craftsmanship: hands precision-assembling, measuring, and testing {prod} to absolute perfection.",
+                "camera_movement": "Smooth Slider Pan across Worktable",
+                "on_screen_text": f"Crafted Without Compromise",
+                "voiceover": f"At {brand}, we decided to change that. We set out to create {prod} with one uncompromising goal: perfection.",
+                "sound_fx": "Deep acoustic piano chords enter with warm cello"
+            },
+            {
+                "scene_number": 4,
+                "timecode": "00:22 - 00:30",
+                "scene_title": "The Key Differentiator",
+                "veo_prompt": f"Crystal-clear 4K demonstration showcasing: {ben}. Micro-animations explain why it outperforms traditional alternatives.",
+                "camera_movement": "Architectural 3D Pan with Motion Callouts",
+                "on_screen_text": f"The Breakthrough: {ben}",
+                "voiceover": f"Here is what sets us apart: {ben}. Every detail is engineered for lasting reliability.",
+                "sound_fx": "Uplifting rhythmic pulse begins driving momentum"
+            },
+            {
+                "scene_number": 5,
+                "timecode": "00:30 - 00:38",
+                "scene_title": "Customer Transformation",
+                "veo_prompt": f"Genuine happy clients in {loc} experiencing the real results. Radiant smiles, modern environments, five-star review badges.",
+                "camera_movement": "Slow Orbit around Satisfied Customer",
+                "on_screen_text": "⭐⭐⭐⭐⭐ Rated 4.9/5 by Clients",
+                "voiceover": f"That is why our clients consistently rate us 4.9 stars and recommend us to their friends and colleagues.",
+                "sound_fx": "Bright percussive energy with melodic synth accents"
+            },
+            {
+                "scene_number": 6,
+                "timecode": "00:38 - 00:46",
+                "scene_title": "Risk-Free Guarantee",
+                "veo_prompt": f"3D security shield and verified guarantee seal stamp onto a pristine glass certificate.",
+                "camera_movement": "Center Lock with Radial Light Rays",
+                "on_screen_text": "100% Satisfaction & Warranty",
+                "voiceover": f"Plus, your decision is protected with our complete guarantee and transparent pricing.",
+                "sound_fx": "Confident metallic click with warm bass sweep"
+            },
+            {
+                "scene_number": 7,
+                "timecode": "00:46 - 00:54",
+                "scene_title": "The Exclusive Launch Offer",
+                "veo_prompt": f"Exclusive VIP invite envelope opens, unveiling introductory rate '{price}' with limited edition perks.",
+                "camera_movement": "Elegant Macro Tilt Down",
+                "on_screen_text": f"Packages from {price}",
+                "voiceover": f"For our upcoming launch batch in {loc}, packages start from just {price} with zero middleman markup.",
+                "sound_fx": "Celebratory musical swell reaching climax"
+            },
+            {
+                "scene_number": 8,
+                "timecode": "00:54 - 00:60",
+                "scene_title": "The Direct WhatsApp Call to Action",
+                "veo_prompt": f"High-impact final screen with clickable WhatsApp interface, QR code, and countdown timer: 'Offer Expires Soon'.",
+                "camera_movement": "Direct Push to Center Action Button",
+                "on_screen_text": "👉 Tap WhatsApp to Book Your Consultation",
+                "voiceover": f"Click the WhatsApp button right below this video to speak with our specialists and claim your package today!",
+                "sound_fx": "Signature WhatsApp send chime with lingering warm chord"
+            }
+        ]
+
+    # Full narration text for voice synthesis
+    full_narration = " ".join(scene["voiceover"] for scene in screenplay)
+
+    # Simplified video_script object for backward compatibility
+    video_script = {
+        "hook": screenplay[0]["voiceover"],
+        "problem": screenplay[1]["voiceover"],
+        "solution": screenplay[2]["voiceover"] if len(screenplay) > 2 else screenplay[-1]["voiceover"],
+        "cta": screenplay[-1]["voiceover"]
     }
-    
-    # Full narration text for TTS
-    full_narration = f"{script_obj['hook']} {script_obj['problem']} {script_obj['solution']} {script_obj['cta']}"
-    
+
     return {
-        "product_name": product_name,
+        "product_name": prod,
+        "company_name": brand,
+        "topic": subject,
         "industry": industry,
         "primary_texts": primary_texts,
         "headlines": headlines,
         "descriptions": descriptions,
-        "call_to_action": "Send WhatsApp Message",
-        "video_script": script_obj,
+        "call_to_action": cta_verb,
+        "video_script": video_script,
+        "screenplay": screenplay,
+        "duration": duration,
+        "quality": quality,
+        "tone": tone,
         "full_narration": full_narration
     }

@@ -280,21 +280,32 @@ class PaginatedLeadsResponse(BaseModel):
 
 class CreativeCopyRequest(BaseModel):
     product_name: str = Field(min_length=2)
-    industry: str = Field(default="real_estate")
+    company_name: Optional[str] = None
+    topic: Optional[str] = None
+    industry: str = Field(default="universal")
     price_point: str = Field(default="Competitive Pricing")
     location: str = Field(default="Gurugram")
     key_benefit: str = Field(default="Direct Developer Pricing · Zero Brokerage")
     target_audience: str = Field(default="Prospective buyers")
+    duration: Optional[int] = Field(default=15)
+    quality: Optional[str] = Field(default="1080p")
+    tone: Optional[str] = Field(default="high_energy")
 
 
 class CreativeCopyResponse(BaseModel):
     product_name: str
+    company_name: Optional[str] = None
+    topic: Optional[str] = None
     industry: str
     primary_texts: list[str]
     headlines: list[str]
     descriptions: list[str]
     call_to_action: str
     video_script: dict[str, str]
+    screenplay: Optional[list[dict[str, Any]]] = None
+    duration: Optional[int] = 15
+    quality: Optional[str] = "1080p"
+    tone: Optional[str] = "high_energy"
     full_narration: str
 
 
