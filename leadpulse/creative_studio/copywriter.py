@@ -7,6 +7,39 @@ from __future__ import annotations
 from typing import Dict, Any, List
 
 
+def get_dynamic_cta(product_name: str, industry: str, company_name: str = "") -> str:
+    """Determine CTA dynamically based on industry/offering type.
+
+    Args:
+        product_name: Product/service name
+        industry: Industry type (food, grocery, ecommerce, clinic, dental, gym, fitness, real_estate, etc.)
+        company_name: Company name for fallback context
+
+    Returns:
+        Contextually appropriate CTA text
+    """
+    combined = (product_name + " " + company_name + " " + industry).lower()
+
+    # Food / Grocery / Wholesale / Ecommerce / Product
+    if any(k in combined for k in ["egg", "food", "grocery", "wholesale", "poultry", "retail", "product", "order", "ecommerce", "shop"]):
+        return "🛒 Order Now on WhatsApp ➔"
+
+    # Clinic / Dental / Healthcare
+    if any(k in combined for k in ["dental", "clinic", "health", "doctor", "medical", "aligner", "teeth", "smile", "appointment"]):
+        return "📲 Book Appointment ➔"
+
+    # Gym / Fitness
+    if any(k in combined for k in ["gym", "fit", "workout", "trainer", "muscle", "training"]):
+        return "📲 Claim Free Pass ➔"
+
+    # Real Estate
+    if any(k in combined for k in ["bhk", "flat", "villa", "realty", "estate", "home", "property", "site", "visit"]):
+        return "📲 Book Site Visit ➔"
+
+    # Default
+    return "💬 Chat on WhatsApp ➔"
+
+
 def generate_ad_copy(
     product_name: str,
     company_name: str = "",
@@ -31,23 +64,26 @@ def generate_ad_copy(
     ben = key_benefit.strip() if key_benefit else "Guaranteed Results & Uncompromised Quality"
     aud = target_audience.strip() if target_audience else "customers looking for the best"
 
+    # Get dynamic CTA based on industry
+    dynamic_cta = get_dynamic_cta(prod, industry, brand)
+
     # Tone adjustments
     if tone == "luxury":
         h_prefix = ["The Art of", "Unrivaled Elegance:", "Redefining Luxury:"]
         v_mood = "Cinematic slow-motion 4K macro shot, dramatic chiaroscuro lighting, shallow depth of field (f/1.4, 85mm anamorphic), deep obsidian and warm metallic gold tones."
-        cta_verb = "Request Private VIP Invitation"
+        cta_verb = dynamic_cta
     elif tone == "problem_solution":
         h_prefix = ["Why Settle When", "The Problem With Ordinary", "Finally, A Better Way:"]
         v_mood = "Sharp dynamic transition, high-contrast editorial lighting, 35mm crisp commercial lens, candid documentary realism shifting to glowing polished finish."
-        cta_verb = "See The Transformation on WhatsApp"
+        cta_verb = dynamic_cta
     elif tone == "friendly":
         h_prefix = ["Meet", "Your New Favorite", "Why Everyone in " + loc + " Loves"]
         v_mood = "Warm natural daylight, handheld tracking shot, cheerful organic atmosphere, vibrant natural color grading."
-        cta_verb = "Say Hi on WhatsApp"
+        cta_verb = dynamic_cta
     else:  # high_energy (default)
         h_prefix = ["Stop Wasting Money On", "Transform Your Results With", "Limited Launch Offer:"]
         v_mood = "Fast dynamic zoom-in, electric neon rim lighting, high-speed 60fps slow-motion capture, energetic motion blur with crisp product isolation."
-        cta_verb = "Claim Launch Offer on WhatsApp"
+        cta_verb = dynamic_cta
 
     # 1. Dynamic CTR Headlines
     headlines = [

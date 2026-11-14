@@ -604,13 +604,12 @@ async def create_ad_copy(
     body: CreativeCopyRequest,
     tenant_id: UUID = Depends(get_current_tenant),
 ) -> CreativeCopyResponse:
-    """Generate high-converting Meta Ad primary copy, headlines, and Google Veo screenplay."""
-    from .creative_studio import generate_ad_copy
-    data = generate_ad_copy(
-        product_name=body.product_name,
-        company_name=body.company_name or "",
+    """Generate high-converting Meta Ad primary copy, headlines, and Google Veo screenplay via Thinking Master."""
+    from .creative_studio import think_and_generate_campaign
+    data = await think_and_generate_campaign(
         topic=body.topic or "",
-        industry=body.industry,
+        company_name=body.company_name or "",
+        product_name=body.product_name,
         price_point=body.price_point,
         location=body.location,
         key_benefit=body.key_benefit,
@@ -619,7 +618,18 @@ async def create_ad_copy(
         quality=body.quality or "1080p",
         tone=body.tone or "high_energy",
     )
-    return CreativeCopyResponse(**data)
+    # Ensure all required response fields are present
+    if "primary_texts" not in data:
+        data["primary_texts"] = [data.get("primary_text", "Exclusive limited offer available now.")]
+    if "descriptions" not in data:
+        data["descriptions"] = [f"📍 {body.location} · {body.key_benefit}"]
+    if "call_to_action" not in data:
+        data["call_to_action"] = data.get("dynamic_cta", "💬 Chat on WhatsApp ➔")
+    if "industry" not in data:
+        data["industry"] = body.industry
+    if "product_name" not in data:
+        data["product_name"] = body.product_name
+    return CreativeCopyResponse.model_validate(data)
 
 
 @api_router.post("/creative/banner", response_model=CreativeBannerResponse)

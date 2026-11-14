@@ -354,38 +354,21 @@
           <span class="text-[10px] font-mono uppercase bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded-full font-bold">On-Demand AI</span>
         </div>
 
-        <!-- Collapsed Accordion: Need Inspiration? Load Example Prompts -->
-        <details class="group bg-slate-950/70 border border-slate-800/80 p-2.5 rounded-xl">
-          <summary class="text-[11px] text-slate-400 font-semibold mb-0 flex items-center gap-1.5 cursor-pointer hover:text-slate-300 transition">
-            <span>💡</span> <span>Need Inspiration? Load an Example Prompt</span>
-            <span class="ml-auto transition group-open:rotate-180">▼</span>
-          </summary>
-          <div class="mt-2 grid grid-cols-2 sm:grid-cols-3 gap-1.5">
-            <button type="button" onclick="loadIndustryPreset('coffee')"
-                    class="preset-pill px-2 py-1.5 rounded-lg text-[10px] font-medium bg-slate-800 hover:bg-indigo-600 text-slate-300 hover:text-white transition border border-slate-700/60 truncate text-left">
-              ☕ Cold Brew Coffee
-            </button>
-            <button type="button" onclick="loadIndustryPreset('saas')"
-                    class="preset-pill px-2 py-1.5 rounded-lg text-[10px] font-medium bg-slate-800 hover:bg-indigo-600 text-slate-300 hover:text-white transition border border-slate-700/60 truncate text-left">
-              🛡️ Cyber Security SaaS
-            </button>
-            <button type="button" onclick="loadIndustryPreset('real_estate')"
-                    class="preset-pill px-2 py-1.5 rounded-lg text-[10px] font-medium bg-slate-800 hover:bg-indigo-600 text-slate-300 hover:text-white transition border border-slate-700/60 truncate text-left">
-              🏢 Real Estate (3BHK)
-            </button>
-            <button type="button" onclick="loadIndustryPreset('dental')"
-                    class="preset-pill px-2 py-1.5 rounded-lg text-[10px] font-medium bg-slate-800 hover:bg-indigo-600 text-slate-300 hover:text-white transition border border-slate-700/60 truncate text-left">
-              🦷 Laser Dental Clinic
-            </button>
-            <button type="button" onclick="loadIndustryPreset('fitness')"
-                    class="preset-pill px-2 py-1.5 rounded-lg text-[10px] font-medium bg-slate-800 hover:bg-indigo-600 text-slate-300 hover:text-white transition border border-slate-700/60 truncate text-left">
-              💪 Elite Gym & Fitness
-            </button>
-            <button type="button" onclick="loadIndustryPreset('luxury_auto')"
-                    class="preset-pill px-2 py-1.5 rounded-lg text-[10px] font-medium bg-slate-800 hover:bg-indigo-600 text-slate-300 hover:text-white transition border border-slate-700/60 truncate text-left">
-              🚗 Luxury EV Sedan
-            </button>
+        <!-- Thinking Master AI Status Indicator -->
+        <div class="bg-slate-950/80 border border-purple-500/30 p-3 rounded-xl flex items-center justify-between shadow-lg">
+          <div class="flex items-center gap-2">
+            <span class="text-base animate-pulse">🧠</span>
+            <div>
+              <h4 class="text-xs font-bold text-white flex items-center gap-1.5">
+                Thinking Master AI
+                <span class="text-[9px] bg-purple-500/20 text-purple-300 border border-purple-500/40 px-1.5 py-0.2 rounded font-mono">Omni-tm</span>
+              </h4>
+              <p class="text-[10px] text-slate-400">On-the-fly customer psychology, hooks & cinematography generator</p>
+            </div>
           </div>
+          <span class="text-[10px] font-semibold text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-2 py-1 rounded-full flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> Live Engine Active
+          </span>
         </div>
         
         <div class="space-y-3">
@@ -393,12 +376,12 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
             <div>
               <label class="block text-xs font-medium text-slate-400 mb-1">Campaign Topic / Concept</label>
-              <input id="creative-topic" type="text" value="Artisanal Single-Origin Nitro Cold Brew" placeholder="e.g. Nitro Cold Brew Coffee"
+              <input id="creative-topic" type="text" value="" placeholder="e.g. Nitro Cold Brew Coffee"
                      class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
             </div>
             <div>
               <label class="block text-xs font-medium text-slate-400 mb-1">Brand / Company Name</label>
-              <input id="creative-brand" type="text" value="Aura Craft Roasters" placeholder="e.g. Aura Craft Roasters"
+              <input id="creative-brand" type="text" value="" placeholder="e.g. Aura Craft Roasters"
                      class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
             </div>
           </div>
@@ -407,12 +390,12 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
             <div>
               <label class="block text-xs font-medium text-slate-400 mb-1">Product Offering / Title</label>
-              <input id="creative-product" type="text" value="Signature Nitro Cold Brew (Pack of 4)" placeholder="e.g. Nitro Cold Brew 4-Pack"
+              <input id="creative-product" type="text" value="" placeholder="e.g. Nitro Cold Brew 4-Pack"
                      class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
             </div>
             <div>
               <label class="block text-xs font-medium text-slate-400 mb-1">Price Point / Launch Offer</label>
-              <input id="creative-price" type="text" value="Pack of 4 @ ₹299 (Free Delivery)" placeholder="e.g. Pack of 4 @ ₹299"
+              <input id="creative-price" type="text" value="" placeholder="e.g. Pack of 4 @ ₹299"
                      class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
             </div>
           </div>
@@ -421,12 +404,12 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
             <div>
               <label class="block text-xs font-medium text-slate-400 mb-1">Target City / Region</label>
-              <input id="creative-location" type="text" value="Koramangala, Bangalore" placeholder="e.g. Bangalore, Indiranagar"
+              <input id="creative-location" type="text" value="" placeholder="e.g. Bangalore, Indiranagar"
                      class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
             </div>
             <div>
               <label class="block text-xs font-medium text-slate-400 mb-1">Target Audience / Buyer Persona</label>
-              <input id="creative-audience" type="text" value="Coffee aficionados & busy professionals seeking clean energy" placeholder="e.g. Tech professionals, coffee lovers"
+              <input id="creative-audience" type="text" value="" placeholder="e.g. Tech professionals, coffee lovers"
                      class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
             </div>
           </div>
@@ -435,7 +418,7 @@
           <div>
             <label class="block text-xs font-medium text-slate-400 mb-1">Key Selling Points / USPs (comma separated)</label>
             <textarea id="creative-benefit" rows="2" placeholder="e.g. Zero Acidity, 24-Hour Extraction, 100% Arabica, No Added Sugar"
-                      class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500">Zero Acidity, 24-Hour Cold Extraction, 100% Single-Estate Arabica, Zero Sugar</textarea>
+                      class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
           </div>
 
           <!-- Video Duration, Quality & Tone Selectors -->
@@ -505,7 +488,27 @@
       </div>
 
       <!-- Right: Generated Creative Output -->
-      <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-lg">
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-lg space-y-4">
+
+        <!-- 🧠 Thinking Master Live AI Strategy Card -->
+        <div id="thinking-master-card" class="p-4 rounded-xl border border-purple-500/40 bg-gradient-to-r from-purple-950/70 via-slate-950/90 to-indigo-950/70 shadow-2xl hidden">
+          <div class="flex items-center justify-between mb-2 pb-2 border-b border-purple-500/20">
+            <div class="flex items-center gap-2">
+              <span class="text-base animate-pulse">🧠</span>
+              <h3 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
+                Thinking Master AI — Strategy & Creative Reasoning
+              </h3>
+              <span id="thinking-engine-badge" class="text-[9px] bg-purple-500/30 text-purple-200 border border-purple-500/50 px-2 py-0.5 rounded-full font-mono">Omni-tm Active</span>
+            </div>
+            <span class="text-[10px] text-emerald-400 font-semibold flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Generated On-The-Fly
+            </span>
+          </div>
+          <p id="thinking-process-display" class="text-xs text-indigo-100/90 leading-relaxed font-sans bg-slate-950/60 p-3 rounded-lg border border-purple-500/20 shadow-inner">
+            Awaiting prompt input to begin strategic analysis...
+          </p>
+        </div>
+
         <!-- Sub-tabs: Banner, Video & Screenplay, Audio AI, Copy -->
         <div class="flex items-center gap-2 border-b border-slate-800 pb-3 mb-5 overflow-x-auto">
           <button id="ctab-btn-banner" onclick="switchCreativeTab('banner')"
@@ -583,13 +586,12 @@
             <div class="bg-slate-950 rounded-2xl p-4 border border-slate-800 flex flex-col items-center">
               <div class="w-[260px] h-[462px] rounded-[28px] border-4 border-slate-700 bg-slate-900 shadow-2xl relative overflow-hidden flex flex-col">
                 <!-- Embedded HTML5 Video Player -->
-                <video id="creative-video-player" playsinline controls class="w-full h-full object-cover rounded-[24px]" poster="./static/generated/banner_68632c63_1x1.png">
-                  <source src="./static/generated/video_ad_65db34c0.mp4" type="video/mp4">
+                <video id="creative-video-player" playsinline controls class="w-full h-full object-cover rounded-[24px]">
                   Your browser does not support the video tag.
                 </video>
 
-                <!-- Fallback: Motion Canvas -->
-                <canvas id="cinema-motion-canvas" class="w-full h-full object-cover rounded-[24px] hidden"></canvas>
+                <!-- Live Kinetic Motion Canvas (60fps preview) -->
+                <canvas id="cinema-motion-canvas" class="w-full h-full object-cover rounded-[24px] hidden" style="display: flex;"></canvas>
               </div>
 
               <!-- Video Controls Below Player -->
@@ -1644,20 +1646,13 @@ const api = {
   async generateBanner(payload) {
     const data = await this._fetch('POST', '/api/creative/banner', payload);
     if (data && data.banner_url) return data;
-    return {
-      banner_url: './static/generated/banner_68632c63_1x1.png',
-      headline: payload.headline || 'Transform Your Smile',
-      price_tag: payload.price_tag || 'From ₹2,499/mo'
-    };
+    return null;  // No fallback - will use canvas
   },
 
   async generateVideo(payload) {
     const data = await this._fetch('POST', '/api/creative/video', payload);
     if (data && data.video_url) return data;
-    return {
-      video_url: './static/generated/video_ad_65db34c0.mp4',
-      product_name: payload.product_name
-    };
+    return null;  // No fallback - will use canvas
   },
 
   async get30DayStrategy(payload) {
@@ -2341,7 +2336,7 @@ const INDUSTRY_PRESETS = {
     price: 'Pack of 4 @ ₹299 (Free Delivery)',
     location: 'Koramangala, Bangalore',
     audience: 'Coffee aficionados & busy professionals seeking clean energy',
-    benefit: 'Zero Acidity, 24-Hour Cold Extraction, 100% Single-Estate Arabica, Zero Sugar',
+    benefit: '',
     duration: '15',
     quality: '1080p',
     tone: 'luxury',
@@ -2557,7 +2552,13 @@ async function renderCanvasBanner(params) {
   let bgGradStart = '#0f172a';
   let bgGradEnd = '#020617';
 
-  if (textCombined.includes('coffee') || textCombined.includes('brew') || textCombined.includes('roast') || textCombined.includes('cafe')) {
+  if (textCombined.includes('egg') || textCombined.includes('food') || textCombined.includes('poultry') || textCombined.includes('farm') || textCombined.includes('grocery') || textCombined.includes('wholesale') || textCombined.includes('fresh')) {
+    imgUrl = './static/stock_ecommerce.jpg';
+    primaryColor = '#f59e0b';
+    accentColor = '#10b981';
+    bgGradStart = '#451a03';
+    bgGradEnd = '#0c0a09';
+  } else if (textCombined.includes('coffee') || textCombined.includes('brew') || textCombined.includes('roast') || textCombined.includes('cafe')) {
     imgUrl = './static/stock_ecommerce.jpg';
     primaryColor = '#d97706';
     accentColor = '#f59e0b';
@@ -2782,7 +2783,7 @@ async function renderCanvasBanner(params) {
       ctx.fillStyle = '#ffffff';
       ctx.font = '900 34px system-ui, -apple-system, sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText('💬 Chat on WhatsApp · Instant Booking', 480, 843);
+      ctx.fillText(params.call_to_action || '💬 Chat on WhatsApp · Instant Booking', 480, 843);
       ctx.textAlign = 'left';
 
     } else {
@@ -2873,7 +2874,7 @@ async function renderCanvasBanner(params) {
       ctx.fillStyle = '#ffffff';
       ctx.font = '900 36px system-ui, -apple-system, sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText('💬 Chat on WhatsApp · Instant Booking', W / 2, 983);
+      ctx.fillText(params.call_to_action || '💬 Chat on WhatsApp · Instant Booking', W / 2, 983);
       ctx.textAlign = 'left';
     }
 
@@ -2963,6 +2964,11 @@ function renderScreenplayDeck(screenplay) {
 function setupReelPlayer(screenplay, duration, brand, product, price, voice) {
   currentScreenplay = screenplay || [];
   reelSceneIndex = 0;
+
+  // Initialize kinetic motion canvas with screenplay, product info, and dynamic CTA
+  const industry = detectIndustry(product);
+  const dynamicCta = getDynamicCta(product, industry, brand);
+  initKineticCanvas(screenplay, product, brand, price, dynamicCta);
 
   const brandTag = document.getElementById('reel-brand-tag');
   if (brandTag) {
@@ -3290,7 +3296,7 @@ async function generateCreativeKit() {
   if (btn) { btn.disabled = true; btn.classList.add('opacity-70'); }
 
   try {
-    // 1. Generate Ad Copy & Google Veo Screenplay
+    // 1. Generate Ad Copy & Google Veo Screenplay with Thinking Master
     const copyData = await api.generateAdCopy({
       topic,
       company_name,
@@ -3305,6 +3311,18 @@ async function generateCreativeKit() {
       industry: 'universal'
     });
     cachedCreativeData = copyData;
+
+    // Display Thinking Master Strategic Reasoning in UI Card
+    const thinkingCard = document.getElementById('thinking-master-card');
+    const thinkingDisplay = document.getElementById('thinking-process-display');
+    const thinkingBadge = document.getElementById('thinking-engine-badge');
+    if (thinkingCard && thinkingDisplay) {
+      thinkingCard.classList.remove('hidden');
+      thinkingDisplay.innerText = copyData.thinking_process || `Analyzed market psychology for ${company_name || product_name} in ${location}. Formulated emotional hook based on ${key_benefit} with urgent conversion trigger.`;
+      if (thinkingBadge) {
+        thinkingBadge.innerText = copyData.engine || 'Thinking Master (Omni-tm)';
+      }
+    }
 
     // Render Copy Details in Sub-tab 4
     renderCopyDetails(copyData);
@@ -4074,12 +4092,223 @@ function regenerateVideo() {
   generateCreativeKit();
 }
 
+// ──────────────────────────────────────────────
+// Kinetic Motion Canvas (60fps Preview)
+// ──────────────────────────────────────────────
+const canvasState = {
+  isPlaying: false,
+  currentScene: 0,
+  currentTime: 0,
+  totalDuration: 15,
+  scenes: [],
+  screenplay: null,
+  product_name: '',
+  company_name: '',
+  price_point: '',
+  cta: ''
+};
+
+function initKineticCanvas(screenplay, product_name, company_name, price_point, cta) {
+  canvasState.screenplay = screenplay;
+  canvasState.product_name = product_name;
+  canvasState.company_name = company_name;
+  canvasState.price_point = price_point;
+  canvasState.cta = cta;
+  canvasState.scenes = screenplay || [];
+  canvasState.currentScene = 0;
+  canvasState.currentTime = 0;
+
+  const canvas = document.getElementById('cinema-motion-canvas');
+  if (canvas) {
+    canvas.style.display = 'flex';
+    canvas.width = 260;
+    canvas.height = 462;
+    renderCanvasScene();
+    startCanvasAnimation();
+  }
+}
+
+function renderCanvasScene() {
+  const canvas = document.getElementById('cinema-motion-canvas');
+  if (!canvas || !canvasState.scenes.length) return;
+
+  const ctx = canvas.getContext('2d');
+  const scene = canvasState.scenes[canvasState.currentScene] || canvasState.scenes[0];
+
+  // Clear with gradient background
+  const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+  gradient.addColorStop(0, '#0f172a');
+  gradient.addColorStop(1, '#1e293b');
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Add subtle animated glow effect
+  const glowAlpha = 0.3 + 0.2 * Math.sin(canvasState.currentTime * 0.05);
+  ctx.fillStyle = `rgba(99, 102, 241, ${glowAlpha})`;
+  ctx.beginPath();
+  ctx.arc(canvas.width * 0.7, canvas.height * 0.3, 80, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Draw overlay darkness
+  ctx.fillStyle = 'rgba(15, 23, 42, 0.6)';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Scene number badge (top left)
+  ctx.fillStyle = 'rgba(99, 102, 241, 0.8)';
+  ctx.fillRect(12, 12, 32, 28);
+  ctx.fillStyle = '#e0e7ff';
+  ctx.font = 'bold 16px Arial';
+  ctx.textAlign = 'center';
+  ctx.fillText(`S${scene.scene_number}`, 28, 31);
+
+  // Animated title with Ken Burns zoom
+  const zoomFactor = 1 + 0.02 * Math.sin(canvasState.currentTime * 0.03);
+  ctx.save();
+  ctx.translate(canvas.width / 2, canvas.height * 0.35);
+  ctx.scale(zoomFactor, zoomFactor);
+  ctx.translate(-canvas.width / 2, -canvas.height * 0.35);
+
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 18px Arial';
+  ctx.textAlign = 'center';
+  const titleText = scene.on_screen_text || canvasState.product_name;
+  wrapCanvasText(ctx, titleText, canvas.width / 2, canvas.height * 0.35, canvas.width - 20, 22);
+
+  ctx.restore();
+
+  // Price pill (center)
+  ctx.fillStyle = 'rgba(16, 185, 129, 0.2)';
+  ctx.fillRect(40, canvas.height * 0.5 - 15, canvas.width - 80, 30);
+  ctx.strokeStyle = 'rgba(16, 185, 129, 0.6)';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(40, canvas.height * 0.5 - 15, canvas.width - 80, 30);
+
+  ctx.fillStyle = '#10b981';
+  ctx.font = 'bold 13px Arial';
+  ctx.textAlign = 'center';
+  ctx.fillText(`🏷️ ${canvasState.price_point}`, canvas.width / 2, canvas.height * 0.5 + 2);
+
+  // Dynamic CTA button (bottom) with pulsating effect
+  const ctaPulse = 0.8 + 0.2 * Math.sin(canvasState.currentTime * 0.06);
+  ctx.fillStyle = `rgba(34, 197, 94, ${ctaPulse})`;
+  ctx.beginPath();
+  ctx.roundRect(30, canvas.height - 65, canvas.width - 60, 50, 8);
+  ctx.fill();
+
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 11px Arial';
+  ctx.textAlign = 'center';
+  wrapCanvasText(ctx, canvasState.cta, canvas.width / 2, canvas.height - 42, canvas.width - 50, 13);
+
+  // Scene progress bar (bottom)
+  const progressWidth = (canvasState.currentScene + 1) / canvasState.scenes.length;
+  ctx.fillStyle = 'rgba(99, 102, 241, 0.5)';
+  ctx.fillRect(0, canvas.height - 3, canvas.width * progressWidth, 3);
+}
+
+function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight) {
+  const words = text.split(' ');
+  let line = '';
+
+  for (let i = 0; i < words.length; i++) {
+    const testLine = line + (line ? ' ' : '') + words[i];
+    const metrics = ctx.measureText(testLine);
+
+    if (metrics.width > maxWidth && line) {
+      ctx.fillText(line, x, y);
+      line = words[i];
+      y += lineHeight;
+    } else {
+      line = testLine;
+    }
+  }
+  if (line) ctx.fillText(line, x, y);
+}
+
+function startCanvasAnimation() {
+  canvasState.isPlaying = true;
+  animateCanvas();
+}
+
+function stopCanvasAnimation() {
+  canvasState.isPlaying = false;
+}
+
+function animateCanvas() {
+  if (!canvasState.isPlaying) return;
+
+  canvasState.currentTime += 0.016; // ~60fps
+
+  // Scene timing: ~3-4 seconds per scene for 15s total
+  const secondsPerScene = canvasState.totalDuration / canvasState.scenes.length;
+  const newScene = Math.floor(canvasState.currentTime / secondsPerScene);
+
+  if (newScene !== canvasState.currentScene && newScene < canvasState.scenes.length) {
+    canvasState.currentScene = newScene;
+  } else if (newScene >= canvasState.scenes.length) {
+    // Loop
+    canvasState.currentTime = 0;
+    canvasState.currentScene = 0;
+  }
+
+  renderCanvasScene();
+  requestAnimationFrame(animateCanvas);
+}
+
+function playCanvasPreview() {
+  const canvas = document.getElementById('cinema-motion-canvas');
+  if (canvas && canvas.style.display !== 'none') {
+    startCanvasAnimation();
+  }
+}
+
+function detectIndustry(product_name, headline = '') {
+  const combined = (product_name + ' ' + headline).toLowerCase();
+  if (any(combined, ["dental", "smile", "aligner", "teeth", "tooth"])) return "dental";
+  if (any(combined, ["bhk", "flat", "villa", "realty", "estate", "home", "property"])) return "real_estate";
+  if (any(combined, ["gym", "fit", "workout", "trainer", "muscle"])) return "fitness";
+  if (any(combined, ["egg", "food", "grocery", "wholesale", "poultry", "retail", "product", "order", "ecommerce", "shop"])) return "food";
+  return "universal";
+}
+
+function any(text, keywords) {
+  return keywords.some(k => text.includes(k));
+}
+
+function getDynamicCta(product_name, industry, company_name = '') {
+  const combined = (product_name + ' ' + company_name + ' ' + industry).toLowerCase();
+  if (any(combined, ["egg", "food", "grocery", "wholesale", "poultry", "retail", "product", "order", "ecommerce", "shop"])) return "🛒 Order Now on WhatsApp ➔";
+  if (any(combined, ["dental", "clinic", "health", "doctor", "medical", "aligner", "teeth", "smile", "appointment"])) return "📲 Book Appointment ➔";
+  if (any(combined, ["gym", "fit", "workout", "trainer", "muscle", "training"])) return "📲 Claim Free Pass ➔";
+  if (any(combined, ["bhk", "flat", "villa", "realty", "estate", "home", "property", "site", "visit"])) return "📲 Book Site Visit ➔";
+  return "💬 Chat on WhatsApp ➔";
+}
+
+function pauseCanvasPreview() {
+  stopCanvasAnimation();
+}
+
 (function boot() {
   const savedBackend = localStorage.getItem('lp_backend_url');
   if (savedBackend) {
     api._base = savedBackend;
     const label = document.getElementById('backend-status-label');
-    if (label) label.innerText = 'Connected: ' + new URL(savedBackend).host;
+    if (label) label.innerText = '🟢 Connected: ' + new URL(savedBackend).host;
+  } else {
+    // Auto-detect backend on localhost:8000
+    if (window.location.protocol.startsWith('http') && window.location.port === '8000') {
+      const origin = window.location.origin;
+      testBackendHealth(origin).then(isAlive => {
+        if (isAlive) {
+          api._base = '';
+          localStorage.setItem('lp_backend_url', origin);
+          const label = document.getElementById('backend-status-label');
+          if (label) label.innerText = '🟢 Connected: Localhost (Port 8000)';
+        }
+      }).catch(() => {
+        // Backend not available, continue in client mode
+      });
+    }
   }
 
   // Auto-login into demo session so mobile and GitHub Pages visitors immediately access all features
@@ -4089,6 +4318,15 @@ function regenerateVideo() {
   showPage('dashboard');
   initDashboard();
 })();
+
+async function testBackendHealth(origin) {
+  try {
+    const res = await fetch(origin + '/health', { method: 'GET' });
+    return res.ok;
+  } catch (e) {
+    return false;
+  }
+}
 </script>
 
 <!-- Backend Connection & Cloud Deployment Modal -->

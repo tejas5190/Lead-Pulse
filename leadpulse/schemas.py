@@ -10,7 +10,7 @@ from datetime import date, datetime
 from enum import Enum
 from typing import Any, Optional
 
-from pydantic import BaseModel, EmailStr, Field, model_validator
+from pydantic import BaseModel, ConfigDict, EmailStr, Field, model_validator
 
 
 # ────────────────────────────────────────────────────────
@@ -293,6 +293,8 @@ class CreativeCopyRequest(BaseModel):
 
 
 class CreativeCopyResponse(BaseModel):
+    model_config = ConfigDict(extra="allow")
+
     product_name: str
     company_name: Optional[str] = None
     topic: Optional[str] = None
@@ -307,6 +309,8 @@ class CreativeCopyResponse(BaseModel):
     quality: Optional[str] = "1080p"
     tone: Optional[str] = "high_energy"
     full_narration: str
+    thinking_process: Optional[str] = None
+    engine: Optional[str] = None
 
 
 class CreativeBannerRequest(BaseModel):

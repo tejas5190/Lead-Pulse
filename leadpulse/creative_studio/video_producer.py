@@ -10,6 +10,8 @@ import subprocess
 import imageio_ffmpeg
 from PIL import Image, ImageDraw, ImageFont
 from .banner_designer import get_font, create_gradient, fetch_stock_photo
+from .copywriter import get_dynamic_cta
+
 
 
 async def generate_voiceover(
@@ -197,11 +199,12 @@ async def generate_video_ad(
 
     # 3. Generate 3 Animated Slide Frames with stock photography
     slide1 = os.path.join(temp_dir, "slide1.jpg")
+    dynamic_cta = get_dynamic_cta(product_name, industry, "")
     create_slide(
         title=script_obj['hook'],
         subtitle=f"Special Opportunity in {location}",
         badge=product_name,
-        cta="📲 Chat on WhatsApp ➔",
+        cta=dynamic_cta,
         output_path=slide1,
         highlight_color=(99, 102, 241),
         industry=industry
@@ -212,18 +215,19 @@ async def generate_video_ad(
         title=f"Starting at {price_point}",
         subtitle=key_benefit,
         badge="PREMIUM PRICING",
-        cta="📲 Get Details On WhatsApp ➔",
+        cta=dynamic_cta,
         output_path=slide2,
         highlight_color=(16, 185, 129),
         industry=industry
     )
 
     slide3 = os.path.join(temp_dir, "slide3.jpg")
+    dynamic_cta = get_dynamic_cta(product_name, industry, "")
     create_slide(
         title="Consultations Open This Week",
         subtitle=script_obj['cta'],
         badge="LIMITED SLOTS AVAILABLE",
-        cta="📲 Book Free VIP Visit ➔",
+        cta=dynamic_cta,
         output_path=slide3,
         highlight_color=(245, 158, 11),
         industry=industry

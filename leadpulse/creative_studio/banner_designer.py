@@ -9,6 +9,7 @@ import uuid
 import urllib.request
 import io
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
+from .copywriter import get_dynamic_cta
 
 STOCK_PHOTOS = {
     "dental": "https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=1080&q=80",
@@ -95,7 +96,8 @@ def generate_ad_banner(
     key_points: list,
     output_dir: str,
     aspect_ratio: str = "1:1",  # "1:1" (1080x1080) or "9:16" (1080x1920)
-    brand_name: str = "EXCLUSIVE PREVIEW"
+    brand_name: str = "EXCLUSIVE PREVIEW",
+    industry: str = "universal"
 ) -> str:
     """Generate a high-converting Meta Ad banner PNG image."""
     os.makedirs(output_dir, exist_ok=True)
@@ -200,7 +202,7 @@ def generate_ad_banner(
     draw.rounded_rectangle(btn_box, radius=48, fill=(34, 197, 94)) # Emerald Green
 
     cta_font = get_font(40, bold=True)
-    cta_text = "📲  Book VIP Visit On WhatsApp  ➔"
+    cta_text = get_dynamic_cta(product_name, industry, brand_name)
     c_bbox = draw.textbbox((0, 0), cta_text, font=cta_font)
     c_tw, c_th = c_bbox[2] - c_bbox[0], c_bbox[3] - c_bbox[1]
     draw.text(((width - c_tw) // 2, btn_y + (95 - c_th) // 2 - 4), cta_text, font=cta_font, fill=(255, 255, 255))
