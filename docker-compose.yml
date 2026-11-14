@@ -1,0 +1,60 @@
+# LeadPulse AI — Docker Compose
+# Usage: docker compose up -d
+
+services:
+  # ── FastAPI application ──────────────────────────────────────────────
+  app:
+    build:
+      context: ./leadpulse
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - leadpulse
+
+  # ── PostgreSQL ───────────────────────────────────────────────────────
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: leadpulse
+      POSTGRES_USER: leadpulse
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U leadpulse"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - leadpulse
+
+  # ── Nginx reverse proxy ─────────────────────────────────────────────
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./certbot/conf:/etc/letsencrypt:ro
+      - ./certbot/www:/var/www/certbot:ro
+    depends_on:
+      - app
+    restart: unless-stopped
+    networks:
+      - leadpulse
+
+volumes:
+  pgdata:
+
+networks:
+  leadpulse:
+    driver: bridge

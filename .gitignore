@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+.pytest_cache/
+
+# Databases & local data
+*.db
+*.db-shm
+*.db-wal
+test_leadpulse.db
+leadpulse.db
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+
+# Reference docs (not for public repo)
+project reference files/
+
+# Antigravity system files
+.gemini/

@@ -1,0 +1,7 @@
+file 'leadpulse/static/generated/temp_ef85daf8/slide1.jpg'
+duration 4.5
+file 'leadpulse/static/generated/temp_ef85daf8/slide2.jpg'
+duration 4.5
+file 'leadpulse/static/generated/temp_ef85daf8/slide3.jpg'
+duration 5.0
+file 'leadpulse/static/generated/temp_ef85daf8/slide3.jpg'

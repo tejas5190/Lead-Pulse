@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LeadPulse AI — Weekly Report</title>
+  <style>
+    /* ── Reset & Base ──────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      color: #1e293b;
+      background: #ffffff;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    /* ── Page Container ────────────────────────────── */
+    .page {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px 48px;
+    }
+
+    /* ── Header ────────────────────────────────────── */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 3px solid #6366f1;
+      padding-bottom: 20px;
+      margin-bottom: 32px;
+    }
+
+    .header-left h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #6366f1;
+      margin-bottom: 4px;
+    }
+
+    .header-left .subtitle {
+      font-size: 16px;
+      color: #64748b;
+      font-weight: 400;
+    }
+
+    .header-right {
+      text-align: right;
+      font-size: 13px;
+      color: #64748b;
+    }
+
+    .header-right .company {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1e293b;
+      margin-bottom: 2px;
+    }
+
+    .logo-placeholder {
+      width: 48px;
+      height: 48px;
+      background: #e0e7ff;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: #6366f1;
+      font-weight: 700;
+      margin-bottom: 8px;
+      margin-left: auto;
+    }
+
+    /* ── Date Range Banner ─────────────────────────── */
+    .date-range {
+      background: #f1f5f9;
+      border-radius: 8px;
+      padding: 12px 20px;
+      text-align: center;
+      font-size: 14px;
+      color: #475569;
+      margin-bottom: 32px;
+    }
+
+    .date-range strong {
+      color: #1e293b;
+    }
+
+    /* ── KPI Cards ─────────────────────────────────── */
+    .kpi-grid {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 36px;
+    }
+
+    .kpi-card {
+      flex: 1;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .kpi-card .kpi-value {
+      font-size: 32px;
+      font-weight: 700;
+      color: #1e293b;
+      line-height: 1.2;
+    }
+
+    .kpi-card .kpi-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #64748b;
+      margin-top: 6px;
+    }
+
+    .kpi-card.highlight {
+      background: #6366f1;
+      border-color: #6366f1;
+    }
+
+    .kpi-card.highlight .kpi-value,
+    .kpi-card.highlight .kpi-label {
+      color: #ffffff;
+    }
+
+    /* ── Section Headings ──────────────────────────── */
+    .section-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #e2e8f0;
+    }
+
+    /* ── Qualified Leads Table ──────────────────────── */
+    .leads-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 36px;
+      font-size: 13px;
+    }
+
+    .leads-table thead th {
+      background: #f1f5f9;
+      color: #475569;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      font-size: 11px;
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 2px solid #e2e8f0;
+    }
+
+    .leads-table tbody td {
+      padding: 10px 14px;
+      border-bottom: 1px solid #f1f5f9;
+      color: #334155;
+    }
+
+    .leads-table tbody tr:nth-child(even) {
+      background: #fafbfc;
+    }
+
+    .leads-table tbody tr:hover {
+      background: #f0f4ff;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .status-qualified {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .status-appointment {
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+
+    .no-data {
+      text-align: center;
+      color: #94a3b8;
+      padding: 24px;
+      font-style: italic;
+    }
+
+    /* ── Executive Summary ─────────────────────────── */
+    .executive-summary {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin-bottom: 36px;
+    }
+
+    .executive-summary p {
+      margin-bottom: 14px;
+      color: #334155;
+      line-height: 1.7;
+    }
+
+    .executive-summary p:last-child {
+      margin-bottom: 0;
+    }
+
+    .summary-label {
+      font-weight: 600;
+      color: #6366f1;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+
+    /* ── Footer ────────────────────────────────────── */
+    .footer {
+      border-top: 1px solid #e2e8f0;
+      padding-top: 20px;
+      text-align: center;
+      font-size: 12px;
+      color: #94a3b8;
+    }
+
+    .footer .brand {
+      font-weight: 600;
+      color: #6366f1;
+    }
+
+    /* ── Print / PDF tweaks ────────────────────────── */
+    @page {
+      size: A4;
+      margin: 20mm 15mm;
+    }
+
+    @media print {
+      .page { padding: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="header-left">
+        <h1>Weekly Lead Report</h1>
+        <div class="subtitle">{{ project_name }}</div>
+      </div>
+      <div class="header-right">
+        <div class="logo-placeholder">{{ company_name[0] | upper }}</div>
+        <div class="company">{{ company_name }}</div>
+        <div>Generated {{ generated_at }}</div>
+      </div>
+    </div>
+
+    <!-- Date Range -->
+    <div class="date-range">
+      Report period: <strong>{{ week_start }}</strong> — <strong>{{ week_end }}</strong>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-value">{{ total_leads }}</div>
+        <div class="kpi-label">Total Leads</div>
+      </div>
+      <div class="kpi-card highlight">
+        <div class="kpi-value">{{ qualified_count }}</div>
+        <div class="kpi-label">Qualified</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value">{{ qualification_rate }}%</div>
+        <div class="kpi-label">Qualification Rate</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value">{{ avg_lead_score }}</div>
+        <div class="kpi-label">Avg Score</div>
+      </div>
+    </div>
+
+    <!-- Qualified Leads Table -->
+    <h2 class="section-title">Qualified Leads</h2>
+    {% if qualified_leads %}
+    <table class="leads-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Phone</th>
+          <th>Score</th>
+          <th>Status</th>
+          <th>Qualified At</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for lead in qualified_leads %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ lead.name or '—' }}</td>
+          <td>{{ lead.phone_number }}</td>
+          <td>{{ lead.lead_score }}</td>
+          <td>
+            <span class="status-badge {% if lead.status == 'appointment_booked' %}status-appointment{% else %}status-qualified{% endif %}">
+              {{ lead.status | replace('_', ' ') }}
+            </span>
+          </td>
+          <td>{{ lead.qualified_at.strftime('%d %b %Y') if lead.qualified_at else '—' }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="no-data">No qualified leads in this period.</div>
+    {% endif %}
+
+    <!-- Executive Summary -->
+    <h2 class="section-title">Executive Summary</h2>
+    <div class="executive-summary">
+      {% for paragraph in executive_summary %}
+      <p>{{ paragraph }}</p>
+      {% endfor %}
+    </div>
+
+    <!-- Spend Summary (if available) -->
+    {% if spend_data %}
+    <h2 class="section-title">Ad Spend Overview</h2>
+    <table class="leads-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Impressions</th>
+          <th>Clicks</th>
+          <th>Leads</th>
+          <th>Spend (₹)</th>
+          <th>CPL (₹)</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in spend_data %}
+        <tr>
+          <td>{{ row.date.strftime('%d %b') }}</td>
+          <td>{{ row.impressions | default(0) }}</td>
+          <td>{{ row.clicks | default(0) }}</td>
+          <td>{{ row.leads_count | default(0) }}</td>
+          <td>{{ '%.2f' | format(row.spend_inr | default(0)) }}</td>
+          <td>{{ '%.2f' | format(row.cpl_inr | default(0)) }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+
+    <!-- Footer -->
+    <div class="footer">
+      <p>Powered by <span class="brand">LeadPulse AI</span> · This report was auto-generated.</p>
+    </div>
+
+  </div>
+</body>
+</html>
