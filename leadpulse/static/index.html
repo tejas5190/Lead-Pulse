@@ -2272,50 +2272,50 @@ async function renderCanvasBanner(params) {
 
   // Keyword-based stock photo & aesthetic theme detection
   const textCombined = `${params.topic || ''} ${params.product_name || ''} ${params.brand || ''}`.toLowerCase();
-  let imgUrl = './static/stock_dental.jpg';
+  let imgUrl = '/static/stock_dental.jpg';
   let primaryColor = '#4f46e5';
   let accentColor = '#10b981';
   let bgGradStart = '#0f172a';
   let bgGradEnd = '#020617';
 
   if (textCombined.includes('egg') || textCombined.includes('food') || textCombined.includes('poultry') || textCombined.includes('farm') || textCombined.includes('grocery') || textCombined.includes('wholesale') || textCombined.includes('fresh')) {
-    imgUrl = './static/stock_ecommerce.jpg';
+    imgUrl = '/static/stock_ecommerce.jpg';
     primaryColor = '#f59e0b';
     accentColor = '#10b981';
     bgGradStart = '#451a03';
     bgGradEnd = '#0c0a09';
   } else if (textCombined.includes('coffee') || textCombined.includes('brew') || textCombined.includes('roast') || textCombined.includes('cafe')) {
-    imgUrl = './static/stock_ecommerce.jpg';
+    imgUrl = '/static/stock_ecommerce.jpg';
     primaryColor = '#d97706';
     accentColor = '#f59e0b';
     bgGradStart = '#27170a';
     bgGradEnd = '#0c0703';
   } else if (textCombined.includes('cyber') || textCombined.includes('saas') || textCombined.includes('tech') || textCombined.includes('cloud') || textCombined.includes('ai') || textCombined.includes('soft')) {
-    imgUrl = './static/stock_education.jpg';
+    imgUrl = '/static/stock_education.jpg';
     primaryColor = '#06b6d4';
     accentColor = '#6366f1';
     bgGradStart = '#081a30';
     bgGradEnd = '#030712';
   } else if (textCombined.includes('estate') || textCombined.includes('penthouse') || textCombined.includes('3bhk') || textCombined.includes('luxury') || textCombined.includes('villa')) {
-    imgUrl = './static/stock_real_estate.jpg';
+    imgUrl = '/static/stock_real_estate.jpg';
     primaryColor = '#eab308';
     accentColor = '#3b82f6';
     bgGradStart = '#111827';
     bgGradEnd = '#030712';
   } else if (textCombined.includes('dental') || textCombined.includes('align') || textCombined.includes('smile') || textCombined.includes('teeth') || textCombined.includes('clinic')) {
-    imgUrl = './static/stock_dental.jpg';
+    imgUrl = '/static/stock_dental.jpg';
     primaryColor = '#14b8a6';
     accentColor = '#06b6d4';
     bgGradStart = '#042f2e';
     bgGradEnd = '#021214';
   } else if (textCombined.includes('gym') || textCombined.includes('fit') || textCombined.includes('physique') || textCombined.includes('muscle') || textCombined.includes('workout')) {
-    imgUrl = './static/stock_fitness.jpg';
+    imgUrl = '/static/stock_fitness.jpg';
     primaryColor = '#ef4444';
     accentColor = '#84cc16';
     bgGradStart = '#1e1b4b';
     bgGradEnd = '#020617';
   } else if (textCombined.includes('auto') || textCombined.includes('car') || textCombined.includes('sedan') || textCombined.includes('speed') || textCombined.includes('vehicle')) {
-    imgUrl = './static/stock_auto.jpg';
+    imgUrl = '/static/stock_auto.jpg';
     primaryColor = '#f43f5e';
     accentColor = '#38bdf8';
     bgGradStart = '#18181b';
@@ -2647,7 +2647,7 @@ function renderScreenplayDeck(screenplay) {
         <div class="flex items-center gap-2">
           <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-900/60 text-indigo-300 border border-indigo-700/40">Scene ${s.scene_number}</span>
           <span class="text-xs font-bold text-white">${s.scene_title}</span>
-          <span class="text-[11px] font-mono text-emerald-400 bg-emerald-950/50 px-2 py-0.5 rounded border border-emerald-700/30">⏱️ ${s.timecode}</span>
+          <span class="text-[11px] font-mono text-emerald-400 bg-emerald-950/50 px-2 py-0.5 rounded border border-emerald-700/30">⏱️ ${s.timestamp || s.timecode || ''}</span>
         </div>
         <button onclick="copyVeoPrompt(${idx}, this)"
                 class="px-2.5 py-1 rounded-md text-[11px] font-semibold bg-indigo-600 hover:bg-indigo-500 text-white transition flex items-center gap-1 shadow-sm">
@@ -2657,10 +2657,10 @@ function renderScreenplayDeck(screenplay) {
 
       <div class="flex items-center gap-2 flex-wrap text-[11px]">
         <span class="px-2 py-0.5 rounded bg-slate-900 text-slate-300 border border-slate-800 flex items-center gap-1">
-          <span>🎥</span> <span>${s.camera_movement}</span>
+          <span>🎥</span> <span>${s.camera_motion || s.camera_movement || ''}</span>
         </span>
         <span class="px-2 py-0.5 rounded bg-slate-900 text-slate-300 border border-slate-800 flex items-center gap-1">
-          <span>💡</span> <span>${s.lighting_and_lens}</span>
+          <span>💡</span> <span>${s.lens_lighting || s.lighting_and_lens || ''}</span>
         </span>
       </div>
 
@@ -2680,7 +2680,7 @@ function renderScreenplayDeck(screenplay) {
         <div class="bg-slate-900/50 rounded-lg p-2.5 border border-slate-800/60">
           <div class="text-[10px] uppercase font-bold text-amber-400 mb-0.5">💬 On-Screen Kinetic Text</div>
           <div class="text-slate-300 font-semibold">${s.on_screen_text}</div>
-          <div class="text-[10px] text-slate-400 mt-1">🎵 SFX: ${s.sound_fx}</div>
+          <div class="text-[10px] text-slate-400 mt-1">🎵 SFX: ${s.sound_fx || 'Ambient'}</div>
         </div>
       </div>
     </div>
@@ -2977,13 +2977,13 @@ function copyEntireScreenplay() {
   txt += `=======================================================\n\n`;
 
   d.screenplay.forEach(s => {
-    txt += `SCENE ${s.scene_number} [${s.timecode}] - ${s.scene_title.toUpperCase()}\n`;
-    txt += `Camera Movement: ${s.camera_movement}\n`;
-    txt += `Lighting & Lens: ${s.lighting_and_lens}\n`;
+    txt += `SCENE ${s.scene_number} [${s.timestamp || s.timecode || ''}] - ${s.scene_title.toUpperCase()}\n`;
+    txt += `Camera Movement: ${s.camera_motion || s.camera_movement || ''}\n`;
+    txt += `Lighting & Lens: ${s.lens_lighting || s.lighting_and_lens || ''}\n`;
     txt += `Veo 2 Prompt: ${s.veo_prompt}\n`;
     txt += `On-Screen Kinetic Caption: ${s.on_screen_text}\n`;
     txt += `Voiceover Dialogue: "${s.voiceover}"\n`;
-    txt += `Sound FX Cue: ${s.sound_fx}\n\n`;
+    txt += `Sound FX Cue: ${s.sound_fx || 'Ambient'}\n\n`;
   });
 
   txt += `=======================================================\n`;
@@ -3059,7 +3059,7 @@ async function generateCreativeKit() {
     const specScenes = document.getElementById('video-spec-scenes');
     if (specDur) specDur.innerText = `${duration}s Video`;
     if (specQual) specQual.innerText = quality === '4k' ? '4K Ultra HD Cinema' : (quality === '720p' ? '720p Fast Demo' : '1080p Full HD');
-    if (specScenes) specScenes.innerText = `${copyData.screenplay.length} Scenes Screenplay`;
+    if (specScenes) specScenes.innerText = `${(copyData.screenplay || []).length} Scenes Screenplay`;
 
     // 2. Render Photorealistic Banner on HTML5 Canvas
     await renderCanvasBanner({
@@ -3175,7 +3175,7 @@ function renderCopyDetails(copyData) {
   if (scriptBox && copyData.screenplay) {
     scriptBox.innerHTML = copyData.screenplay.map(s => `
       <div class="border-b border-slate-800 pb-2 mb-2 last:border-none last:pb-0 last:mb-0">
-        <span class="text-indigo-400 font-bold">[Scene ${s.scene_number} · ${s.timecode}]:</span>
+        <span class="text-indigo-400 font-bold">[Scene ${s.scene_number} · ${s.timestamp || s.timecode || ''}]:</span>
         <span class="text-slate-300 font-medium"> ${s.scene_title}</span>
         <p class="text-slate-400 mt-1 italic">"${s.voiceover}"</p>
       </div>
