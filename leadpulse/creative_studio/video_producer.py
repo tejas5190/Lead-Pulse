@@ -56,7 +56,7 @@ def create_slide(
     cta: str,
     output_path: str,
     highlight_color: tuple = (16, 185, 129), # Emerald
-    industry: str = "dental"
+    industry: str = "universal"
 ):
     """Render a single 1080x1920 video slide image with realistic photo background."""
     width, height = 1080, 1920
@@ -197,11 +197,11 @@ async def generate_video_ad(
     # 2. Get FFmpeg executable
     ffmpeg_exe = imageio_ffmpeg.get_ffmpeg_exe()
 
-    # 3. Generate 3 Animated Slide Frames with stock photography
+    # 3. Generate 3 Animated Slide Frames
     slide1 = os.path.join(temp_dir, "slide1.jpg")
     dynamic_cta = get_dynamic_cta(product_name, industry, "")
     create_slide(
-        title=script_obj['hook'],
+        title=script_obj.get('hook', product_name),
         subtitle=f"Special Opportunity in {location}",
         badge=product_name,
         cta=dynamic_cta,
@@ -212,9 +212,9 @@ async def generate_video_ad(
 
     slide2 = os.path.join(temp_dir, "slide2.jpg")
     create_slide(
-        title=f"Starting at {price_point}",
+        title=price_point if price_point else "Featured Offer",
         subtitle=key_benefit,
-        badge="PREMIUM PRICING",
+        badge="HIGHLIGHT",
         cta=dynamic_cta,
         output_path=slide2,
         highlight_color=(16, 185, 129),
@@ -222,11 +222,10 @@ async def generate_video_ad(
     )
 
     slide3 = os.path.join(temp_dir, "slide3.jpg")
-    dynamic_cta = get_dynamic_cta(product_name, industry, "")
     create_slide(
-        title="Consultations Open This Week",
-        subtitle=script_obj['cta'],
-        badge="LIMITED SLOTS AVAILABLE",
+        title=script_obj.get('cta', 'Connect With Us on WhatsApp'),
+        subtitle=f"Available in {location} · Tap to Claim",
+        badge="ACT NOW",
         cta=dynamic_cta,
         output_path=slide3,
         highlight_color=(245, 158, 11),

@@ -1353,294 +1353,20 @@ const api = {
     return data || { status: 'saved' };
   },
 
+  async smartParse(prompt) {
+    const data = await this._fetch('POST', '/api/creative/smart-parse', { prompt });
+    if (!data || !data.product_name) {
+      throw new Error('Smart parse failed. Please check that OmniRoute is running on port 20128.');
+    }
+    return data;
+  },
+
   async generateAdCopy(payload) {
     const data = await this._fetch('POST', '/api/creative/copy', payload);
-    if (data && data.headlines && data.screenplay && data.screenplay.length > 0) return data;
-    
-    // Client-side generative engine matching copywriter.py
-    const brand = (payload.company_name || payload.product_name || 'Exclusive Brand').trim();
-    const prod = (payload.product_name || payload.topic || 'Signature Offering').trim();
-    const topic = (payload.topic || prod).trim();
-    const loc = (payload.location || 'Your City').trim();
-    const price = (payload.price_point || 'Exclusive Launch Offer').trim();
-    const ben = (payload.key_benefit || 'Verified Quality, Guaranteed Results').trim();
-    const aud = (payload.target_audience || 'Discerning clients').trim();
-    const duration = parseInt(payload.duration || 15, 10);
-    const tone = payload.tone || 'high_energy';
-    const quality = payload.quality || '1080p';
-
-    let h_prefix = [];
-    let v_mood = '';
-
-    if (tone === 'luxury') {
-      h_prefix = ['The Art of', 'Unrivaled Elegance:', 'Redefining Luxury:'];
-      v_mood = 'Cinematic slow-motion 4K macro shot, dramatic chiaroscuro lighting, shallow depth of field (f/1.4, 85mm anamorphic), deep obsidian and warm metallic gold tones.';
-    } else if (tone === 'problem_solution') {
-      h_prefix = ['Why Settle When', 'The Problem With Ordinary', 'Finally, A Better Way:'];
-      v_mood = 'Sharp dynamic transition, high-contrast editorial lighting, 35mm crisp commercial lens, candid documentary realism shifting to glowing polished finish.';
-    } else if (tone === 'friendly') {
-      h_prefix = ['Meet', 'Your New Favorite', `Why Everyone in ${loc} Loves`];
-      v_mood = 'Warm natural daylight, handheld tracking shot, cheerful organic atmosphere, vibrant natural color grading.';
-    } else { // high_energy
-      h_prefix = ['Stop Wasting Money On', 'Transform Your Results With', 'Limited Launch Offer:'];
-      v_mood = 'Fast dynamic zoom-in, electric neon rim lighting, high-speed 60fps slow-motion capture, energetic motion blur with crisp product isolation.';
+    if (!data || !data.headlines || !data.screenplay || data.screenplay.length === 0) {
+      throw new Error('Creative generation failed. Please verify OmniRoute is running on port 20128.');
     }
-
-    const firstBen = ben.split(',')[0].trim();
-    const headlines = [
-      `${h_prefix[0]} ${prod} | ${price}`,
-      `${h_prefix[1]} ${topic} @ ${loc}`,
-      `Get ${firstBen} With ${brand} Today`
-    ];
-
-    const primary_texts = [
-      `✨ Experience the difference with ${prod} by ${brand}.\n\nDesigned specifically for ${aud}, this is your opportunity to upgrade without compromise.\n\n💎 ${price}\n📍 Available in ${loc}\n⭐ ${ben}\n\n👉 Tap WhatsApp below to get the exclusive brochure and introductory pricing directly on your phone.`,
-      `💡 Why settle for ordinary ${topic} when you can get direct access to ${brand}?\n\n✔️ Transparent Pricing: ${price}\n✔️ Proven Benefits: ${ben}\n✔️ 100% Satisfaction & Verified Quality\n\nJoin hundreds of satisfied clients in ${loc}. Tap below to speak directly with our team on WhatsApp in 30 seconds.`,
-      `⏳ LIMITED OPPORTUNITY: Exclusive launch packages for ${prod} are now live for ${loc}.\n\n🔒 Lock in special pricing at ${price} before rates adjust.\n⚡ ${ben}\n\nClick WhatsApp below right now to secure your spot before this week's allocation fills up.`
-    ];
-
-    const descriptions = [
-      `${brand} Official · Instant WhatsApp Response`,
-      `Verified Quality · ${price} · ${loc}`,
-      `Limited Allocation This Week · Inquire Now`
-    ];
-
-    let screenplay = [];
-    if (duration <= 15) {
-      screenplay = [
-        {
-          scene_number: 1,
-          timecode: "00:00 - 00:03",
-          scene_title: "The Visual Hook",
-          veo_prompt: `${v_mood} Camera pulls back rapidly revealing ${topic} centered in frame with glowing atmospheric mist. Text pops with kinetic energy.`,
-          camera_movement: "Rapid Snap-Zoom + Center Track",
-          lighting_and_lens: "35mm T1.5 Anamorphic / High-Key Rim Light",
-          on_screen_text: `Tired of Average ${topic}?`,
-          voiceover: `Still searching for the best ${topic} in ${loc}?`,
-          sound_fx: "Deep sub-bass riser with crisp whoosh transition"
-        },
-        {
-          scene_number: 2,
-          timecode: "00:03 - 00:07",
-          scene_title: "The Agitation & Pain",
-          veo_prompt: `Gritty high-speed macro details of common industry frustrations, rapid shutter flicker, transitioning abruptly into sleek polished glass.`,
-          camera_movement: "Whip Pan Left to Right",
-          lighting_and_lens: "Low-Key Desaturated / 50mm Macro",
-          on_screen_text: "Most options cut corners.",
-          voiceover: `Most alternatives overcharge and underdeliver on quality.`,
-          sound_fx: "Vinyl scratch transition into energetic rhythmic beat"
-        },
-        {
-          scene_number: 3,
-          timecode: "00:07 - 00:12",
-          scene_title: "The Solution & Hero Showcase",
-          veo_prompt: `Hero 360-degree orbit shot around ${prod}. Soft studio rim lights highlight premium textures. Floating holographic badge reads '${firstBen}'.`,
-          camera_movement: "Smooth 360-Degree Orbital Gimbal",
-          lighting_and_lens: "Golden Hour Warmth / 85mm Portrait f/1.4",
-          on_screen_text: `${prod} · ${price}`,
-          voiceover: `Meet ${prod} by ${brand}. ${ben}. Starting at just ${price}.`,
-          sound_fx: "Upbeat cinematic punch with warm synth pad"
-        },
-        {
-          scene_number: 4,
-          timecode: "00:12 - 00:15",
-          scene_title: "The Urgent Call-To-Action",
-          veo_prompt: `Dynamic end card with glowing neon border. Sleek smartphone mockup displays an active WhatsApp chat with instant reply bubbles.`,
-          camera_movement: "Slow Forward Dolly Push",
-          lighting_and_lens: "Studio Cyber Glow / 24mm Wide Angle",
-          on_screen_text: `Tap WhatsApp Below · ${price}`,
-          voiceover: `Tap the WhatsApp button below now to claim your launch package!`,
-          sound_fx: "WhatsApp notification ding & bass drop"
-        }
-      ];
-    } else if (duration <= 30) {
-      screenplay = [
-        {
-          scene_number: 1,
-          timecode: "00:00 - 00:04",
-          scene_title: "The Cinematic Hook",
-          veo_prompt: `${v_mood} Dramatic slow-motion dolly in towards ${topic}. Volumetric light rays stream across the frame revealing craftsmanship details.`,
-          camera_movement: "Slow-Dolly Push-In with 10-degree Dutch Angle",
-          lighting_and_lens: "Anamorphic 40mm / Volumetric Morning Mist",
-          on_screen_text: `What if ${topic} could be effortless?`,
-          voiceover: `If you have been looking for real quality in ${loc}, this is for you.`,
-          sound_fx: "Orchestral swell with ambient texture"
-        },
-        {
-          scene_number: 2,
-          timecode: "00:04 - 00:09",
-          scene_title: "The Hidden Industry Flaw",
-          veo_prompt: `Fast-cut documentary montage illustrating high prices and lack of transparency in conventional alternatives.`,
-          camera_movement: "Handheld Jitter Track to Static Lock",
-          lighting_and_lens: "Cool Tone 5600K / 28mm Documentary Prime",
-          on_screen_text: "You shouldn't have to compromise.",
-          voiceover: `Too many brands make big promises but leave you with hidden costs and disappointment.`,
-          sound_fx: "Muffled record beat with tension tone"
-        },
-        {
-          scene_number: 3,
-          timecode: "00:09 - 00:15",
-          scene_title: "Introducing The New Standard",
-          veo_prompt: `Clean radiant sweep. ${brand} logo animates in brushed titanium, settling over stunning product visuals.`,
-          camera_movement: "Crane Downward Pedestal to Eye Level",
-          lighting_and_lens: "Diffusion 1/4 Pro-Mist / 50mm Prime f/1.8",
-          on_screen_text: `Enter ${brand}`,
-          voiceover: `That is why ${brand} built ${prod}. Designed from the ground up for ${aud}.`,
-          sound_fx: "Bright orchestral drop with inspiring piano chords"
-        },
-        {
-          scene_number: 4,
-          timecode: "00:15 - 00:21",
-          scene_title: "Proof & Performance",
-          veo_prompt: `Macro inspection of ${prod} materials and operation. Kinetic UI callouts display '${ben}'.`,
-          camera_movement: "Macro Slider Track Left-to-Right",
-          lighting_and_lens: "100mm Macro f/2.8 / Dual LED Edge Strips",
-          on_screen_text: `✔ ${firstBen}`,
-          voiceover: `Enjoy ${ben}. Backed by verified standards and complete peace of mind.`,
-          sound_fx: "Crisp technical UI clicks and warm sub bass"
-        },
-        {
-          scene_number: 5,
-          timecode: "00:21 - 00:26",
-          scene_title: "The Unbeatable Value Proposition",
-          veo_prompt: `Full 3D typography reveal of pricing: ${price}. Floating trust badges: 5-star ratings and guaranteed satisfaction.`,
-          camera_movement: "Orbital Arc Camera Move",
-          lighting_and_lens: "Warm Amber Rim / 35mm Master Prime",
-          on_screen_text: `Launch Offer: ${price}`,
-          voiceover: `And right now in ${loc}, get exclusive launch pricing starting at ${price}.`,
-          sound_fx: "Triumphant musical crescendo"
-        },
-        {
-          scene_number: 6,
-          timecode: "00:26 - 00:30",
-          scene_title: "Call-to-Action & WhatsApp VIP Pass",
-          veo_prompt: `Clean interactive end screen with vibrating WhatsApp CTA button and promotional countdown timer.`,
-          camera_movement: "Smooth Zoom-out to Hero Center Lock",
-          lighting_and_lens: "High-contrast Studio Fill / 50mm",
-          on_screen_text: `Tap WhatsApp · Instant Response`,
-          voiceover: `Tap the WhatsApp button below now to lock in this special offer before it expires!`,
-          sound_fx: "WhatsApp send bubble chime & clean reverb tail"
-        }
-      ];
-    } else { // 60s
-      screenplay = [
-        {
-          scene_number: 1,
-          timecode: "00:00 - 00:08",
-          scene_title: "The Deep Hook & Atmosphere",
-          veo_prompt: `${v_mood} Breathtaking cinematic establishing shot of ${loc}. Camera glides forward smoothly, zeroing into an elegant setting showcasing ${topic}.`,
-          camera_movement: "Drone Crane Descend to SteadyCam Push",
-          lighting_and_lens: "Golden Twilight 3200K / Anamorphic 35mm",
-          on_screen_text: `Welcome to the Future of ${topic}`,
-          voiceover: `Take a moment. What if everything you thought you knew about ${topic} changed today?`,
-          sound_fx: "Atmospheric wind whoosh and gentle piano intro"
-        },
-        {
-          scene_number: 2,
-          timecode: "00:08 - 00:15",
-          scene_title: "The Consumer Dilemma",
-          veo_prompt: `Cinematic split screen contrasting cluttered, frustrating conventional experiences with serene minimalist perfection.`,
-          camera_movement: "Whip Pan Transition",
-          lighting_and_lens: "Split Tone Contrast / 50mm Prime",
-          on_screen_text: "Most people settle for less.",
-          voiceover: `For years, finding dependable quality in ${loc} meant overpaying and dealing with compromises.`,
-          sound_fx: "Low frequency tension drone"
-        },
-        {
-          scene_number: 3,
-          timecode: "00:15 - 00:23",
-          scene_title: "The Genesis of the Brand",
-          veo_prompt: `Behind-the-scenes master craftsmanship montage. High-speed 120fps slow-motion capture of precision assembly and rigorous quality tests.`,
-          camera_movement: "Circular Tracking Shot",
-          lighting_and_lens: "Natural Studio Daylight / 85mm f/1.4",
-          on_screen_text: `Engineered by ${brand}`,
-          voiceover: `That is why ${brand} set out to change the game with ${prod}.`,
-          sound_fx: "Uplifting string quartet with heartbeat kick drum"
-        },
-        {
-          scene_number: 4,
-          timecode: "00:23 - 00:32",
-          scene_title: "Feature Deep-Dive 1: The Core Benefit",
-          veo_prompt: `Macro lens reveals stunning craftsmanship and key selling point: ${firstBen}. High-contrast lighting accents every curve.`,
-          camera_movement: "Extreme Macro Probe Lens Pass",
-          lighting_and_lens: "100mm Probe Lens / Fiber Optic Edge Lighting",
-          on_screen_text: `✔ ${firstBen}`,
-          voiceover: `First, ${firstBen}. Built to deliver reliable, long-lasting performance you can trust every single day.`,
-          sound_fx: "Digital sweep and solid metallic confirmation thud"
-        },
-        {
-          scene_number: 5,
-          timecode: "00:32 - 00:40",
-          scene_title: "Feature Deep-Dive 2: Built For You",
-          veo_prompt: `Candid lifestyle cinematography showing delighted customers using ${prod} in authentic modern settings.`,
-          camera_movement: "Shoulder Rig Handheld Steadicam",
-          lighting_and_lens: "35mm High-Speed Prime / Warm Ambient",
-          on_screen_text: `Tailored For ${aud}`,
-          voiceover: `Specifically engineered for ${aud}, addressing every pain point with precision.`,
-          sound_fx: "Warm acoustic guitar rhythm with cheerful cadence"
-        },
-        {
-          scene_number: 6,
-          timecode: "00:40 - 00:48",
-          scene_title: "Social Proof & Verified Trust",
-          veo_prompt: `Montage of genuine 5-star customer ratings, verified badges, and press mentions animating across the screen.`,
-          camera_movement: "Slow Backward Pull-Out",
-          lighting_and_lens: "Commercial Studio Softbox / 50mm",
-          on_screen_text: `⭐ 4.9/5 Rating · Over 1,200+ Verified Clients`,
-          voiceover: `Join hundreds of satisfied clients in ${loc} who have already upgraded their experience.`,
-          sound_fx: "Subtle applause and rhythmic percussion build-up"
-        },
-        {
-          scene_number: 7,
-          timecode: "00:48 - 00:54",
-          scene_title: "The Launch Price Guarantee",
-          veo_prompt: `Gleaming 3D gold and emerald typographic treatment of the offer: ${price}. Guarantee badge locks into place.`,
-          camera_movement: "Sweeping Arc Pedestal Shot",
-          lighting_and_lens: "Backlit Amber Glow / 85mm Anamorphic",
-          on_screen_text: `Direct Offer: ${price}`,
-          voiceover: `Today, you can access this entire package starting at just ${price}. Zero hidden fees. 100% satisfaction guaranteed.`,
-          sound_fx: "Triumphant cinematic brass hit"
-        },
-        {
-          scene_number: 8,
-          timecode: "00:54 - 01:00",
-          scene_title: "Final Call to Action",
-          veo_prompt: `High-conversion animated end screen featuring WhatsApp chat interface with direct interactive button.`,
-          camera_movement: "Lock-Off Static Center Punch",
-          lighting_and_lens: "Crisp Modern Flat Lay Lighting / 50mm",
-          on_screen_text: `Chat Directly on WhatsApp · Instant VIP Access`,
-          voiceover: `Click the WhatsApp link below right now to claim your exclusive launch package while allocations last!`,
-          sound_fx: "WhatsApp chime and resonant final chord"
-        }
-      ];
-    }
-
-    const full_narration = screenplay.map(s => s.voiceover).join(' ');
-
-    return {
-      product_name: prod,
-      company_name: brand,
-      topic,
-      industry: payload.industry || 'universal',
-      price_point: price,
-      location: loc,
-      key_benefit: ben,
-      target_audience: aud,
-      duration,
-      quality,
-      tone,
-      headlines,
-      primary_texts,
-      descriptions,
-      screenplay,
-      full_narration,
-      video_script: {
-        hook: screenplay[0]?.voiceover || `Looking for ${topic}?`,
-        problem: screenplay[1]?.voiceover || 'Most options cut corners.',
-        solution: screenplay[2]?.voiceover || `${prod} starting at ${price}.`,
-        cta: screenplay[screenplay.length - 1]?.voiceover || 'Tap WhatsApp below!'
-      }
-    };
+    return data;
   },
 
   async generateBanner(payload) {
@@ -4004,42 +3730,49 @@ function saveSimLeadToCRM() {
   loadLeads();
 }
 
-function smartParsePrompt() {
-  const prompt = document.getElementById('creative-prompt-input')?.value || '';
+async function smartParsePrompt() {
+  const promptEl = document.getElementById('creative-prompt-input');
+  const prompt = promptEl ? promptEl.value : '';
   if (!prompt.trim()) {
-    showToast('Please enter a campaign description first.');
+    showToast('⚠️ Please enter a campaign or business description first.');
     return;
   }
 
-  // Simple AI-like parsing of natural language prompt
-  const promptLower = prompt.toLowerCase();
+  showToast('🧠 DeepSeek-3.2 (OmniRoute) is analyzing your concept...');
 
-  // Extract product/topic
-  const topicMatch = prompt.match(/(?:selling|promoting|launching|advertising)\s+([^.!?]+)/i);
-  const topic = topicMatch ? topicMatch[1].trim() : prompt.split('\n')[0].substring(0, 50);
-  document.getElementById('creative-topic').value = topic;
+  try {
+    const parsed = await api.smartParse(prompt);
+    
+    if (parsed.topic && document.getElementById('creative-topic')) {
+      document.getElementById('creative-topic').value = parsed.topic;
+    }
+    if (parsed.company_name && document.getElementById('creative-brand')) {
+      document.getElementById('creative-brand').value = parsed.company_name;
+    }
+    if (parsed.product_name && document.getElementById('creative-product')) {
+      document.getElementById('creative-product').value = parsed.product_name;
+    }
+    if (parsed.price_point && document.getElementById('creative-price')) {
+      document.getElementById('creative-price').value = parsed.price_point;
+    }
+    if (parsed.location && document.getElementById('creative-location')) {
+      document.getElementById('creative-location').value = parsed.location;
+    }
+    if (parsed.target_audience && document.getElementById('creative-audience')) {
+      document.getElementById('creative-audience').value = parsed.target_audience;
+    }
+    if (parsed.key_benefit && document.getElementById('creative-benefit')) {
+      document.getElementById('creative-benefit').value = parsed.key_benefit;
+    }
+    if (parsed.tone && document.getElementById('creative-tone')) {
+      document.getElementById('creative-tone').value = parsed.tone;
+    }
 
-  // Extract price/offer
-  const priceMatch = prompt.match(/[₹$]\s*(\d+[,.\d]*(?:\/|per)?[^\s.!?]*)/i);
-  const price = priceMatch ? '₹' + priceMatch[1] : 'Special Offer';
-  document.getElementById('creative-price').value = price;
-
-  // Extract location
-  const locationMatch = prompt.match(/(?:in|for|serving)\s+([A-Za-z\s,]+?)(?:\.|for|,|$)/i);
-  const location = locationMatch ? locationMatch[1].trim() : 'Your City';
-  document.getElementById('creative-location').value = location;
-
-  // Extract audience
-  const audienceMatch = prompt.match(/(?:target|audience|for)\s+([^.!?]+?)(?:\.|,|$)/i);
-  const audience = audienceMatch ? audienceMatch[1].trim() : 'Professionals';
-  document.getElementById('creative-audience').value = audience;
-
-  // Extract benefits/USPs
-  const benefitMatch = prompt.match(/(?:benefits?|features?|including|with)\s+([^.!?]+?)(?:\.|,|$)/i);
-  const benefits = benefitMatch ? benefitMatch[1].trim() : topic;
-  document.getElementById('creative-benefit').value = benefits;
-
-  showToast('✅ Smart parse complete! Review and refine the extracted fields below.');
+    showToast('✅ DeepSeek-3.2 parsed concept: ' + (parsed.product_name || parsed.topic));
+  } catch (err) {
+    console.error('Smart parse error:', err);
+    showToast('❌ Smart Parse Failed: ' + (err.message || 'Check OmniRoute on port 20128'));
+  }
 }
 
 // VoiceStudio audio handled above

@@ -278,15 +278,35 @@ class PaginatedLeadsResponse(BaseModel):
 #  Creative Studio Schemas
 # ────────────────────────────────────────────────────────
 
+class SmartParseRequest(BaseModel):
+    prompt: str = Field(min_length=3, description="Natural language business or campaign description")
+
+
+class SmartParseResponse(BaseModel):
+    model_config = ConfigDict(extra="allow")
+
+    topic: str
+    company_name: Optional[str] = None
+    product_name: str
+    price_point: Optional[str] = None
+    location: Optional[str] = None
+    target_audience: Optional[str] = None
+    key_benefit: Optional[str] = None
+    industry: Optional[str] = "food"
+    tone: Optional[str] = "high_energy"
+    suggested_cta: Optional[str] = None
+    engine: Optional[str] = None
+
+
 class CreativeCopyRequest(BaseModel):
     product_name: str = Field(min_length=2)
     company_name: Optional[str] = None
     topic: Optional[str] = None
     industry: str = Field(default="universal")
     price_point: str = Field(default="Competitive Pricing")
-    location: str = Field(default="Gurugram")
-    key_benefit: str = Field(default="Direct Developer Pricing · Zero Brokerage")
-    target_audience: str = Field(default="Prospective buyers")
+    location: str = Field(default="Your City")
+    key_benefit: str = Field(default="Guaranteed Quality & Fast Delivery")
+    target_audience: str = Field(default="Target Audience")
     duration: Optional[int] = Field(default=15)
     quality: Optional[str] = Field(default="1080p")
     tone: Optional[str] = Field(default="high_energy")

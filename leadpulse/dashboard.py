@@ -43,6 +43,8 @@ from .schemas import (
     CreativeCopyResponse,
     CreativeVideoRequest,
     CreativeVideoResponse,
+    SmartParseRequest,
+    SmartParseResponse,
     LeadDetailResponse,
     LeadResponse,
     LeadTranscriptResponse,
@@ -599,6 +601,21 @@ async def get_industry_templates(
 #  Creative Studio Endpoints
 # ────────────────────────────────────────────────────────
 
+@api_router.post("/creative/smart-parse", response_model=SmartParseResponse)
+async def parse_campaign_prompt(
+    body: SmartParseRequest,
+    tenant_id: UUID = Depends(get_current_tenant),
+) -> SmartParseResponse:
+    """Intelligently parse a natural language business concept into structured campaign fields via OmniRoute."""
+    from .creative_studio import smart_parse_requirement
+    try:
+        data = await smart_parse_requirement(body.prompt)
+        return SmartParseResponse.model_validate(data)
+    except Exception as e:
+        logger.error(f"Smart parse failed: {e}")
+        raise HTTPException(status_code=500, detail=f"AI Prompt Parsing failed: {str(e)}")
+
+
 @api_router.post("/creative/copy", response_model=CreativeCopyResponse)
 async def create_ad_copy(
     body: CreativeCopyRequest,
@@ -606,22 +623,27 @@ async def create_ad_copy(
 ) -> CreativeCopyResponse:
     """Generate high-converting Meta Ad primary copy, headlines, and Google Veo screenplay via Thinking Master."""
     from .creative_studio import think_and_generate_campaign
-    data = await think_and_generate_campaign(
-        topic=body.topic or "",
-        company_name=body.company_name or "",
-        product_name=body.product_name,
-        price_point=body.price_point,
-        location=body.location,
-        key_benefit=body.key_benefit,
-        target_audience=body.target_audience,
-        duration=body.duration or 15,
-        quality=body.quality or "1080p",
-        tone=body.tone or "high_energy",
-    )
+    try:
+        data = await think_and_generate_campaign(
+            topic=body.topic or "",
+            company_name=body.company_name or "",
+            product_name=body.product_name,
+            price_point=body.price_point,
+            location=body.location,
+            key_benefit=body.key_benefit,
+            target_audience=body.target_audience,
+            duration=body.duration or 15,
+            quality=body.quality or "1080p",
+            tone=body.tone or "high_energy",
+        )
+    except Exception as e:
+        logger.error(f"Thinking Master campaign generation failed: {e}")
+        raise HTTPException(status_code=502, detail=f"OmniRoute generation failed: {str(e)}")
+
     # Ensure all required response fields are present
-    if "primary_texts" not in data:
+    if "primary_texts" not in data or not data["primary_texts"]:
         data["primary_texts"] = [data.get("primary_text", "Exclusive limited offer available now.")]
-    if "descriptions" not in data:
+    if "descriptions" not in data or not data["descriptions"]:
         data["descriptions"] = [f"📍 {body.location} · {body.key_benefit}"]
     if "call_to_action" not in data:
         data["call_to_action"] = data.get("dynamic_cta", "💬 Chat on WhatsApp ➔")

@@ -1,7 +1,8 @@
 """
-LeadPulse AI — Thinking Master Engine (Omni-tm / OmniRoute)
-Provides live on-the-fly deep strategic thinking, audience psychology analysis,
-bespoke ad copywriting, and Google Veo cinematic screenplay generation.
+LeadPulse AI — Thinking Master Engine (OmniRoute / kr/deepseek-3.2)
+Provides live on-the-fly deep strategic thinking, smart prompt intake,
+audience psychology analysis, bespoke ad copywriting, and Google Veo cinematic screenplay generation.
+All operations run through OmniRoute using kr/deepseek-3.2 with zero hardcoded fallbacks.
 """
 from __future__ import annotations
 import json
@@ -12,9 +13,75 @@ import httpx
 
 logger = logging.getLogger(__name__)
 
-OMNIROUTE_URL = "http://localhost:20128/v1/messages"
+OMNIROUTE_URL = "http://127.0.0.1:20128/v1/chat/completions"
 OMNIROUTE_KEY = "sk-296ab32e22eef604-04b072-4cdd0bd1"
-MODEL_NAME = "Omni-tm"
+MODEL_NAME = "kr/deepseek-3.2"
+
+
+def _extract_json(text: str) -> Dict[str, Any]:
+    """Robustly extract and parse JSON from LLM response text."""
+    text = text.strip()
+    # Strip markdown code fence if present
+    if text.startswith("```"):
+        text = re.sub(r"^```(?:json)?\s*", "", text)
+        text = re.sub(r"\s*```$", "", text)
+        text = text.strip()
+    m = re.search(r"\{.*\}", text, re.DOTALL)
+    if m:
+        return json.loads(m.group(0))
+    return json.loads(text)
+
+
+async def smart_parse_requirement(prompt: str) -> Dict[str, Any]:
+    """Parse a natural language business prompt into structured campaign fields via DeepSeek-3.2."""
+    if not prompt or not prompt.strip():
+        raise ValueError("Prompt cannot be empty")
+
+    system_prompt = (
+        "You are an elite marketing intake strategist and commercial creative director. "
+        "Given a user's natural language business idea or ad campaign concept, extract or intelligently infer "
+        "the precise campaign setup. If details like brand name, location, or price are missing, suggest creative, "
+        "highly plausible, context-aware values tailored directly to that specific concept.\n\n"
+        "Return ONLY a valid JSON object with NO extra text and NO markdown code fences:\n"
+        "{\n"
+        '  "topic": "Concise campaign theme (e.g. Artisanal Gelato & Sorbet Summer Launch)",\n'
+        '  "company_name": "Inferred or creative brand name (e.g. Velvet Scoop Gelateria)",\n'
+        '  "product_name": "Hero product or service offering",\n'
+        '  "price_point": "Compelling offer or price (e.g. Scoops from ₹129 / Buy 2 Get 1 Free)",\n'
+        '  "location": "Target neighborhood / city (e.g. Bandra West, Mumbai)",\n'
+        '  "target_audience": "Specific customer persona with psychological desires",\n'
+        '  "key_benefit": "Top 3 USPs separated by commas (e.g. 100% Real Fruit, Zero Preservatives, Belgian Waffle Cones)",\n'
+        '  "industry": "food, retail, clinic, fitness, real_estate, ecommerce, services, or tech",\n'
+        '  "tone": "high_energy, luxury, friendly, or problem_solution",\n'
+        '  "suggested_cta": "Action-specific CTA with emoji (e.g. 🍨 Order on WhatsApp ➔)"\n'
+        "}"
+    )
+
+    headers = {
+        "Authorization": f"Bearer {OMNIROUTE_KEY}",
+        "Content-Type": "application/json"
+    }
+
+    payload = {
+        "model": MODEL_NAME,
+        "messages": [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": f"Business Requirement Prompt:\n{prompt.strip()}"}
+        ],
+        "temperature": 0.3,
+        "max_tokens": 1000
+    }
+
+    async with httpx.AsyncClient(timeout=35.0) as client:
+        res = await client.post(OMNIROUTE_URL, json=payload, headers=headers)
+        if res.status_code != 200:
+            raise RuntimeError(f"OmniRoute error ({res.status_code}): {res.text}")
+        
+        resp_json = res.json()
+        raw_text = resp_json["choices"][0]["message"]["content"]
+        parsed = _extract_json(raw_text)
+        parsed["engine"] = f"OmniRoute ({MODEL_NAME})"
+        return parsed
 
 
 async def think_and_generate_campaign(
@@ -29,7 +96,7 @@ async def think_and_generate_campaign(
     quality: str = "1080p",
     tone: str = "high_energy",
 ) -> Dict[str, Any]:
-    """Call the Omni-tm Thinking Master to reason through and generate a bespoke campaign."""
+    """Call OmniRoute (kr/deepseek-3.2) to reason deeply and generate a 100% bespoke ad suite and screenplay."""
 
     brand = company_name.strip() or product_name.strip() or "Brand"
     prod = product_name.strip() or topic.strip() or "Offering"
@@ -46,14 +113,16 @@ When given a business requirement, you think deeply and reason through:
 4. Google Veo 2 / Sora cinematography: lighting, lens choice, camera movement, and kinetic typography.
 5. The exact high-converting Call To Action (e.g. 'Order on WhatsApp', 'Claim Offer', 'Book Now').
 
-Generate a bespoke advertising campaign tailored specifically to this business.
+Generate a 100% bespoke advertising campaign tailored specifically to this business.
 Return ONLY a valid JSON object with NO extra prose or markdown code fence:
 {{
   "thinking_process": "3-5 sentences of your live strategic thinking, audience psychology, hook rationale, and visual metaphor",
   "brand_tagline": "short catchy brand punchline",
   "headlines": ["Headline 1 with emoji", "Headline 2", "Headline 3"],
   "primary_text": "2-sentence high-converting ad copy",
-  "dynamic_cta": "Action-specific CTA with emoji and arrow (e.g. 🛒 Order Now on WhatsApp ➔)",
+  "primary_texts": ["Angle 1 (Desire & Aspiration)", "Angle 2 (Logic & Value)", "Angle 3 (Urgency & Scarcity)"],
+  "descriptions": ["Description variant 1", "Description variant 2", "Description variant 3"],
+  "dynamic_cta": "Action-specific CTA with emoji and arrow (e.g. 🛒 Order on WhatsApp ➔)",
   "video_script": {{
     "hook": "Attention-grabbing hook (0-4s)",
     "problem": "Customer pain point / tension (4-8s)",
@@ -67,7 +136,7 @@ Return ONLY a valid JSON object with NO extra prose or markdown code fence:
       "timestamp": "00:00 - 00:04",
       "lens_lighting": "35mm Anamorphic · High-Key Rim Light",
       "camera_motion": "Rapid Snap Zoom + Center Track",
-      "veo_prompt": "Cinematic prompt describing the visual action, lighting, and camera motion",
+      "veo_prompt": "Cinematic prompt describing the visual action, lighting, and camera motion specifically for this product",
       "voiceover": "Narration text for scene 1",
       "on_screen_text": "Bold text overlay for scene 1"
     }},
@@ -77,7 +146,7 @@ Return ONLY a valid JSON object with NO extra prose or markdown code fence:
       "timestamp": "00:04 - 00:08",
       "lens_lighting": "50mm Macro · Low-Key Directional Light",
       "camera_motion": "Whip Pan Left to Right",
-      "veo_prompt": "Cinematic prompt describing tension/comparison",
+      "veo_prompt": "Cinematic prompt describing tension/comparison for this product",
       "voiceover": "Narration text for scene 2",
       "on_screen_text": "Bold text overlay for scene 2"
     }},
@@ -87,7 +156,7 @@ Return ONLY a valid JSON object with NO extra prose or markdown code fence:
       "timestamp": "00:08 - 00:12",
       "lens_lighting": "85mm Portrait f/1.4 · Golden Hour Warmth",
       "camera_motion": "Smooth 360-Degree Orbital Gimbal",
-      "veo_prompt": "Hero reveal of product with glowing badges and pristine presentation",
+      "veo_prompt": "Hero reveal of product with glowing presentation specifically for this product",
       "voiceover": "Narration text for scene 3",
       "on_screen_text": "Bold text overlay for scene 3"
     }},
@@ -95,7 +164,7 @@ Return ONLY a valid JSON object with NO extra prose or markdown code fence:
       "scene_number": 4,
       "scene_title": "The Urgent Call-To-Action",
       "timestamp": "00:12 - 00:15",
-      "lens_lighting": "24mm Wide Angle · Neon Cyber Glow",
+      "lens_lighting": "24mm Wide Angle · Vibrant Modern Glow",
       "camera_motion": "Slow Forward Dolly Push",
       "veo_prompt": "High-energy end card with smartphone mockup and glowing WhatsApp CTA button",
       "voiceover": "Narration text for scene 4",
@@ -103,7 +172,7 @@ Return ONLY a valid JSON object with NO extra prose or markdown code fence:
     }}
   ],
   "full_narration": "Seamless 15-second voiceover script for Edge-TTS neural speech synthesis",
-  "aspect_ratio": "1:1",
+  "aspect_ratio": "9:16",
   "target_audience": "{aud}",
   "location": "{loc}"
 }}"""
@@ -121,52 +190,27 @@ Quality: {quality}
 Tone: {tone}"""
 
     headers = {
-        "x-api-key": OMNIROUTE_KEY,
-        "anthropic-version": "2023-06-01",
-        "content-type": "application/json"
+        "Authorization": f"Bearer {OMNIROUTE_KEY}",
+        "Content-Type": "application/json"
     }
 
     req_body = {
         "model": MODEL_NAME,
-        "max_tokens": 1500,
+        "max_tokens": 2000,
         "temperature": 0.7,
         "messages": [
-            {"role": "user", "content": f"{system_prompt}\n\n{user_message}"}
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_message}
         ]
     }
 
-    try:
-        async with httpx.AsyncClient(timeout=25.0) as client:
-            res = await client.post(OMNIROUTE_URL, json=req_body, headers=headers)
-            if res.status_code == 200:
-                resp_json = res.json()
-                content_text = resp_json.get("content", [{}])[0].get("text", "")
-                m = re.search(r"\{.*\}", content_text, re.DOTALL)
-                if m:
-                    parsed = json.loads(m.group(0))
-                    parsed["engine"] = "Thinking Master (Omni-tm)"
-                    return parsed
-    except Exception as e:
-        logger.warning(f"Thinking Master OmniRoute call failed, using dynamic generator: {e}")
+    async with httpx.AsyncClient(timeout=45.0) as client:
+        res = await client.post(OMNIROUTE_URL, json=req_body, headers=headers)
+        if res.status_code != 200:
+            raise RuntimeError(f"OmniRoute generation failed ({res.status_code}): {res.text}")
 
-    # Resilient dynamic fallback tailored specifically to the input
-    from .copywriter import generate_ad_copy
-    fallback_data = generate_ad_copy(
-        product_name=prod,
-        company_name=brand,
-        topic=topic,
-        price_point=price,
-        location=loc,
-        key_benefit=ben,
-        target_audience=aud,
-        duration=duration,
-        quality=quality,
-        tone=tone,
-    )
-    fallback_data["thinking_process"] = (
-        f"Analyzed {brand}'s positioning for {prod} in {loc}. "
-        f"Focused the strategy on {ben} with an immediate {price} offer. "
-        f"Designed dynamic video reel hooks to drive maximum click-through rates directly to WhatsApp."
-    )
-    fallback_data["engine"] = "LeadPulse Dynamic Generative Engine"
-    return fallback_data
+        resp_json = res.json()
+        content_text = resp_json["choices"][0]["message"]["content"]
+        parsed = _extract_json(content_text)
+        parsed["engine"] = f"OmniRoute Thinking Master ({MODEL_NAME})"
+        return parsed
